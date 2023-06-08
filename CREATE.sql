@@ -29,6 +29,7 @@ create table infousuarios.perfil(
 
     constraint pk_perfil primary key (per_id),
     constraint fk_user foreign key (fk_usuario) references infousuarios.usuario(idU)
+    on delete cascade on update cascade
 );
 
 create table infousuarios.actividad(
@@ -40,6 +41,7 @@ create table infousuarios.actividad(
 
     constraint pk_actividad primary key (act_id),
     constraint fk_perfil foreign key (fk_perfil) references infousuarios.perfil(per_id)
+    on delete cascade on update cascade
 );
 
 create table infousuarios.suscripcion(
@@ -65,8 +67,10 @@ create table infousuarios.Suscripcion_Beneficio(
     fk_sus_ben serial not null,
 
     constraint pk_ben_sus primary key (fk_ben_sus,fk_sus_ben),
-    constraint fk_ben foreign key (fk_ben_sus) references infousuarios.beneficio(benid),
+    constraint fk_ben foreign key (fk_ben_sus) references infousuarios.beneficio(benid)
+    on delete cascade on update cascade,
     constraint fk_sus foreign key (fk_sus_ben) references infousuarios.suscripcion(susid)
+    on delete cascade on update cascade
 );
 
 create table infousuarios.TarjetaCredito(
@@ -77,4 +81,5 @@ create table infousuarios.TarjetaCredito(
 
     constraint pk_tdc primary key (tdcnumero),
     constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(idU)
+    on delete cascade on update cascade
 );

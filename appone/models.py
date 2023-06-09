@@ -3,6 +3,25 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
 # Create your models here.
 
+class UsuarioManager(BaseUserManager):
+    def create_user(self,idu,correou,nombreu,apellidou,fechanacu,contrasennau,ciudadu,sexou,paisu):
+        if not correou:
+            raise ValueError('El usuario debe tener correo electronico')
+        Usuario = self.model(
+            idu = idu,
+            correou = self.normalize_email(correou),
+            nombreu = nombreu,
+            apellidou = apellidou,
+            fechanacu = fechanacu,
+            contrasennau = contrasennau,
+            ciudadu = ciudadu,
+            sexou = sexou,
+            paisu = paisu
+        )
+        Usuario.set_password(contrasennau)
+        Usuario.save()
+        return Usuario
+
 class Usuario(AbstractBaseUser):
     idu = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
     nombreu = models.CharField('Nombre del usuario',null=False,blank=False,max_length=20)
@@ -13,6 +32,7 @@ class Usuario(AbstractBaseUser):
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=10)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False)
     paisu = models.CharField('Pais del usuario',null=False,blank=False,max_length=15)
+    objects = UsuarioManager()
 
     USERNAME_FIELD = 'idu'
     REQUIRED_FIELDS = ['nombreu','apellidou','fechanacu','correou','contrasennau','ciudadu','sexou','paisu']

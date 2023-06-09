@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.contrib.auth.models import User
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm
-from .models import Task
+from .models import Task,Usuario
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -22,7 +21,7 @@ def Singup(request):
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
-                user = User.objects.create_user(
+                user = Usuario.objects.create_user(
                     username=request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request,user)

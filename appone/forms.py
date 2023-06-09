@@ -1,9 +1,19 @@
 from django import forms
-from .models import Task
+from .models import Task,Usuario
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
+        fields = ['title','description','important']
+        widgets = {
+            'title' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escribe el titulo de la tarea'}),
+            'description' : forms.Textarea(attrs={'class':'form-control','placeholder':'Escribe la descripcion de la tarea'}),
+            'important' : forms.CheckboxInput(attrs={'class':'form-check-input m-auto'}),
+        }
+
+class UsuarioForm(forms.base):
+    class Meta:
+        model = Usuario
         fields = ['title','description','important']
         widgets = {
             'title' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escribe el titulo de la tarea'}),

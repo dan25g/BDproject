@@ -83,6 +83,9 @@ DATABASES = {
         'PASSWORD': '4520',
         'HOST': 'localhost',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=infousuarios'
+        }
     }
 }
 
@@ -130,3 +133,4 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'appone/static'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'appone.Usuario'

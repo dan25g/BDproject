@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.core.validators import EmailValidator
 
 # Create your models here.
 
@@ -30,7 +31,7 @@ class Usuario(AbstractBaseUser):
     correou = models.CharField('Correo electronico',unique=True,null=False,blank=False, max_length=50)
     contrasennau = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=10)
-    sexou = models.CharField('Sexo del usuario',null=False,blank=False)
+    sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Oesc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = models.CharField('Pais del usuario',null=False,blank=False,max_length=15)
     objects = UsuarioManager()
 

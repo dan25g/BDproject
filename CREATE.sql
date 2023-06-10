@@ -83,3 +83,67 @@ create table infousuarios.TarjetaCredito(
     constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(idU)
     on delete cascade on update cascade
 );
+
+create table infopersonajes.civil(
+    id_personaje int unique not null,
+    genC genero,
+    primer_nombre varchar(20) not null,
+    segundo_nombre varchar(20) not null,
+    primer_apellido varchar(20) not null,
+    segundo_apellido varchar(20) not null,
+    color_pelo varchar(15) not null,
+    color_ojos varchar(15) not null,
+    frase_celebre varchar(75) null,
+    comic_primer_vez varchar(50) not null,
+
+    constraint pk_civil primary key (id_personaje)
+);
+
+create table infopersonajes.heroe(
+    id_personaje int unique not null,
+    genC genero,
+    primer_nombre varchar(20) not null,
+    segundo_nombre varchar(20) not null,
+    primer_apellido varchar(20) not null,
+    segundo_apellido varchar(20) not null,
+    color_pelo varchar(15) not null,
+    color_ojos varchar(15) not null,
+    frase_celebre varchar(75),
+    nombre_superheroe varchar(20) not null,
+    color_traje varchar(15) not null,
+    logotipo varchar(75) not null,
+    comic_primer_vez varchar(50) not null,
+
+    constraint pk_heroe primary key (id_personaje)
+);
+
+create table infopersonajes.villano(
+    id_personaje int unique not null,
+    genC genero,
+    primer_nombre varchar(20) not null,
+    segundo_nombre varchar(20) not null,
+    primer_apellido varchar(20) not null,
+    segundo_apellido varchar(20) not null,
+    color_pelo varchar(15) not null,
+    color_ojos varchar(15) not null,
+    frase_celebre varchar(75),
+    nombre_supervillano varchar(20) not null,
+    objetivo varchar(50) not null,
+    comic_primer_vez varchar(50) not null,
+    archienemigo int,
+
+    constraint pk_civil primary key (id_personaje)
+    constraint fk_archienemigo foreign key (archienemigo) references infopersonajes.heroe(id_personaje)
+    on delete set null
+);
+
+create table infopersonajes.amistad(
+    id_civil int,
+    id_amispers int,
+
+    constraint pk_amistad primary key (id_civil,id_amispers),
+    constraint fk_civil foreign key (id_civil) references infopersonajes.civil(id_personaje),
+    constraint fk_personaje foreign key (id_amispers) references infopersonajes.id_personaje,
+    on delete cascade on update cascade
+
+);

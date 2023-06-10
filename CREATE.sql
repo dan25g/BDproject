@@ -6,6 +6,7 @@ create domain genero as varchar not null check ( value in ('M','F','Desc','Otro'
 
 create domain mail as varchar not null check ( value ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 
+create domain estadoMar as varchar not null check (value in ('Casado','Soltero','Viudo','Divorciado'));
 create table infousuarios.usuario(
     idU varchar(15) unique not null,
     nombreU varchar(20) not null,
@@ -138,8 +139,8 @@ create table infopersonajes.villano(
 );
 
 create table infopersonajes.amistad(
-    id_civil int,
-    id_amispers int,
+    id_civil int not null,
+    id_amispers int not null,
 
     constraint pk_amistad primary key (id_civil,id_amispers),
     constraint fk_civil foreign key (id_civil) references infopersonajes.civil(id_personaje),
@@ -147,3 +148,46 @@ create table infopersonajes.amistad(
     on delete cascade on update cascade
 
 );
+
+create table infopersonajes.nacionalidad(
+    id_personaje_nac int not null,
+    id_nacion int not null,
+    nacion_nombre varchar(20) not null, 
+    nacion_continente varchar(20) not null,
+
+    constraint pk_nacionalidad primary key (id_personaje_nac,id_nacion),
+    constraint fk_personaje foreign key (id_personaje_nac) references infopersonajes.id_personaje,
+);
+
+create table infopersonajes.creador(
+    id_personaje_cre int not null,
+    id_creador int not null,
+    creador_nombre varchar(20) not null, 
+    creador_apellido varchar(20) not null,
+
+    constraint pk_creador primary key (id_personaje_cre,id_creador),
+    constraint fk_personaje foreign key (id_personaje_cre) references infopersonajes.id_personaje,
+);
+
+create table infopersonajes.ocupacion(
+    id_personaje_ocu int not null,
+    id_ocupacion int not null,
+    ocupa_nombre varchar(20) not null,
+
+    constraint pk_ocupacion primary key (id_personaje_ocu,id_),
+    constraint fk_personaje foreign key (id_personaje_ocu) references infopersonajes.id_personaje,
+);
+
+create table infopersonajes.historico_matrimonio(
+    id_pers_mari int not null,
+    id_pers_muj int not null,
+    fecha_inicio date not null,
+    fecha_fin date not null,
+    estadoMarital estadoMar,
+
+    constraint pk_matrimonio primary key (id_pers_mari,id_pers_muj,fecha_inicio);
+    constraint fk_marido foreign key (id_pers_mari) references infopersonajes.id_personaje,
+    constraint fk_mujer foreign key (id_pers_muj) references infopersonajes.id_personaje,
+);
+
+create table 

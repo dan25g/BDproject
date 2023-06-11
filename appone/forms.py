@@ -39,7 +39,7 @@ class UsuarioForm(forms.ModelForm):
             'apellidou' : forms.TextInput(attrs={'class':'form-control','placeholder':'Apellido de usuario'}),
             'correou' : forms.EmailInput(attrs={'class':'form-control','placeholder':'Correo electronico'}),
             'contrasennau' : forms.PasswordInput(attrs={'class':'form-control','placeholder':'Contraseña del usuario'}),
-            'fechanacu' : forms.DateInput(attrs={'class':'date','label':'Fecha de nacimiento','placeholder':'__/__/____'}),
+            'fechanacu' : forms.DateInput(attrs={'class':'date','label':'Fecha de nacimiento','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
             'ciudadu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ciudad de usuario'}),
             'paisu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Pais de usuario'}),
             'sexou' : forms.Select(attrs={'class':'form-control','placeholder':'Sexo del usuario'}),

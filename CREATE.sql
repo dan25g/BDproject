@@ -90,7 +90,7 @@ create table infousuarios.TarjetaCredito(
     on delete cascade on update cascade
 );
 
-create table infopersonajes.civil(
+create table infopersonajes.personaje(
     id_personaje int unique not null,
     genC genero,
     primer_nombre varchar(20) not null,
@@ -102,43 +102,34 @@ create table infopersonajes.civil(
     frase_celebre varchar(75) null,
     comic_primer_vez varchar(50) not null,
 
-    constraint pk_civil primary key (id_personaje)
+    constraint pk_personaje primary key (id_personaje),
+);
+
+create table infopersonajes.civil(
+    id_personaje int unique not null,
+
+    constraint pk_civil primary key (id_personaje),
+    constraint fk_personaje foreign key (id_personaje) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.heroe(
     id_personaje int unique not null,
-    genC genero,
-    primer_nombre varchar(20) not null,
-    segundo_nombre varchar(20) not null,
-    primer_apellido varchar(20) not null,
-    segundo_apellido varchar(20) not null,
-    color_pelo varchar(15) not null,
-    color_ojos varchar(15) not null,
-    frase_celebre varchar(75),
     nombre_superheroe varchar(20) not null,
     color_traje varchar(15) not null,
     logotipo varchar(75) not null,
-    comic_primer_vez varchar(50) not null,
 
     constraint pk_heroe primary key (id_personaje)
+    constraint fk_personaje foreign key (id_personaje) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.villano(
     id_personaje int unique not null,
-    genC genero,
-    primer_nombre varchar(20) not null,
-    segundo_nombre varchar(20) not null,
-    primer_apellido varchar(20) not null,
-    segundo_apellido varchar(20) not null,
-    color_pelo varchar(15) not null,
-    color_ojos varchar(15) not null,
-    frase_celebre varchar(75),
     nombre_supervillano varchar(20) not null,
     objetivo varchar(50) not null,
-    comic_primer_vez varchar(50) not null,
     archienemigo int,
 
     constraint pk_villano primary key (id_personaje)
+    constraint fk_personaje foreign key (id_personaje) references infopersonajes.personaje(id_personaje),
     constraint fk_archienemigo foreign key (archienemigo) references infopersonajes.heroe(id_personaje)
     on delete set null
 );
@@ -149,7 +140,7 @@ create table infopersonajes.amistad(
 
     constraint pk_amistad primary key (id_civil,id_amispers),
     constraint fk_civil foreign key (id_civil) references infopersonajes.civil(id_personaje),
-    constraint fk_personaje foreign key (id_amispers) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (id_amispers) references infopersonajes.personaje(id_personaje),
     on delete cascade on update cascade
 
 );
@@ -161,7 +152,7 @@ create table infopersonajes.nacionalidad(
     nacion_continente varchar(20) not null check(values in('America','Europa','Africa','Asia','Oceania')),
 
     constraint pk_nacionalidad primary key (id_personaje_nac,id_nacion),
-    constraint fk_personaje foreign key (id_personaje_nac) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (id_personaje_nac) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.creador(
@@ -171,7 +162,7 @@ create table infopersonajes.creador(
     creador_apellido varchar(20) not null,
 
     constraint pk_creador primary key (id_personaje_cre,id_creador),
-    constraint fk_personaje foreign key (id_personaje_cre) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (id_personaje_cre) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.ocupacion(
@@ -180,7 +171,7 @@ create table infopersonajes.ocupacion(
     ocupa_nombre varchar(20) not null,
 
     constraint pk_ocupacion primary key (id_personaje_ocu,id_),
-    constraint fk_personaje foreign key (id_personaje_ocu) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (id_personaje_ocu) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.historico_matrimonio(
@@ -191,8 +182,8 @@ create table infopersonajes.historico_matrimonio(
     estadoMarital estadoMar,
 
     constraint pk_matrimonio primary key (id_pers_mari,id_pers_muj,fecha_inicio);
-    constraint fk_marido foreign key (id_pers_mari) references infopersonajes.id_personaje,
-    constraint fk_mujer foreign key (id_pers_muj) references infopersonajes.id_personaje,
+    constraint fk_marido foreign key (id_pers_mari) references infopersonajes.personaje(id_personaje),
+    constraint fk_mujer foreign key (id_pers_muj) references infopersonajes.personaje(id_personaje),
 );
 
 create table infopersonajes.poder(
@@ -210,7 +201,7 @@ create table infopersonajes.personaje_poder(
     hereditario boolean not null,
 
     constraint pk_personaje_poder primary key (fk_pod_pers,fk_pers_pod),
-    constraint fk_personaje foreign key (fk_pers_pod) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (fk_pers_pod) references infopersonajes.personaje(id_personaje),
     constraint fk_poder foreign key (fk_pod_pers) references infopersonajes.poder(podid),
 );
 
@@ -239,7 +230,7 @@ create table infopersonajes.personaje_objeto(
     hereditario boolean not null,
 
     constraint pk_personaje_objeto primary key (fk_obj_pers,fk_pers_obj),
-    constraint fk_personaje foreign key (fk_pers_obj) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (fk_pers_obj) references infopersonajes.personaje(id_personaje),
     constraint fk_objeto foreign key (fk_obj_pers) references infopersonajes.objeto(obid),
 );
 
@@ -258,7 +249,7 @@ create table infopersonajes.registro_combates (
     cmbfecha date not null,
 
     constraint pk_registro_combate primary key (fk_cmb_reg,fk_obj_reg,id_pers_reg,id_pod_reg,cmbfecha),
-    constraint fk_personaje foreign key (id_pers_reg) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (id_pers_reg) references infopersonajes.personaje(id_personaje),
     constraint fk_combate foreign key (fk_cmb_reg) references infopersonajes.combate(cmbid),
     constraint fk_objeto foreign key (fk_obj_reg) references infopersonajes.objeto(obid),
     constraint fk_poder foreign key (id_pod_reg) references infopersonajes.poder(podid),
@@ -296,17 +287,23 @@ create table infopersonajes.historico_personaje(
     fecha_salida date,
 
     constraint pk_historico primary key (fk_pers_org,fk_org_pers,fecha_union),
-    constraint fk_personaje foreign key (fk_pers_org) references infopersonajes.id_personaje,
+    constraint fk_personaje foreign key (fk_pers_org) references infopersonajes.personaje(id_personaje),
     constraint fk_organizacion foreign key (fk_org_pers) references infopersonajes.organizacion(obid),
 );
 
-create table infopersonajes.pelicula(
+create table infopersonajes.medio(
     medio_id serial unique not null,
     medfecestreno date not null,
     medcomcreacion varchar(20) not null,
     medcomproduc varchar (40) not null,
     medrating rating,
     medsinopsis varchar(120) not null,
+
+    constraint pk_medio primary key (medio_id),
+)
+
+create table infopersonajes.pelicula(
+    medio_id int unique not null,
     medtipo varchar(10) not null check(values in('animada','liveaction','stopmotion')),
     peldirector varchar(40) not null,
     pelduracion int not null,
@@ -314,21 +311,18 @@ create table infopersonajes.pelicula(
     pelganancias number(5,4) not null,
 
     constraint pk_pelicula primary key (medio_id),
+    constraint fk_medio foreign key (medio_id) references infopersonajes.medio(medio_id),
 );
 
 create table infopersonajes.serie(
-    medio_id serial unique not null,
-    medfecestreno date not null,
-    medcomcreacion varchar(20) not null,
-    medcomproduc varchar (40) not null,
-    medrating rating,
-    medsinopsis varchar(120) not null,
+    medio_id int unique not null,
     medtipo varchar(10) not null check(values in('animada','liveaction','stopmotion')),
     sercreador varchar(40) not null,
     serepisodios int not null,
     sercanal varchar(20) not null,
 
-    constraint pk_pelicula primary key (medio_id),
+    constraint pk_serie primary key (medio_id),
+    constraint fk_medio foreign key (medio_id) references infopersonajes.medio(medio_id),
 );
 
 create table infopersonajes.jueplataforma(
@@ -339,18 +333,14 @@ create table infopersonajes.jueplataforma(
 );
 
 create table infopersonajes.juego(
-    medio_id serial unique not null,
-    medfecestreno date not null,
-    medcomcreacion varchar(20) not null,
-    medcomproduc varchar (40) not null,
-    medrating rating,
-    medsinopsis varchar(120) not null,
+    medio_id int unique not null,
     medtipo varchar(14) not null check(values in('accion','aventura','estrategia','rpg','mundo abierto','simulacion')),
     juegocompania varchar(20) not null,
     fk_plataforma int not null,
 
     constraint pk_pelicula primary key (medio_id),
     constraint fk_plataforma foreign key (fk_plataforma) references infopersonajes.jueplataforma(id_plataforma),
+    constraint fk_medio foreign key (medio_id) references infopersonajes.medio(medio_id),
 );
 
 create table infopersonajes.organizacion_medio(
@@ -360,7 +350,7 @@ create table infopersonajes.organizacion_medio(
 
     constraint pk_orgmed primary key (fk_med_org,fk_org_med),
     constraint fk_organizacion foreign key (fk_org_med) references infopersonajes.organizacion(id_org),
-    constraint fk_medio foreign key (fk_med_org) references infopersonajes.medio_id,
+    constraint fk_medio foreign key (fk_med_org) references infopersonajes.medio(medio_id),
 );
 
 create table infopersonajes.personaje_medio(
@@ -371,6 +361,17 @@ create table infopersonajes.personaje_medio(
     personaje_tipo varchar(30) not null check (values in('Antagonista','Protagonista','Secundario')),
 
     constraint pk_persmed primary key (fk_med_pers,fk_pers_med),
-    constraint fk_personaje foreign key (fk_pers_med) references infopersonajes.id_personaje,
-    constraint fk_medio foreign key (fk_med_pers) references infopersonajes.medio_id,
+    constraint fk_personaje foreign key (fk_pers_med) references infopersonajes.personaje(id_personaje),
+    constraint fk_medio foreign key (fk_med_pers) references infopersonajes.medio(medio_id),
+);
+
+create table infousuarios.perfil_medio(
+    fk_perf_med int not null,
+    fk_med_perf int not null,
+    calificacion rating,
+    fecha_vista date not null,
+
+    constraint pk_perfmed primary key (fk_perf_med,fk_med_perf),
+    constraint fk_perfil foreign key (fk_perf_med) references infousuarios.perfil(per_id),
+    constraint fk_medio foreign key (fk_med_perf) references infopersonajes.medio(medio_id),
 );

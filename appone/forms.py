@@ -1,6 +1,8 @@
 from django import forms
 from .models import Task,Usuario
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django_countries.widgets import CountrySelectWidget
+
 
 class TaskForm(forms.ModelForm):
     class Meta:
@@ -32,7 +34,7 @@ class UsuarioForm(forms.ModelForm):
     ))
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = ['idu','nombreu','apellidou','correou','contrasennau','fechanacu','ciudadu','paisu','sexou']
         widgets = {
             'idu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de usuario'}),
             'nombreu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre real de usuario'}),
@@ -40,7 +42,7 @@ class UsuarioForm(forms.ModelForm):
             'correou' : forms.EmailInput(attrs={'class':'form-control','placeholder':'Correo electronico'}),
             'contrasennau' : forms.PasswordInput(attrs={'class':'form-control','placeholder':'Contraseña del usuario'}),
             'fechanacu' : forms.DateInput(attrs={'class':'date','label':'Fecha de nacimiento','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
-            'ciudadu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ciudad de usuario'}),
-            'paisu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Pais de usuario'}),
+            'paisu' : CountrySelectWidget(),
+            'ciudadu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ciudad de usuario'}),    
             'sexou' : forms.Select(attrs={'class':'form-control','placeholder':'Sexo del usuario'}),
         }

@@ -80,7 +80,7 @@ create table infousuarios.Suscripcion_Beneficio(
 );
 
 create table infousuarios.TarjetaCredito(
-    tdcnumero int unique not null,
+    tdcnumero bigint unique not null,
     tdcfecvencimiento date not null,
     tdccvv int not null,
     fk_usuario varchar(25) not null unique,
@@ -311,6 +311,7 @@ create table infopersonajes.pelicula(
     pelganancias numeric(5,4) not null,
 
     constraint pk_pelicula primary key (medio_id),
+    constraint check_ganancia check (pelcosteprod<=pelganancias),
     constraint fk_medio foreign key (medio_id) references infopersonajes.medio(medio_id)
 );
 

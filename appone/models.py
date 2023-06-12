@@ -61,7 +61,7 @@ class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)
     idioma = models.CharField(max_length=10)
     percorreo = models.CharField()
-    fk_usuario = models.ForeignKey(Usuario, models.DO_NOTHING, db_column='fk_usuario')
+    fk_usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -72,7 +72,7 @@ class Actividad(models.Model):
     act_ingreso = models.DateTimeField()
     act_dispositivo = models.CharField(max_length=10)
     act_fin = models.DateTimeField()
-    fk_perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, db_column='fk_perfil')
+    fk_perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -99,8 +99,8 @@ class Suscripcion(models.Model):
 
 
 class SuscripcionBeneficio(models.Model):
-    fk_ben_sus = models.ForeignKey(Beneficio, models.DO_NOTHING, db_column='fk_ben_sus', primary_key=True)  # The composite primary key (fk_ben_sus, fk_sus_ben) found, that is not supported. The first column is selected.
-    fk_sus_ben = models.ForeignKey(Suscripcion, models.DO_NOTHING, db_column='fk_sus_ben')
+    fk_ben_sus = models.ForeignKey(Beneficio, models.DO_NOTHING,primary_key=True)  
+    fk_sus_ben = models.ForeignKey(Suscripcion, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
@@ -112,7 +112,7 @@ class Tarjetacredito(models.Model):
     tdcnumero = models.IntegerField(primary_key=True)
     tdcfecvencimiento = models.DateField()
     tdccvv = models.IntegerField()
-    fk_usuario = models.OneToOneField('Usuario', models.DO_NOTHING, db_column='fk_usuario')
+    fk_usuario = models.OneToOneField(Usuario, models.DO_NOTHING)
 
     class Meta:
         managed = False

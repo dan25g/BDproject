@@ -100,7 +100,7 @@ class Suscripcion(models.Model):
 
 class SuscripcionBeneficio(models.Model):
     fk_ben_sus = models.ForeignKey(Beneficio, models.DO_NOTHING,primary_key=True)  
-    fk_sus_ben = models.ForeignKey(Suscripcion, models.DO_NOTHING, primary_key=True)
+    fk_sus_ben = models.ForeignKey(Suscripcion, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -144,7 +144,7 @@ class Civil(models.Model):
 
 class Amistad(models.Model):
     id_civil = models.OneToOneField(Civil, models.DO_NOTHING,primary_key=True)  
-    id_amispers = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
+    id_amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -186,8 +186,8 @@ class Heroe(models.Model):
 
 
 class HistoricoMatrimonio(models.Model):
-    id_pers_mari = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
-    id_pers_muj = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
+    id_pers_mari = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
+    id_pers_muj = models.ForeignKey(Civil, models.DO_NOTHING,)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
     estadomarital = models.CharField()
@@ -211,8 +211,8 @@ class Organizacion(models.Model):
         db_table = 'organizacion'
 
 class HistoricoPersonaje(models.Model):
-    fk_pers_org = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
-    fk_org_pers = models.ForeignKey(Organizacion, models.DO_NOTHING,primary_key=True)
+    fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
+    fk_org_pers = models.OneToOneField(Organizacion, models.DO_NOTHING, blank=True, null=True)
     fundador = models.BooleanField()
     lider = models.BooleanField()
     fecha_union = models.DateField()
@@ -298,7 +298,7 @@ class Ocupacion(models.Model):
 
 class OrganizacionMedio(models.Model):
     fk_med_org = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True) 
-    fk_org_med = models.ForeignKey(Organizacion, models.DO_NOTHING, primary_key=True)
+    fk_org_med = models.ForeignKey(Organizacion, models.DO_NOTHING)
     estado = models.CharField(max_length=20)
 
     class Meta:
@@ -321,7 +321,7 @@ class Pelicula(models.Model):
 
 class PerfilMedio(models.Model):
     fk_perf_med = models.OneToOneField(Perfil, models.DO_NOTHING, primary_key=True)  
-    fk_med_perf = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
+    fk_med_perf = models.OneToOneField(Medio, models.DO_NOTHING)
     calificacion = models.IntegerField()
     fecha_vista = models.DateTimeField()
 
@@ -333,7 +333,7 @@ class PerfilMedio(models.Model):
 
 class PersonajeMedio(models.Model):
     fk_med_pers = models.OneToOneField(Medio, models.DO_NOTHING,primary_key=True)  
-    fk_pers_med = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
+    fk_pers_med = models.ForeignKey(Personaje, models.DO_NOTHING)
     actor_tipo = models.CharField()
     actor_nombre = models.CharField(max_length=40)
     personaje_tipo = models.CharField(max_length=30)
@@ -346,7 +346,7 @@ class PersonajeMedio(models.Model):
 
 class PersonajeObjeto(models.Model):
     fk_obj_pers = models.OneToOneField(Objeto, models.DO_NOTHING, primary_key=True) 
-    fk_pers_obj = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
+    fk_pers_obj = models.ForeignKey(Personaje, models.DO_NOTHING)
     hereditario = models.BooleanField()
 
     class Meta:
@@ -357,7 +357,7 @@ class PersonajeObjeto(models.Model):
 
 class PersonajePoder(models.Model):
     fk_pod_pers = models.OneToOneField('Poder', models.DO_NOTHING, primary_key=True)  
-    fk_pers_pod = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
+    fk_pers_pod = models.ForeignKey(Personaje, models.DO_NOTHING)
     hereditario = models.BooleanField()
 
     class Meta:
@@ -378,10 +378,10 @@ class Poder(models.Model):
 
 
 class RegistroCombates(models.Model):
-    fk_cmb_reg = models.OneToOneField(Combate, models.DO_NOTHING,primary_key=True)
-    fk_obj_reg = models.ForeignKey(Objeto, models.DO_NOTHING, primary_key=True)
-    id_pers_reg = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True)
-    id_pod_reg = models.ForeignKey(Poder, models.DO_NOTHING, primary_key=True)
+    fk_cmb_reg = models.ForeignKey(Combate, models.DO_NOTHING,primary_key=True)
+    fk_obj_reg = models.ForeignKey(Objeto, models.DO_NOTHING)
+    id_pers_reg = models.ForeignKey(Personaje, models.DO_NOTHING)
+    id_pod_reg = models.ForeignKey(Poder, models.DO_NOTHING)
     cmbfecha = models.DateField()
 
     class Meta:
@@ -395,7 +395,7 @@ class Sede(models.Model):
     sede_nombre = models.CharField(max_length=20)
     sede_ubicacion = models.CharField(max_length=20)
     tipo_edificacion = models.CharField(max_length=10)
-    id_org = models.one(Organizacion, models.DO_NOTHING,primary_key=True)
+    id_org = models.OneToOneField(Organizacion, models.DO_NOTHING)
 
     class Meta:
         managed = False

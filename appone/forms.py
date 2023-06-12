@@ -46,3 +46,4 @@ class UsuarioForm(forms.ModelForm):
             'ciudadu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ciudad de usuario'}),    
             'sexou' : forms.Select(attrs={'class':'form-control','placeholder':'Sexo del usuario'}),
         }
+        

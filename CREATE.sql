@@ -80,7 +80,7 @@ create table infousuarios.Suscripcion_Beneficio(
 );
 
 create table infousuarios.TarjetaCredito(
-    tdcnumero serial unique not null,
+    tdcnumero int unique not null,
     tdcfecvencimiento date not null,
     tdccvv int not null,
     fk_usuario varchar(25) not null unique,

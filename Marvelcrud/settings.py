@@ -85,7 +85,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {
-            'options': '-c search_path=infousuarios'
+            'options': '-c search_path=infousuarios,infopersonajes,public'
         }
     }
 }

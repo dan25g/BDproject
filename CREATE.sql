@@ -376,3 +376,16 @@ create table infousuarios.perfil_medio(
     constraint fk_perfil foreign key (fk_perf_med) references infousuarios.perfil(per_id),
     constraint fk_medio foreign key (fk_med_perf) references infopersonajes.medio(medio_id)
 );
+
+create function Mensaje_Perdida() returns trigger as
+$$
+    BEGIN
+        raise notice 'ADVERTENCIA: La pelicula da perdida, revise los datos inserados';
+    END
+$$
+language plpgsql;
+
+create trigger DaPerdida before insert or update on infopersonajes.pelicula
+    for each row
+    when ( old.pelcosteprod>old.pelganancias )
+    execute function Mensaje_Perdida();

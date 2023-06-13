@@ -13,17 +13,17 @@ create domain rating as int not null check (value between 1 and 5);
 create domain actortipo as varchar not null check(value in('Interpreta','Presta su voz'));
 
 create table infousuarios.usuario(
-    idU varchar(15) unique not null,
+    username varchar(15) unique not null,
     nombreU varchar(20) not null,
     apellidoU varchar(20) not null,
     fechaNacU date not null,
     correoU mail,
-    contrasennaU varchar(20) not null,
+    password varchar(20) not null,
     ciudadU varchar(10) not null,
     sexoU genero,
     paisU varchar(15) not null,
 
-    constraint pk_user primary key (idU),
+    constraint pk_user primary key (username),
     constraint val_fnac check ( fechaNacU between '1924/1/1' and '2013/12/31')
 );
 
@@ -34,7 +34,7 @@ create table infousuarios.perfil(
     fk_usuario varchar(25) not null,
 
     constraint pk_perfil primary key (per_id),
-    constraint fk_user foreign key (fk_usuario) references infousuarios.usuario(idU)
+    constraint fk_user foreign key (fk_usuario) references infousuarios.usuario(username)
     on delete cascade on update cascade
 );
 
@@ -86,7 +86,7 @@ create table infousuarios.TarjetaCredito(
     fk_usuario varchar(25) not null unique,
 
     constraint pk_tdc primary key (tdcnumero),
-    constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(idU)
+    constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(username)
     on delete cascade on update cascade
 );
 

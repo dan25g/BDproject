@@ -31,8 +31,8 @@ class Usuario(AbstractBaseUser):
     fechanacu = models.DateField('Fecha de nacimiento del usuario',null=False,blank=False)
     correou = models.CharField('Correo electronico',unique=True,null=False,blank=False, max_length=50)
     password = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
-    ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=10)
-    sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Oesc','Desconocido'),('Otro','Otro')],max_length=10)
+    ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
+    sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
     objects = UsuarioManager()
 

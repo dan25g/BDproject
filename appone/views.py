@@ -32,7 +32,7 @@ def Singup(request):
             except IntegrityError:
                 return render(request, 'singup.html', {
                     'form': UsuarioForm,
-                    'error':'Usuario ya existe en el sistema'
+                    'error':'ERROR: Dato invalido revise los datos ingresados'
                 })
         else:
             return render(request, 'singup.html', {

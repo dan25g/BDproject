@@ -13,15 +13,16 @@ create domain rating as int not null check (value between 1 and 5);
 create domain actortipo as varchar not null check(value in('Interpreta','Presta su voz'));
 
 create table infousuarios.usuario(
-    username varchar(15) unique not null,
-    nombreU varchar(20) not null,
-    apellidoU varchar(20) not null,
+    username varchar(30) unique not null,
+    nombreU varchar(50) not null,
+    apellidoU varchar(50) not null,
     fechaNacU date not null,
     correoU mail,
-    password varchar(20) not null,
-    ciudadU varchar(10) not null,
+    password varchar(300) not null,
+    ciudadU varchar(30) not null,
     sexoU genero,
-    paisU varchar(15) not null,
+    paisU varchar(30) not null,
+    last_login timestamp,
 
     constraint pk_user primary key (username),
     constraint val_fnac check ( fechaNacU between '1924/1/1' and '2013/12/31')

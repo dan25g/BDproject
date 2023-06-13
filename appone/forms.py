@@ -34,13 +34,13 @@ class UsuarioForm(forms.ModelForm):
     ))
     class Meta:
         model = Usuario
-        fields = ['idu','nombreu','apellidou','correou','contrasennau','fechanacu','ciudadu','paisu','sexou']
+        fields = ['username','nombreu','apellidou','correou','password','fechanacu','ciudadu','paisu','sexou']
         widgets = {
-            'idu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de usuario'}),
+            'username' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de usuario'}),
             'nombreu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre real de usuario'}),
             'apellidou' : forms.TextInput(attrs={'class':'form-control','placeholder':'Apellido de usuario'}),
             'correou' : forms.EmailInput(attrs={'class':'form-control','placeholder':'Correo electronico'}),
-            'contrasennau' : forms.PasswordInput(attrs={'class':'form-control','placeholder':'Contraseña del usuario'}),
+            'password' : forms.PasswordInput(attrs={'class':'form-control','placeholder':'Contraseña del usuario'}),
             'fechanacu' : forms.DateInput(attrs={'class':'date','label':'Fecha de nacimiento','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
             'paisu' : CountrySelectWidget(),
             'ciudadu' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ciudad de usuario'}),    

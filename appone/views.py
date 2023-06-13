@@ -19,13 +19,16 @@ def Singup(request):
             'form': UsuarioForm
         })
     else:
-        if request.POST['contrasennau'] == request.POST['password2']:
+        if request.POST['password'] == request.POST['password2']:
             try:
                 user = Usuario.objects.create_user(
-                    username=request.POST['idu'], password=request.POST['contrasennau'])
+                    username=request.POST['username'], password=request.POST['password'],
+                    nombreu=request.POST['nombreu'], apellidou=request.POST['apellidou'],
+                    correou=request.POST['correou'],fechanacu=request.POST['fechanacu'],
+                    ciudadu=request.POST['ciudadu'],sexou=request.POST['sexou'],paisu=request.POST['paisu'])
                 user.save()
                 login(request,user)
-                return redirect('Home')
+                return redirect('home')
             except IntegrityError:
                 return render(request, 'singup.html', {
                     'form': UsuarioForm,
@@ -43,7 +46,7 @@ def singin(request):
             'form':LoginForm
         })    
     else:
-        user = authenticate(request,username=request.POST['idu'], password=request.POST['contrasennau'])
+        user = authenticate(request,username=request.POST['username'], password=request.POST['password'])
         if user is None:
             return render(request,'singin.html',{
                 'form':LoginForm,

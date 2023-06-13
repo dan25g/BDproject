@@ -6,45 +6,45 @@ from django_countries.fields import CountryField
 # Create your models here.
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self,idu,correou,nombreu,apellidou,fechanacu,contrasennau,ciudadu,sexou,paisu):
+    def create_user(self,username,correou,nombreu,apellidou,fechanacu,password,ciudadu,sexou,paisu):
         if not correou:
             raise ValueError('El usuario debe tener correo electronico')
         Usuario = self.model(
-            idu = idu,
+            username = username,
             correou = self.normalize_email(correou),
             nombreu = nombreu,
             apellidou = apellidou,
             fechanacu = fechanacu,
-            contrasennau = contrasennau,
+            password = password,
             ciudadu = ciudadu,
             sexou = sexou,
             paisu = paisu
         )
-        Usuario.set_password(contrasennau)
+        Usuario.set_password(password)
         Usuario.save()
         return Usuario
 
 class Usuario(AbstractBaseUser):
-    idu = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
+    username = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
     nombreu = models.CharField('Nombre del usuario',null=False,blank=False,max_length=20)
     apellidou = models.CharField('Apellido del usuario',null=False,blank=False,max_length=20)
     fechanacu = models.DateField('Fecha de nacimiento del usuario',null=False,blank=False)
     correou = models.CharField('Correo electronico',unique=True,null=False,blank=False, max_length=50)
-    contrasennau = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
+    password = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=10)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Oesc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
     objects = UsuarioManager()
 
-    USERNAME_FIELD = 'idu'
-    REQUIRED_FIELDS = ['nombreu','apellidou','fechanacu','correou','contrasennau','ciudadu','sexou','paisu']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['nombreu','apellidou','fechanacu','correou','password','ciudadu','sexou','paisu']
 
     def __str__(self):
         return self.idu + ' - ' + self.correou
 
     class Meta:
         managed = False
-        db_table = 'usuario'
+        db_table =u'"infousuarios\".\"usuario"'
 
 class Task(models.Model):
     title = models.CharField(max_length=100)
@@ -65,7 +65,7 @@ class Perfil(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'perfil'
+        db_table =u'"infousuarios\".\"perfil"'
 
 class Actividad(models.Model):
     act_id = models.AutoField(primary_key=True)
@@ -76,7 +76,7 @@ class Actividad(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'actividad'
+        db_table =u'"infousuarios\".\"actividad"'
 
 class Beneficio(models.Model):
     benid = models.AutoField(primary_key=True)
@@ -84,7 +84,7 @@ class Beneficio(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'beneficio'
+        db_table =u'"infousuarios\".\"beneficio"'
 
 
 class Suscripcion(models.Model):
@@ -95,7 +95,7 @@ class Suscripcion(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'suscripcion'
+        db_table =u'"infousuarios\".\"suscripcion"'
 
 
 class SuscripcionBeneficio(models.Model):
@@ -104,7 +104,7 @@ class SuscripcionBeneficio(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'suscripcion_beneficio'
+        db_table =u'"infousuarios\".\"suscripcion_beneficio"'
         unique_together = (('fk_ben_sus', 'fk_sus_ben'),)
 
 
@@ -116,7 +116,7 @@ class Tarjetacredito(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tarjetacredito'
+        db_table =u'"infousuarios\".\"tarjetacredito"'
 
 class Personaje(models.Model):
     id_personaje = models.IntegerField(primary_key=True)
@@ -132,14 +132,14 @@ class Personaje(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'personaje'
+        db_table =u'"infopersonajes\".\"personaje"'
 
 class Civil(models.Model):
     id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
-        db_table = 'civil'
+        db_table =u'"infopersonajes\".\"civil"'
 
 
 class Amistad(models.Model):
@@ -148,7 +148,7 @@ class Amistad(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'amistad'
+        db_table =u'"infopersonajes\".\"amistad"'
         unique_together = (('id_civil', 'id_amispers'),)
 
 
@@ -159,7 +159,7 @@ class Combate(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'combate'
+        db_table =u'"infopersonajes\".\"combate"'
 
 
 class Creador(models.Model):
@@ -170,7 +170,7 @@ class Creador(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'creador'
+        db_table =u'"infopersonajes\".\"creador"'
         unique_together = (('id_personaje_cre', 'id_creador'),)
 
 
@@ -182,20 +182,20 @@ class Heroe(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'heroe'
+        db_table =u'"infopersonajes\".\"heroe"'
 
 
 class HistoricoMatrimonio(models.Model):
-    id_pers_mari = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
-    id_pers_muj = models.ForeignKey(Civil, models.DO_NOTHING,)
+    id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
+    id_pers_conyug2 = models.ForeignKey(Civil, models.DO_NOTHING,)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
     estadomarital = models.CharField()
 
     class Meta:
         managed = False
-        db_table = 'historico_matrimonio'
-        unique_together = (('id_pers_mari', 'id_pers_muj', 'fecha_inicio'),)
+        db_table =u'"infopersonajes\".\"historico_matrimonio"'
+        unique_together = (('id_pers_conyug1', 'id_pers_conyug2', 'fecha_inicio'),)
 
 class Organizacion(models.Model):
     id_organizacion = models.AutoField(primary_key=True)
@@ -208,7 +208,7 @@ class Organizacion(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'organizacion'
+        db_table =u'"infopersonajes\".\"organizacion"'
 
 class HistoricoPersonaje(models.Model):
     fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
@@ -220,7 +220,7 @@ class HistoricoPersonaje(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'historico_personaje'
+        db_table =u'"infopersonajes\".\"historico_personaje"'
         unique_together = (('fk_pers_org', 'fk_org_pers', 'fecha_union'),)
 
 class Medio(models.Model):
@@ -241,7 +241,7 @@ class Jueplataforma(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'jueplataforma'
+        db_table =u'"infopersonajes\".\"jueplataforma"'
 
 class Juego(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
@@ -251,7 +251,7 @@ class Juego(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'juego'
+        db_table =u'"infopersonajes\".\"juego"'
 
 
 class Nacionalidad(models.Model):
@@ -262,7 +262,7 @@ class Nacionalidad(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'nacionalidad'
+        db_table =u'"infopersonajes\".\"nacionalidad"'
         unique_together = (('id_personaje_nac', 'id_nacion'),)
 
 class Tipoobj(models.Model):
@@ -272,7 +272,7 @@ class Tipoobj(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tipoobj'
+        db_table =u'"infopersonajes\".\"tipoobj"'
 
 class Objeto(models.Model):
     obid = models.AutoField(primary_key=True)
@@ -283,7 +283,7 @@ class Objeto(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'objeto'
+        db_table =u'"infopersonajes\".\"objeto"'
 
 
 class Ocupacion(models.Model):
@@ -293,7 +293,7 @@ class Ocupacion(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'ocupacion'
+        db_table =u'"infopersonajes\".\"ocupacion"'
         unique_together = (('id_personaje_ocu', 'id_ocupacion'),)
 
 class OrganizacionMedio(models.Model):
@@ -303,7 +303,7 @@ class OrganizacionMedio(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'organizacion_medio'
+        db_table =u'"infopersonajes\".\"organizacion_medio"'
         unique_together = (('fk_med_org', 'fk_org_med'),)
 
 
@@ -317,7 +317,7 @@ class Pelicula(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'pelicula'        
+        db_table =u'"infopersonajes\".\"pelicula"'        
 
 class PerfilMedio(models.Model):
     fk_perf_med = models.OneToOneField(Perfil, models.DO_NOTHING, primary_key=True)  
@@ -327,7 +327,7 @@ class PerfilMedio(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'perfil_medio'
+        db_table =u'"infousuarios\".\"perfil_medio"'
         unique_together = (('fk_perf_med', 'fk_med_perf'),)
 
 
@@ -340,7 +340,7 @@ class PersonajeMedio(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'personaje_medio'
+        db_table =u'"infopersonajes\".\"personaje_medio"'
         unique_together = (('fk_med_pers', 'fk_pers_med'),)
 
 
@@ -351,7 +351,7 @@ class PersonajeObjeto(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'personaje_objeto'
+        db_table =u'"infopersonajes\".\"personaje_objeto"'
         unique_together = (('fk_obj_pers', 'fk_pers_obj'),)
 
 
@@ -362,7 +362,7 @@ class PersonajePoder(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'personaje_poder'
+        db_table =u'"infopersonajes\".\"personaje_poder"'
         unique_together = (('fk_pod_pers', 'fk_pers_pod'),)
 
 
@@ -374,7 +374,7 @@ class Poder(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'poder'
+        db_table =u'"infopersonajes\".\"poder"'
 
 
 class RegistroCombates(models.Model):
@@ -386,7 +386,7 @@ class RegistroCombates(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'registro_combates'
+        db_table =u'"infopersonajes\".\"registro_combates"'
         unique_together = (('fk_cmb_reg', 'fk_obj_reg', 'id_pers_reg', 'id_pod_reg', 'cmbfecha'),)
 
 
@@ -399,7 +399,7 @@ class Sede(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'sede'
+        db_table =u'"infopersonajes\".\"sede"'
 
 
 class Serie(models.Model):
@@ -421,5 +421,5 @@ class Villano(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'villano'
+        db_table =u'"infopersonajes\".\"villano"'
 

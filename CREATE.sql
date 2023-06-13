@@ -175,15 +175,15 @@ create table infopersonajes.ocupacion(
 );
 
 create table infopersonajes.historico_matrimonio(
-    id_pers_mari int not null,
-    id_pers_muj int not null,
+    id_pers_conyug1 int not null,
+    id_pers_conyug2 int not null,
     fecha_inicio date not null,
     fecha_fin date,
     estadoMarital estadoMar,
 
-    constraint pk_matrimonio primary key (id_pers_mari,id_pers_muj,fecha_inicio),
-    constraint fk_marido foreign key (id_pers_mari) references infopersonajes.personaje(id_personaje),
-    constraint fk_mujer foreign key (id_pers_muj) references infopersonajes.personaje(id_personaje)
+    constraint pk_matrimonio primary key (id_pers_conyug1,id_pers_conyug2,fecha_inicio),
+    constraint fk_conyuge1 foreign key (id_pers_conyug1) references infopersonajes.personaje(id_personaje),
+    constraint fk_conyuge2 foreign key (id_pers_conyug2) references infopersonajes.personaje(id_personaje)
 );
 
 create table infopersonajes.poder(

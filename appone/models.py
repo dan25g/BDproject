@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.core.validators import EmailValidator
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -31,9 +32,10 @@ class Usuario(AbstractBaseUser):
     fechanacu = models.DateField('Fecha de nacimiento del usuario',null=False,blank=False)
     correou = models.CharField('Correo electronico',unique=True,null=False,blank=False, max_length=50)
     password = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
-    ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=10)
-    sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Oesc','Desconocido'),('Otro','Otro')],max_length=10)
+    ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
+    sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
+    sub_fk = models.ForeignKey(Suscripcion, models.DO_NOTHING,null=True,blank=True)
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'username'
@@ -109,9 +111,9 @@ class SuscripcionBeneficio(models.Model):
 
 
 class Tarjetacredito(models.Model):
-    tdcnumero = models.IntegerField(primary_key=True)
-    tdcfecvencimiento = models.DateField()
-    tdccvv = models.IntegerField()
+    tdcnumero = models.BigIntegerField('Numero de la tarjeta',primary_key=True,blank=False,null=False)
+    tdcfecvencimiento = models.DateField('Fecha de vencimiento de la tarjeta',blank=False,null=False)
+    tdccvv = models.IntegerField('Codigo de seguridad de la tarjeta',blank=False,null=False, validators=[MaxValueValidator(999), MinValueValidator(100)])
     fk_usuario = models.OneToOneField(Usuario, models.DO_NOTHING)
 
     class Meta:

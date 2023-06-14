@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
-from .forms import TaskForm,UsuarioForm,LoginForm
+from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm
 from .models import Task,Usuario
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -32,7 +31,7 @@ def Singup(request):
             except IntegrityError:
                 return render(request, 'singup.html', {
                     'form': UsuarioForm,
-                    'error':'Usuario ya existe en el sistema'
+                    'error':'ERROR: Dato invalido revise los datos ingresados'
                 })
         else:
             return render(request, 'singup.html', {
@@ -125,4 +124,35 @@ def singout(request):
     logout(request)
     return redirect('home')
 
+@login_required
+def seleccionar_subscripcion(request):
+    if request.method == 'GET':
+        return render(request,'select_sub.html')
 
+@login_required
+def registrar_subscripcion(request,susid):
+    sub = get_object_or_404(Suscripcion,pk=susid)
+    if request.method == 'POST':
+        user = request.user
+        user.sub_fk = susid
+        user.save()
+        return redirect('newtdc')
+
+@login_required
+def registro_tdc(request):
+    if request.method == 'GET':
+        return render(request,'registrar_tarjeta.html', {
+            'form': TDCForm,           
+        })
+    else:
+        try:
+            form = TDCForm(request.POST)
+            NewTdc = form.save(commit=False)
+            NewTdc.fk_usuario = request.user
+            NewTdc.save()
+            return redirect('home')
+        except ValueError:
+            return render(request,'registrar_tarjeta.html', {
+                'form': TDCForm,
+                'error':'Por favor ingrese datos validos'           
+            })

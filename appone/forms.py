@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task,Usuario
+from .models import Task,Usuario,Tarjetacredito
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django_countries.widgets import CountrySelectWidget
 
@@ -47,3 +47,12 @@ class UsuarioForm(forms.ModelForm):
             'sexou' : forms.Select(attrs={'class':'form-control','placeholder':'Sexo del usuario'}),
         }
         
+class TDCForm(forms.ModelForm):
+    class Meta:
+        model = Tarjetacredito
+        fields = ['tdcnumero','tdcfecvencimiento','tdccvv']
+        widgets = {
+            'tdcnumero' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Escriba el numero de la tarjeta'}),
+            'tdcfecvencimiento' : forms.DateInput(attrs={'class':'date','label':'Fecha de vencimiento','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'tdccvv' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Escriba el codigo de la tarjeta'}),
+        }        

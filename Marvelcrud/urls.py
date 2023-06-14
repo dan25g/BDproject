@@ -30,5 +30,9 @@ urlpatterns = [
     path('tasks/<int:task_id>/delete',views.delete_task,name='delete_task'),
     path('logout/',views.singout,name='logout'),
     path('singin/',views.singin,name='singin'),
+    path('sub/',views.seleccionar_subscripcion,name='sub'),
+    path('sub/<int:susid>',views.registrar_subscripcion,name='reg_sub'),
+    path('newtdc',views.registro_tdc,name='newtdc'),
+    
 ]
 

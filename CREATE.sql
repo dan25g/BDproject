@@ -12,6 +12,17 @@ create domain rating as int not null check (value between 1 and 5);
 
 create domain actortipo as varchar not null check(value in('Interpreta','Presta su voz'));
 
+create table infousuarios.suscripcion(
+    susid serial unique not null,
+    sustipo varchar(10) not null,
+    susdescripcion varchar(50) not null,
+    sustarifa numeric(6,4) not null,
+
+    constraint pk_suscrip primary key (susid),
+    constraint val_sutipo check ( sustipo in ('VIP', 'Gold','Premium')),
+    constraint val_tarf check ( sustarifa in (9.99,19.99,29.99))
+);
+
 create table infousuarios.usuario(
     username varchar(30) unique not null,
     nombreU varchar(50) not null,
@@ -23,8 +34,10 @@ create table infousuarios.usuario(
     sexoU genero,
     paisU varchar(30) not null,
     last_login timestamp,
+    sub_fk int,
 
     constraint pk_user primary key (username),
+    constraint usuario_sub foreign key (sub_fk) references infousuarios.suscripcion,
     constraint val_fnac check ( fechaNacU between '1924/1/1' and '2013/12/31')
 );
 
@@ -42,24 +55,13 @@ create table infousuarios.perfil(
 create table infousuarios.actividad(
     act_id serial unique not null,
     act_ingreso timestamp not null,
-    act_dispositivo varchar(10) not null,
+    act_dispositivo varchar(20) not null,
     act_fin timestamp not null,
     fk_perfil int not null,
 
     constraint pk_actividad primary key (act_id),
     constraint fk_perfil foreign key (fk_perfil) references infousuarios.perfil(per_id)
     on delete cascade on update cascade
-);
-
-create table infousuarios.suscripcion(
-    susid serial unique not null,
-    sustipo varchar(10) not null,
-    susdescripcion varchar(50) not null,
-    sustarifa numeric(5,4) not null,
-
-    constraint pk_suscrip primary key (susid),
-    constraint val_sutipo check ( sustipo in ('VIP', 'Gold','Premium')),
-    constraint val_tarf check ( sustarifa in (9.99,19.99,29.99))
 );
 
 create table infousuarios.beneficio(
@@ -84,10 +86,10 @@ create table infousuarios.TarjetaCredito(
     tdcnumero bigint unique not null,
     tdcfecvencimiento date not null,
     tdccvv int not null,
-    fk_usuario varchar(25) not null unique,
+    fk_usuario_id varchar(25) not null unique,
 
     constraint pk_tdc primary key (tdcnumero),
-    constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(username)
+    constraint fk_usuario_tdc foreign key (fk_usuario_id) references infousuarios.usuario(username)
     on delete cascade on update cascade
 );
 
@@ -298,7 +300,8 @@ create table infopersonajes.medio(
     medcomcreacion varchar(20) not null,
     medcomproduc varchar (40) not null,
     medrating rating,
-    medsinopsis varchar(120) not null,
+    medsinopsis varchar(300) not null,
+    medionombre varchar(50) not null,
 
     constraint pk_medio primary key (medio_id)
 );
@@ -308,8 +311,8 @@ create table infopersonajes.pelicula(
     medtipo varchar(10) not null check(medtipo in('animada','liveaction','stopmotion')),
     peldirector varchar(40) not null,
     pelduracion int not null,
-    pelcosteprod numeric(5,4) not null,
-    pelganancias numeric(5,4) not null,
+    pelcosteprod numeric(10,2) not null,
+    pelganancias numeric(10,2) not null,
 
     constraint pk_pelicula primary key (medio_id),
     constraint check_ganancia check (pelcosteprod<=pelganancias),
@@ -390,3 +393,4 @@ create trigger DaPerdida before insert or update on infopersonajes.pelicula
     for each row
     when ( old.pelcosteprod>old.pelganancias )
     execute function Mensaje_Perdida();
+

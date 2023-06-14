@@ -2,11 +2,14 @@
 
 {% block content %}
 {% load static %}
+
     <main class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 mt-5">
-                <form action="/tasks/create" method="POST" class="card-body">
-                    <h1 class="text-center">Create Task</h1>
+                <form action="/newtdc" method="POST" class="card-body">
+                    <img src="{% static 'images/tdc.png' %}" style="width: 15vw;">
+                    <h1 class="text-center">Registrar Tarjeta de Credito</h1>
+            
                     {{error}}
             
                     {% csrf_token %}

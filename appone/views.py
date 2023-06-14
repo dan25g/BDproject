@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
-from .forms import TaskForm,UsuarioForm,LoginForm
+from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm
 from .models import Task,Usuario
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -126,3 +125,22 @@ def singout(request):
     return redirect('home')
 
 
+
+@login_required
+def registro_tdc(request):
+    if request.method == 'GET':
+        return render(request,'registrar_tarjeta.html', {
+            'form': TDCForm,           
+        })
+    else:
+        try:
+            form = TDCForm(request.POST)
+            NewTdc = form.save(commit=False)
+            NewTdc.fk_usuario = request.user
+            NewTdc.save()
+            return redirect('home')
+        except ValueError:
+            return render(request,'registrar_tarjeta.html', {
+                'form': TDCForm,
+                'error':'Por favor ingrese datos validos'           
+            })

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.core.validators import EmailValidator
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -109,9 +110,9 @@ class SuscripcionBeneficio(models.Model):
 
 
 class Tarjetacredito(models.Model):
-    tdcnumero = models.IntegerField(primary_key=True)
-    tdcfecvencimiento = models.DateField()
-    tdccvv = models.IntegerField()
+    tdcnumero = models.BigIntegerField('Numero de la tarjeta',primary_key=True,blank=False,null=False)
+    tdcfecvencimiento = models.DateField('Fecha de vencimiento de la tarjeta',blank=False,null=False)
+    tdccvv = models.IntegerField('Codigo de seguridad de la tarjeta',blank=False,null=False, validators=[MaxValueValidator(999), MinValueValidator(100)])
     fk_usuario = models.OneToOneField(Usuario, models.DO_NOTHING)
 
     class Meta:

@@ -84,7 +84,7 @@ create table infousuarios.TarjetaCredito(
     tdcnumero bigint unique not null,
     tdcfecvencimiento date not null,
     tdccvv int not null,
-    fk_usuario varchar(25) not null unique,
+    fk_usuario_id varchar(25) not null unique,
 
     constraint pk_tdc primary key (tdcnumero),
     constraint fk_usuario_tdc foreign key (fk_usuario) references infousuarios.usuario(username)

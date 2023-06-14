@@ -35,6 +35,7 @@ class Usuario(AbstractBaseUser):
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
+    sub_fk = models.ForeignKey(Suscripcion, models.DO_NOTHING,null=True,blank=True)
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'username'

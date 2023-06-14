@@ -124,7 +124,19 @@ def singout(request):
     logout(request)
     return redirect('home')
 
+@login_required
+def seleccionar_subscripcion(request):
+    if request.method == 'GET':
+        return render(request,'select_sub.html')
 
+@login_required
+def registrar_subscripcion(request,susid):
+    sub = get_object_or_404(Suscripcion,pk=susid)
+    if request.method == 'POST':
+        user = request.user
+        user.sub_fk = susid
+        user.save()
+        return redirect('newtdc')
 
 @login_required
 def registro_tdc(request):

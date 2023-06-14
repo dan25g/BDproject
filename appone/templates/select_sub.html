@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main class="container">
+        <div class="card-group">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">VIP</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt sunt repellat similique quaerat molestiae aliquam error tempore assumenda ut earum, illo ad mollitia amet eos.</p>
+                    <form action="{% url 'reg_sub' 3 %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary">9.99</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Gold</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia modi voluptatem reiciendis molestiae quasi delectus nostrum incidunt nisi veritatis quaerat, eaque adipisci accusantium. Ea consectetur architecto debitis. Numquam, fugiat quis?</p>
+                    <form action="{% url 'reg_sub' 4 %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary">19.99</button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Premium</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos alias ipsum qui officia corrupti reiciendis, consectetur odit iste excepturi voluptatum tempore omnis quidem quod totam atque accusamus ut voluptas magni aspernatur? Tempore voluptatem, eum, suscipit similique doloribus dolore recusandae praesentium nam natus optio, corrupti fugit sit repudiandae molestiae quo?</p>
+                    <a href="#" class="btn btn-primary">29.99</a>
+                    <form action="{% url 'reg_sub' 5 %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary">29.99</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}

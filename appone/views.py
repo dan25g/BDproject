@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm
-from .models import Task,Usuario
+from .models import Task,Usuario,Suscripcion
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -27,7 +27,7 @@ def Singup(request):
                     ciudadu=request.POST['ciudadu'],sexou=request.POST['sexou'],paisu=request.POST['paisu'])
                 user.save()
                 login(request,user)
-                return redirect('home')
+                return redirect('sub')
             except IntegrityError:
                 return render(request, 'singup.html', {
                     'form': UsuarioForm,
@@ -53,6 +53,7 @@ def singin(request):
             }) 
         else:
             login(request,user)
+
             return redirect('home')
         
 @login_required
@@ -134,7 +135,7 @@ def registrar_subscripcion(request,susid):
     sub = get_object_or_404(Suscripcion,pk=susid)
     if request.method == 'POST':
         user = request.user
-        user.sub_fk = susid
+        user.sub_fk = sub
         user.save()
         return redirect('newtdc')
 

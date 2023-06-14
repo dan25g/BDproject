@@ -6,6 +6,17 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
+class Suscripcion(models.Model):
+    susid = models.AutoField(primary_key=True)
+    sustipo = models.CharField(max_length=10)
+    susdescripcion = models.CharField(max_length=50)
+    sustarifa = models.DecimalField(max_digits=5, decimal_places=4)
+
+    class Meta:
+        managed = False
+        db_table =u'"infousuarios\".\"suscripcion"'
+
+
 class UsuarioManager(BaseUserManager):
     def create_user(self,username,correou,nombreu,apellidou,fechanacu,password,ciudadu,sexou,paisu):
         if not correou:
@@ -88,16 +99,6 @@ class Beneficio(models.Model):
         managed = False
         db_table =u'"infousuarios\".\"beneficio"'
 
-
-class Suscripcion(models.Model):
-    susid = models.AutoField(primary_key=True)
-    sustipo = models.CharField(max_length=10)
-    susdescripcion = models.CharField(max_length=50)
-    sustarifa = models.DecimalField(max_digits=5, decimal_places=4)
-
-    class Meta:
-        managed = False
-        db_table =u'"infousuarios\".\"suscripcion"'
 
 
 class SuscripcionBeneficio(models.Model):

@@ -34,10 +34,10 @@ create table infousuarios.usuario(
     sexoU genero,
     paisU varchar(30) not null,
     last_login timestamp,
-    sub_fk int,
+    sub_fk_id int,
 
     constraint pk_user primary key (username),
-    constraint usuario_sub foreign key (sub_fk) references infousuarios.suscripcion,
+    constraint usuario_sub foreign key (sub_fk_id) references infousuarios.suscripcion,
     constraint val_fnac check ( fechaNacU between '1924/1/1' and '2013/12/31')
 );
 
@@ -104,6 +104,7 @@ create table infopersonajes.personaje(
     color_ojos varchar(15) not null,
     frase_celebre varchar(75) null,
     comic_primer_vez varchar(50) not null,
+    estadoMarital estadoMar,
 
     constraint pk_personaje primary key (id_personaje)
 );
@@ -182,7 +183,6 @@ create table infopersonajes.historico_matrimonio(
     id_pers_conyug2 int not null,
     fecha_inicio date not null,
     fecha_fin date,
-    estadoMarital estadoMar,
 
     constraint pk_matrimonio primary key (id_pers_conyug1,id_pers_conyug2,fecha_inicio),
     constraint fk_conyuge1 foreign key (id_pers_conyug1) references infopersonajes.personaje(id_personaje),
@@ -384,13 +384,14 @@ create table infousuarios.perfil_medio(
 create function Mensaje_Perdida() returns trigger as
 $$
     BEGIN
+        if  (new.pelcosteprod>new.pelganancias) then
         raise notice 'ADVERTENCIA: La pelicula da perdida, revise los datos inserados';
+        end if;
     END
 $$
 language plpgsql;
 
 create trigger DaPerdida before insert or update on infopersonajes.pelicula
     for each row
-    when ( old.pelcosteprod>old.pelganancias )
     execute function Mensaje_Perdida();
 

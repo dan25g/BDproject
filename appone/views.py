@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
-from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm
+from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm,Tarjetacredito
 from .models import Task,Usuario,Suscripcion
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -53,8 +53,10 @@ def singin(request):
             }) 
         else:
             login(request,user)
-
-            return redirect('home')
+            if user.sub_fk:
+                return redirect('home')
+            else:
+                return redirect('sub')
         
 @login_required
 def tasks(request):
@@ -123,6 +125,11 @@ def delete_task(request,task_id):
 @login_required
 def singout(request):
     logout(request)
+    comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
+    if not comtdc:
+        sub = Suscripcion.objects.filter(fk_usuario=request.user)
+        if sub:
+            sub.delete()
     return redirect('home')
 
 @login_required
@@ -137,7 +144,11 @@ def registrar_subscripcion(request,susid):
         user = request.user
         user.sub_fk = sub
         user.save()
-        return redirect('newtdc')
+        comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
+        if comtdc:
+            return redirect('home')
+        else:
+            return redirect('newtdc')
 
 @login_required
 def registro_tdc(request):

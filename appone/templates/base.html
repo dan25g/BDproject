@@ -22,21 +22,45 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
-                </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
+                </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Registro
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                      <li><a class="dropdown-item" href="#">Acción</a></li>
+                      <li><a class="dropdown-item" href="#">Otra acción</a></li>
+                      <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
+                    </ul>
+                </li>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Reportes
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Reporte 1</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 2</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 3</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 4</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 5</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 6</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 7</a></li>
+                  <li><a class="dropdown-item" href="#">Reporte 8</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
                     <a href="/logout" class="nav-link">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a href="/singup" class="nav-link">Singup</a>
-                </li>
-                <li class="nav-item">
+              </li>
+              {% else %}
+              <li class="nav-item">
+                  <a href="/singup" class="nav-link">Singup</a>
+              </li>
+              <li class="nav-item">
                     <a href="/singin" class="nav-link">Login</a>
-                </li>
-                {% endif %}
+              </li>
+              {% endif %}
             </ul>
           </div>
         </div>

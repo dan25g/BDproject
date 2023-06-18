@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task,Usuario,Tarjetacredito
+from .models import *
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django_countries.widgets import CountrySelectWidget
 
@@ -56,3 +56,22 @@ class TDCForm(forms.ModelForm):
             'tdcfecvencimiento' : forms.DateInput(attrs={'class':'date','label':'Fecha de vencimiento','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
             'tdccvv' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Escriba el codigo de la tarjeta'}),
         }        
+
+
+class PersonajeForm(forms.ModelForm):
+    class Meta:
+        model = Personaje
+        fields = ['genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadoMarital']
+        widgets = {
+            'genC' : forms.Select(attrs={'class':'form-control','placeholder':'Genero del personaje'}),
+            'primer_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer nombre del personaje'}),
+            'segundo_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Segundo nombre del personaje'}),
+            'primer_apellido' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer apellido de personaje'}),
+            'segundo_apellido' : forms.TextInput(attrs={'class':'form-control','placeholder':'Segundo apellido de personaje'}),   
+            'color_pelo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color del pelo del personaje'}),
+            'color_ojos' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color de los ojos del personaje'}),
+            'comic_primer_vez' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primera aparición en comics del personaje'}),  
+            'estadoMarital' : forms.Select(attrs={'class':'form-control','placeholder':'Estado Marital del personaje'}),
+        }
+
+    

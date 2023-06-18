@@ -42,7 +42,7 @@ class Usuario(AbstractBaseUser):
     apellidou = models.CharField('Apellido del usuario',null=False,blank=False,max_length=20)
     fechanacu = models.DateField('Fecha de nacimiento del usuario',null=False,blank=False)
     correou = models.CharField('Correo electronico',unique=True,null=False,blank=False, max_length=50)
-    password = models.CharField('Contrasenna del usuario',null=False,blank=False,max_length=20)
+    password = models.CharField('Contraseña del usuario',null=False,blank=False,max_length=20)
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
@@ -123,15 +123,16 @@ class Tarjetacredito(models.Model):
 
 class Personaje(models.Model):
     id_personaje = models.IntegerField(primary_key=True)
-    genc = models.CharField()
-    primer_nombre = models.CharField(max_length=20)
-    segundo_nombre = models.CharField(max_length=20)
-    primer_apellido = models.CharField(max_length=20)
-    segundo_apellido = models.CharField(max_length=20)
-    color_pelo = models.CharField(max_length=15)
-    color_ojos = models.CharField(max_length=15)
-    frase_celebre = models.CharField(max_length=75, blank=True, null=True)
-    comic_primer_vez = models.CharField(max_length=50)
+    genC = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
+    primer_nombre = models.CharField('Primer nombre del personaje',max_length=20)
+    segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20)
+    primer_apellido = models.CharField('Primer apellido del personaje',max_length=20)
+    segundo_apellido = models.CharField('Segundo apellido del personaje',max_length=20)
+    color_pelo = models.CharField('Color del pelo del personaje',max_length=15)
+    color_ojos = models.CharField('Color de los ojos del personaje',max_length=15)
+    frase_celebre = models.CharField('Frase más celebre del personaje',max_length=75, blank=True, null=True)
+    comic_primer_vez = models.CharField('Primera aparición en comics del personaje',max_length=50)
+    estadoMarital = models.CharField('Estado Marital del personaje',choices=[('Casado','Casado'),('Soltero','Soltero'),('Viudo','Viudo'),('Divorciado','Divorciado')])
 
     class Meta:
         managed = False
@@ -193,7 +194,6 @@ class HistoricoMatrimonio(models.Model):
     id_pers_conyug2 = models.ForeignKey(Civil, models.DO_NOTHING,)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
-    estadomarital = models.CharField()
 
     class Meta:
         managed = False
@@ -204,7 +204,7 @@ class Organizacion(models.Model):
     id_organizacion = models.AutoField(primary_key=True)
     org_nombre = models.CharField(max_length=40)
     eslogan = models.CharField(max_length=100)
-    tipo_organizacion = models.CharField(max_length=7)
+    tipo_organizacion = models.CharField(choices=[('Malvada','Malvada'),('Civil','Civil'),('Heroica','Heroica')])
     comic_primer_vez = models.CharField(max_length=30)
     objetivo_principal = models.CharField(max_length=70)
     lugar_creacion = models.CharField(max_length=20)
@@ -231,7 +231,7 @@ class Medio(models.Model):
     medfecestreno = models.DateField()
     medcomcreacion = models.CharField(max_length=20)
     medcomproduc = models.CharField(max_length=40)
-    medrating = models.IntegerField()
+    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"3-Excelente")])
     medsinopsis = models.CharField(max_length=120)
 
     class Meta:
@@ -248,7 +248,7 @@ class Jueplataforma(models.Model):
 
 class Juego(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(max_length=14)
+    medtipo = models.CharField(choices=[('accion','accion'),('aventura','aventura'),('estrategia','estrategia'),('rpg','rpg'),('mundo abierto','mundo abierto'),('simulacion','simulacion')])
     juegocompania = models.CharField(max_length=20)
     fk_plataforma = models.ForeignKey(Jueplataforma, models.DO_NOTHING)
 
@@ -261,7 +261,7 @@ class Nacionalidad(models.Model):
     id_personaje_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
     id_nacion = models.IntegerField()
     nacion_nombre = models.CharField(max_length=20)
-    nacion_continente = models.CharField(max_length=20)
+    nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
 
     class Meta:
         managed = False
@@ -312,7 +312,7 @@ class OrganizacionMedio(models.Model):
 
 class Pelicula(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(max_length=10)
+    medtipo = models.CharField(choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
     peldirector = models.CharField(max_length=40)
     pelduracion = models.IntegerField()
     pelcosteprod = models.DecimalField(max_digits=5, decimal_places=4)
@@ -339,7 +339,7 @@ class PersonajeMedio(models.Model):
     fk_pers_med = models.ForeignKey(Personaje, models.DO_NOTHING)
     actor_tipo = models.CharField()
     actor_nombre = models.CharField(max_length=40)
-    personaje_tipo = models.CharField(max_length=30)
+    personaje_tipo = models.CharField(choices=[('Antagonista','Antagonista'),('Protagonista','Protagonista'),('Secundario','Secundario')])
 
     class Meta:
         managed = False
@@ -397,7 +397,7 @@ class Sede(models.Model):
     id_sede = models.AutoField(primary_key=True)
     sede_nombre = models.CharField(max_length=20)
     sede_ubicacion = models.CharField(max_length=20)
-    tipo_edificacion = models.CharField(max_length=10)
+    tipo_edificacion = models.CharField(choices=[('Subterranea','Subterranea'),('voladora','voladora'),('Superficial','Superficial')])
     id_org = models.OneToOneField(Organizacion, models.DO_NOTHING)
 
     class Meta:
@@ -407,7 +407,7 @@ class Sede(models.Model):
 
 class Serie(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(max_length=10)
+    medtipo = models.CharField(choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
     sercreador = models.CharField(max_length=40)
     serepisodios = models.IntegerField()
     sercanal = models.CharField(max_length=20)

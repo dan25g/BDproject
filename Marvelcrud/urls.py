@@ -33,6 +33,6 @@ urlpatterns = [
     path('sub/',views.seleccionar_subscripcion,name='sub'),
     path('sub/<int:susid>',views.registrar_subscripcion,name='reg_sub'),
     path('newtdc',views.registro_tdc,name='newtdc'),
-    
+    path('civiles/',views.Civiles,name='civiles'),
 ]
 

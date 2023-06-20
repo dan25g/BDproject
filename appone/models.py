@@ -132,7 +132,7 @@ class Personaje(models.Model):
     color_ojos = models.CharField('Color de los ojos del personaje',max_length=15)
     frase_celebre = models.CharField('Frase más celebre del personaje',max_length=75, blank=True, null=True)
     comic_primer_vez = models.CharField('Primera aparición en comics del personaje',max_length=50)
-    estadoMarital = models.CharField('Estado Marital del personaje',choices=[('Casado','Casado'),('Soltero','Soltero'),('Viudo','Viudo'),('Divorciado','Divorciado')])
+    estadomarital = models.CharField('Estado Marital del personaje',choices=[('Casado','Casado'),('Soltero','Soltero'),('Viudo','Viudo'),('Divorciado','Divorciado')])
 
     class Meta:
         managed = False

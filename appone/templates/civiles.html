@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5">Civiles</h1>
+        <ul class="list-group ">
+        {% for civil in civiles %}
+        <a class="list-group-item mb-4">
+            <header class="d-flex justify-content-between">
+                <h1 class="fw-bold">{{civil.primer_nombre}} 
+                    {% if civil.segundo_nombre is not none %}   
+                        {{civil.segundo_nombre}}
+                    {% endif %}
+                    {{civil.primer_apellido}}
+                    {% if civil.segundo_apellido is not none %}   
+                        {{civil.segundo_apellido}}
+                    {% endif %} 
+                </h1>
+                <p>Aparecio por primera vez: {{civil.comic_primer_vez}}</p>
+            </header>
+            <p>color de pelo: {{civil.color_pelo}}</p>
+            <p>color de ojos:  {{civil.color_ojos}}</p>
+            {% if civil.segundo_apellido is not none %}   
+                <p>Frase: " {{civil.frase_celebre}} " </p>
+                {% endif %} 
+            <p>Estado Marital: {{civil.estadomarital}}</p>
+            
+        </a>
+        <div>
+            <a href="{% url 'tasks_completed' %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Civil</button>
+            </a>
+            <a href="{% url 'tasks_completed' %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Civil</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'tasks_completed' %}">
+            <button class="btn btn-success ">Nuevo Civil</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

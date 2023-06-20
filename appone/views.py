@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
-from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm,Tarjetacredito
-from .models import Task,Usuario,Suscripcion
+from .forms import *
+from .models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -125,11 +125,6 @@ def delete_task(request,task_id):
 @login_required
 def singout(request):
     logout(request)
-    comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
-    if not comtdc:
-        sub = Suscripcion.objects.filter(fk_usuario=request.user)
-        if sub:
-            sub.delete()
     return redirect('home')
 
 @login_required
@@ -168,3 +163,58 @@ def registro_tdc(request):
                 'form': TDCForm,
                 'error':'Por favor ingrese datos validos'           
             })
+        
+@login_required
+def Civiles(request):
+    civiles = Personaje.objects.raw(
+        "select p.id_personaje, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.civil c on p.id_personaje = c.id_personaje")
+    return render(request,'civiles.html',{
+        'civiles':civiles
+    })
+
+@login_required
+def new_civil(request):
+    if request.method == 'GET':
+        return render(request,'new_civil.html', {
+            'form': PersonajeForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            NewCiv = form.save(commit=False)
+            NewCiv.id_personaje = NewCiv.id_personaje
+            civil = Civil(id_personaje = NewCiv.id_personaje)
+            NewCiv.save()
+            civil.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request,'new_civil.html', {
+                'form': TaskForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+
+@login_required
+def elimina_civil(request,civil_id):
+    civ = get_object_or_404(Civil,pk=civil_id)
+    pers = get_object_or_404(Personaje,pk=civil_id)
+    if request.method == 'POST':
+        civ.delete()
+        pers.delete()
+        return redirect('civiles')     
+
+@login_required
+def actualiza_civil(request,task_id):
+    task = get_object_or_404(Task,pk=task_id, user=request.user)
+    if request.method == 'GET':
+        form = TaskForm(instance=task)
+        return render(request,'act_civil.html', {'task': task,'form': form })
+    else:
+        try:
+            form = TaskForm(request.POST,instance=task)
+            form.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request,'act_civil.html', {'task': task,'form': form,
+                'error':"ERROR. No se ha podido actualizar la tarea"
+            })       

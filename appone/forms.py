@@ -61,7 +61,7 @@ class TDCForm(forms.ModelForm):
 class PersonajeForm(forms.ModelForm):
     class Meta:
         model = Personaje
-        fields = ['genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadoMarital']
+        fields = ['genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadomarital']
         widgets = {
             'genC' : forms.Select(attrs={'class':'form-control','placeholder':'Genero del personaje'}),
             'primer_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer nombre del personaje'}),
@@ -71,7 +71,7 @@ class PersonajeForm(forms.ModelForm):
             'color_pelo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color del pelo del personaje'}),
             'color_ojos' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color de los ojos del personaje'}),
             'comic_primer_vez' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primera aparición en comics del personaje'}),  
-            'estadoMarital' : forms.Select(attrs={'class':'form-control','placeholder':'Estado Marital del personaje'}),
+            'estadomarital' : forms.Select(attrs={'class':'form-control','placeholder':'Estado Marital del personaje'}),
         }
 
     

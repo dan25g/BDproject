@@ -182,14 +182,13 @@ def new_civil(request):
         try:
             form = PersonajeForm(request.POST)
             NewCiv = form.save(commit=False)
-            NewCiv.id_personaje = NewCiv.id_personaje
             civil = Civil(id_personaje = NewCiv.id_personaje)
             NewCiv.save()
             civil.save()
             return redirect('civiles')
         except ValueError:
             return render(request,'new_civil.html', {
-                'form': TaskForm,
+                'form': PersonajeForm,
                 'error':'Por favor ingrese datos validos'           
             })
         
@@ -218,4 +217,46 @@ def actualiza_civil(request,civil_id):
         except ValueError:
             return render(request,'act_civil.html', {'civil': civil,'form': form,
                 'error':"ERROR. No se ha podido actualizar"
-            })       
+            }) 
+
+@login_required
+def Heroes(request):
+    heroes = Personaje.objects.raw(
+        "select p.id_personaje, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.heroe h on p.id_personaje = h.id_personaje")
+    hinfo = Heroe.objects.all()
+    return render(request,'heroes.html',{
+        'heroes':heroes,
+        'Hinfo':hinfo
+    })
+
+@login_required
+def elimina_heroe(request,heroe_id):
+    hero = get_object_or_404(Heroe,pk=heroe_id)
+    pers = get_object_or_404(Personaje,pk=heroe_id)
+    if request.method == 'POST':
+        hero.delete()
+        pers.delete()
+        return redirect('heroes')     
+
+@login_required
+def new_heroe(request):
+    if request.method == 'GET':
+        return render(request,'new_heroe.html', {
+            'form': PersonajeForm,
+            'form2': HeroeForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            form2 = HeroeForm(request.POST)
+            NewHer = form.save(commit=False)
+            hero = form2.save(commit=False)
+            NewHer.save()
+            hero.save()
+            return redirect('heroes')
+        except ValueError:
+            return render(request,'new_heroe.html', {
+                'form': PersonajeForm,
+                'form2': HeroeForm,
+                'error':'Por favor ingrese datos validos'           
+            })

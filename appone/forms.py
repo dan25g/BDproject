@@ -61,9 +61,8 @@ class TDCForm(forms.ModelForm):
 class PersonajeForm(forms.ModelForm):
     class Meta:
         model = Personaje
-        fields = ['id_personaje','genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadomarital']
+        fields = ['genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadomarital']
         widgets = {
-            'id_personaje' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Escriba ID del personaje'}),
             'genC' : forms.Select(attrs={'class':'form-control','placeholder':'Genero del personaje'}),
             'primer_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer nombre del personaje'}),
             'segundo_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Segundo nombre del personaje'}),

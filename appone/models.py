@@ -122,7 +122,7 @@ class Tarjetacredito(models.Model):
         db_table =u'"infousuarios\".\"tarjetacredito"'
 
 class Personaje(models.Model):
-    id_personaje = models.IntegerField(primary_key=True)
+    id_personaje = models.AutoField(primary_key=True)
     genC = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
     primer_nombre = models.CharField('Primer nombre del personaje',max_length=20)
     segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20)

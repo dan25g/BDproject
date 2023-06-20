@@ -34,5 +34,8 @@ urlpatterns = [
     path('sub/<int:susid>',views.registrar_subscripcion,name='reg_sub'),
     path('newtdc',views.registro_tdc,name='newtdc'),
     path('civiles/',views.Civiles,name='civiles'),
+    path('civiles/crear',views.new_civil,name='new_civil'),
+    path('civiles/<int:civil_id>/act',views.actualiza_civil,name='civiles_act'),
+    path('civiles/<int:civil_id>/eli',views.elimina_civil,name='civiles_eli'),
 ]
 

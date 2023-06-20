@@ -186,7 +186,7 @@ def new_civil(request):
             civil = Civil(id_personaje = NewCiv.id_personaje)
             NewCiv.save()
             civil.save()
-            return redirect('tasks')
+            return redirect('civiles')
         except ValueError:
             return render(request,'new_civil.html', {
                 'form': TaskForm,
@@ -204,17 +204,18 @@ def elimina_civil(request,civil_id):
         return redirect('civiles')     
 
 @login_required
-def actualiza_civil(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
+def actualiza_civil(request,civil_id):
+    civil = get_object_or_404(Personaje,pk=civil_id)
     if request.method == 'GET':
-        form = TaskForm(instance=task)
-        return render(request,'act_civil.html', {'task': task,'form': form })
+        form = PersonajeForm(instance=civil)
+        return render(request,'act_civil.html', {'civil': civil,'form': form })
     else:
         try:
-            form = TaskForm(request.POST,instance=task)
+            form = PersonajeForm(request.POST,instance=civil)
             form.save()
-            return redirect('tasks')
+
+            return redirect('civiles')
         except ValueError:
-            return render(request,'act_civil.html', {'task': task,'form': form,
-                'error':"ERROR. No se ha podido actualizar la tarea"
+            return render(request,'act_civil.html', {'civil': civil,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
             })       

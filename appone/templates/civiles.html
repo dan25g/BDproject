@@ -30,16 +30,16 @@
             
         </a>
         <div>
-            <a href="{% url 'tasks_completed' %}">
+            <a href="{% url 'civiles_act' civil.id_personaje %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Civil</button>
             </a>
-            <a href="{% url 'tasks_completed' %}">
+            <a href="{% url 'civiles_eli' civil.id_personaje %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Civil</button>
             </a>
         </div>
         {% endfor %}
         </ul>
-        <a href="{% url 'tasks_completed' %}">
+        <a href="{% url 'new_civil' %}">
             <button class="btn btn-success ">Nuevo Civil</button>
         </a>
         </div>

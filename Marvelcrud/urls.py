@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from appone import views
 
+from appone.views import Index
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Home,name='home'),
@@ -41,9 +43,14 @@ urlpatterns = [
     path('heroes/crear',views.new_heroe,name='new_heroe'),
     path('heroes/<int:heroe_id>/act',views.actualiza_heroe,name='heroes_act'),
     path('heroes/<int:heroe_id>/eli',views.elimina_heroe,name='heroes_eli'),
+<<<<<<< HEAD
     path('villanos/',views.villanos,name='villanos'),
     path('villanos/crear',views.new_villano,name='new_villano'),
     path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
     path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
+    path('rep1/',Index.as_view(), name='index'),
+=======
+    path('rep1/',Index.as_view(), name='index'),
+>>>>>>> cdf891d26b0862ba4f76bbd0140d4fcd11e42d7a
 ]
 

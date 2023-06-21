@@ -37,5 +37,9 @@ urlpatterns = [
     path('civiles/crear',views.new_civil,name='new_civil'),
     path('civiles/<int:civil_id>/act',views.actualiza_civil,name='civiles_act'),
     path('civiles/<int:civil_id>/eli',views.elimina_civil,name='civiles_eli'),
+    path('heroes/',views.Heroes,name='heroes'),
+    path('heroes/crear',views.new_heroe,name='new_heroe'),
+    path('heroes/<int:heroe_id>/act',views.actualiza_heroe,name='heroes_act'),
+    path('heroes/<int:heroe_id>/eli',views.elimina_heroe,name='heroes_eli'),
 ]
 

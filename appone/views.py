@@ -211,7 +211,6 @@ def actualiza_civil(request,civil_id):
         try:
             form = PersonajeForm(request.POST,instance=civil)
             form.save()
-
             return redirect('civiles')
         except ValueError:
             return render(request,'act_civil.html', {'civil': civil,'form': form,
@@ -225,17 +224,16 @@ def Heroes(request):
     hinfo = Heroe.objects.all()
     return render(request,'heroes.html',{
         'heroes':heroes,
-        'Hinfo':hinfo
+        'hinfo':hinfo
     })
 
 @login_required
 def elimina_heroe(request,heroe_id):
     hero = get_object_or_404(Heroe,pk=heroe_id)
     pers = get_object_or_404(Personaje,pk=heroe_id)
-    if request.method == 'POST':
-        hero.delete()
-        pers.delete()
-        return redirect('heroes')     
+    hero.delete()
+    pers.delete()
+    return redirect('heroes')     
 
 @login_required
 def new_heroe(request):
@@ -251,6 +249,7 @@ def new_heroe(request):
             NewHer = form.save(commit=False)
             hero = form2.save(commit=False)
             NewHer.save()
+            hero.personaje = NewHer
             hero.save()
             return redirect('heroes')
         except ValueError:
@@ -259,3 +258,24 @@ def new_heroe(request):
                 'form2': HeroeForm,
                 'error':'Por favor ingrese datos validos'           
             })
+        
+
+@login_required
+def actualiza_heroe(request,heroe_id):
+    pers = get_object_or_404(Personaje,pk=heroe_id)
+    hero = get_object_or_404(Heroe,pk=heroe_id)
+    if request.method == 'GET':
+        form = PersonajeForm(instance=pers)
+        form2 = HeroeForm(instance=hero)
+        return render(request,'act_heroe.html', {'heroe': pers,'adinfo':hero,'form': form,'form2': form2 })
+    else:
+        try:
+            form = PersonajeForm(request.POST,instance=pers)
+            form2 = HeroeForm(request.POST,instance=hero)
+            form.save()
+            form2.save()
+            return redirect('heroes')
+        except ValueError:
+            return render(request,'act_heroe.html', {'civil': hero,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
+            }) 

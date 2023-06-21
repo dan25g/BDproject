@@ -179,7 +179,7 @@ class Creador(models.Model):
 
 
 class Heroe(models.Model):
-    personaje_id = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_superheroe = models.CharField(max_length=20)
     color_traje = models.CharField(max_length=15)
     logotipo = models.CharField(max_length=75)

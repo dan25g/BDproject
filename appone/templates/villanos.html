@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5">Villanos</h1>
+        <ul class="list-group ">
+        {% for villano in villanos %}
+        <a class="list-group-item mb-4">
+            <header class="d-flex justify-content-between">
+                <h1 class="fw-bold">{{villano.primer_nombre}} 
+                    {% if villano.segundo_nombre is not none %}   
+                        {{villano.segundo_nombre}}
+                    {% endif %}
+                    {{villano.primer_apellido}}
+                    {% if villano.segundo_apellido is not none %}   
+                        {{villano.segundo_apellido}}
+                    {% endif %} 
+                </h1>
+                <p>Aparecio por primera vez: {{villano.comic_primer_vez}}</p>
+            </header>
+            <p>Sexo: {{villano.genc}}</p>
+            <p>color de pelo: {{villano.color_pelo}}</p>
+            <p>color de ojos:  {{villano.color_ojos}}</p>
+            {% if villano.frase_celebre is not none %}   
+                <p>Frase: " {{villano.frase_celebre}} " </p>
+            {% endif %} 
+            <p>Estado Marital: {{villano.estadomarital}}</p>
+            {% for vinf in vinfo %}
+                {% if villano.personaje_id == vinf.personaje.personaje_id %} 
+                    <h3>Nombre de Super villano: {{vinf.nombre_supervillano}}</h3>
+                    <p>Objetivo : {{vinf.objetivo}}</p>
+                    <h4>Archienemigo: {{vinf.archienemigo.nombre_superheroe}}</h4>
+                {% endif %}
+            {% endfor %}
+        </a>
+        <div>
+            <a href="{% url 'villanos_act' villano.personaje_id %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Heroe</button>
+            </a>
+            <a href="{% url 'villanos_eli' villano.personaje_id %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Heroe</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_villano' %}">
+            <button class="btn btn-success ">Nuevo Heroe</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

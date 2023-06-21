@@ -279,3 +279,65 @@ def actualiza_heroe(request,heroe_id):
             return render(request,'act_heroe.html', {'civil': hero,'form': form,
                 'error':"ERROR. No se ha podido actualizar"
             }) 
+        
+@login_required
+def villanos(request):
+    vil = Personaje.objects.raw(
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.villano v on p.personaje_id = v.personaje_id")
+    vinfo = Villano.objects.all()
+    return render(request,'villanos.html',{
+        'villanos':vil,
+        'vinfo':vinfo
+    })
+
+@login_required
+def elimina_villano(request,vil_id):
+    vil = get_object_or_404(Villano,pk=vil_id)
+    pers = get_object_or_404(Personaje,pk=vil_id)
+    vil.delete()
+    pers.delete()
+    return redirect('villanos')  
+
+@login_required
+def new_villano(request):
+    if request.method == 'GET':
+        return render(request,'new_villano.html', {
+            'form': PersonajeForm,
+            'form2': VilanoForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            form2 = VilanoForm(request.POST)
+            NewVil = form.save(commit=False)
+            vil = form2.save(commit=False)
+            NewVil.save()
+            vil.personaje = NewVil
+            vil.save()
+            return redirect('villanos')
+        except ValueError:
+            return render(request,'new_villano.html', {
+                'form': PersonajeForm,
+                'form2': VilanoForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_vilano(request,vil_id):
+    pers = get_object_or_404(Personaje,pk=vil_id)
+    vil = get_object_or_404(Villano,pk=vil_id)
+    if request.method == 'GET':
+        form = PersonajeForm(instance=pers)
+        form2 = VilanoForm(instance=vil)
+        return render(request,'act_villano.html', {'villano': pers,'adinfo':vil,'form': form,'form2': form2 })
+    else:
+        try:
+            form = PersonajeForm(request.POST,instance=pers)
+            form2 = VilanoForm(request.POST,instance=vil)
+            form.save()
+            form2.save()
+            return redirect('villanos')
+        except ValueError:
+            return render(request,'act_villano.html', {'civil': vil,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
+            }) 

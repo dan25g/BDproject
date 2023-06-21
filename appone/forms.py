@@ -83,3 +83,13 @@ class HeroeForm(forms.ModelForm):
             'color_traje' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el color del traje del héroe'}),
             'logotipo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el logotipo del personaje del héroe'}),
         }      
+
+class VilanoForm(forms.ModelForm):
+    class Meta:
+        model = Villano
+        fields = ['nombre_supervillano','objetivo','archienemigo']
+        widgets = {
+            'nombre_supervillano' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el nombre de Villano del personaje'}),
+            'objetivo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el objetivo del villano'}),
+            'archienemigo' : forms.Select(attrs={'class':'form-control','placeholder':'Archienemigo del villano'}),
+        }              

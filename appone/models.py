@@ -188,6 +188,9 @@ class Heroe(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"heroe"'
 
+    def __str__(self):
+        return f"{self.personaje.personaje_id} - {self.nombre_superheroe}"
+
 
 class HistoricoMatrimonio(models.Model):
     id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
@@ -231,7 +234,7 @@ class Medio(models.Model):
     medfecestreno = models.DateField()
     medcomcreacion = models.CharField(max_length=20)
     medcomproduc = models.CharField(max_length=40)
-    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"3-Excelente")])
+    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")])
     medsinopsis = models.CharField(max_length=120)
 
     class Meta:
@@ -417,7 +420,7 @@ class Serie(models.Model):
         db_table = 'serie'
 
 class Villano(models.Model):
-    personaje_id = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_supervillano = models.CharField(max_length=20)
     objetivo = models.CharField(max_length=50)
     archienemigo = models.OneToOneField(Heroe, models.DO_NOTHING, blank=True, null=True)

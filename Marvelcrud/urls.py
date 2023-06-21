@@ -41,5 +41,9 @@ urlpatterns = [
     path('heroes/crear',views.new_heroe,name='new_heroe'),
     path('heroes/<int:heroe_id>/act',views.actualiza_heroe,name='heroes_act'),
     path('heroes/<int:heroe_id>/eli',views.elimina_heroe,name='heroes_eli'),
+    path('villanos/',views.villanos,name='villanos'),
+    path('villanos/crear',views.new_villano,name='new_villano'),
+    path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
+    path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
 ]
 

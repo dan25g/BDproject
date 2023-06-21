@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
 from .forms import *
@@ -167,7 +167,7 @@ def registro_tdc(request):
 @login_required
 def Civiles(request):
     civiles = Personaje.objects.raw(
-        "select p.id_personaje, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.civil c on p.id_personaje = c.id_personaje")
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.civil c on p.personaje_id = c.personaje_id")
     return render(request,'civiles.html',{
         'civiles':civiles
     })
@@ -182,8 +182,8 @@ def new_civil(request):
         try:
             form = PersonajeForm(request.POST)
             NewCiv = form.save(commit=False)
-            civil = Civil(id_personaje = NewCiv.id_personaje)
             NewCiv.save()
+            civil = Civil.objects.create(personaje=NewCiv)
             civil.save()
             return redirect('civiles')
         except ValueError:
@@ -195,12 +195,11 @@ def new_civil(request):
 
 @login_required
 def elimina_civil(request,civil_id):
-    civ = get_object_or_404(Civil,pk=civil_id)
-    pers = get_object_or_404(Personaje,pk=civil_id)
-    if request.method == 'POST':
-        civ.delete()
-        pers.delete()
-        return redirect('civiles')     
+    civ = Civil.objects.filter(personaje=civil_id)
+    pers = Personaje.objects.filter(personaje_id=civil_id)
+    civ.delete()
+    pers.delete()
+    return redirect('civiles')     
 
 @login_required
 def actualiza_civil(request,civil_id):
@@ -222,7 +221,7 @@ def actualiza_civil(request,civil_id):
 @login_required
 def Heroes(request):
     heroes = Personaje.objects.raw(
-        "select p.id_personaje, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.heroe h on p.id_personaje = h.id_personaje")
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.heroe h on p.personaje_id = h.personaje_id")
     hinfo = Heroe.objects.all()
     return render(request,'heroes.html',{
         'heroes':heroes,

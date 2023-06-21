@@ -23,17 +23,17 @@
             </header>
             <p>color de pelo: {{civil.color_pelo}}</p>
             <p>color de ojos:  {{civil.color_ojos}}</p>
-            {% if civil.segundo_apellido is not none %}   
+            {% if civil.frase_celebre is not none %}   
                 <p>Frase: " {{civil.frase_celebre}} " </p>
                 {% endif %} 
             <p>Estado Marital: {{civil.estadomarital}}</p>
             
         </a>
         <div>
-            <a href="{% url 'civiles_act' civil.id_personaje %}">
+            <a href="{% url 'civiles_act' civil.personaje_id %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Civil</button>
             </a>
-            <a href="{% url 'civiles_eli' civil.id_personaje %}">
+            <a href="{% url 'civiles_eli' civil.personaje_id %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Civil</button>
             </a>
         </div>

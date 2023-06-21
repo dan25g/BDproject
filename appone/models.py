@@ -122,12 +122,12 @@ class Tarjetacredito(models.Model):
         db_table =u'"infousuarios\".\"tarjetacredito"'
 
 class Personaje(models.Model):
-    id_personaje = models.AutoField(primary_key=True)
-    genC = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
+    personaje_id = models.AutoField(primary_key=True)
+    genc = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
     primer_nombre = models.CharField('Primer nombre del personaje',max_length=20)
-    segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20)
+    segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20, blank=True, null=True)
     primer_apellido = models.CharField('Primer apellido del personaje',max_length=20)
-    segundo_apellido = models.CharField('Segundo apellido del personaje',max_length=20)
+    segundo_apellido = models.CharField('Segundo apellido del personaje',max_length=20, blank=True, null=True)
     color_pelo = models.CharField('Color del pelo del personaje',max_length=15)
     color_ojos = models.CharField('Color de los ojos del personaje',max_length=15)
     frase_celebre = models.CharField('Frase más celebre del personaje',max_length=75, blank=True, null=True)
@@ -139,7 +139,7 @@ class Personaje(models.Model):
         db_table =u'"infopersonajes\".\"personaje"'
 
 class Civil(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
@@ -167,7 +167,7 @@ class Combate(models.Model):
 
 
 class Creador(models.Model):
-    id_personaje_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
+    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
     id_creador = models.IntegerField()
     creador_nombre = models.CharField(max_length=20)
     creador_apellido = models.CharField(max_length=20)
@@ -175,11 +175,11 @@ class Creador(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"creador"'
-        unique_together = (('id_personaje_cre', 'id_creador'),)
+        unique_together = (('personaje_id_cre', 'id_creador'),)
 
 
 class Heroe(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje_id = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_superheroe = models.CharField(max_length=20)
     color_traje = models.CharField(max_length=15)
     logotipo = models.CharField(max_length=75)
@@ -258,7 +258,7 @@ class Juego(models.Model):
 
 
 class Nacionalidad(models.Model):
-    id_personaje_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
+    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
     id_nacion = models.IntegerField()
     nacion_nombre = models.CharField(max_length=20)
     nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
@@ -266,7 +266,7 @@ class Nacionalidad(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"nacionalidad"'
-        unique_together = (('id_personaje_nac', 'id_nacion'),)
+        unique_together = (('personaje_id_nac', 'id_nacion'),)
 
 class Tipoobj(models.Model):
     idtipo = models.AutoField(primary_key=True)
@@ -290,14 +290,14 @@ class Objeto(models.Model):
 
 
 class Ocupacion(models.Model):
-    id_personaje_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     id_ocupacion = models.IntegerField()
     ocupa_nombre = models.CharField(max_length=20)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"ocupacion"'
-        unique_together = (('id_personaje_ocu', 'id_ocupacion'),)
+        unique_together = (('personaje_id_ocu', 'id_ocupacion'),)
 
 class OrganizacionMedio(models.Model):
     fk_med_org = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True) 
@@ -417,7 +417,7 @@ class Serie(models.Model):
         db_table = 'serie'
 
 class Villano(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje_id = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_supervillano = models.CharField(max_length=20)
     objetivo = models.CharField(max_length=50)
     archienemigo = models.OneToOneField(Heroe, models.DO_NOTHING, blank=True, null=True)

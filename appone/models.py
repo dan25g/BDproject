@@ -35,7 +35,23 @@ class UsuarioManager(BaseUserManager):
         Usuario.set_password(password)
         Usuario.save()
         return Usuario
-
+    def create_superuser(self,username,correou,nombreu,apellidou,fechanacu,password,ciudadu,sexou,paisu):
+        Usuario = self.create_user(
+            username = username,
+            correou = correou,
+            nombreu = nombreu,
+            apellidou = apellidou,
+            fechanacu = fechanacu,
+            password = password,
+            ciudadu = ciudadu,
+            sexou = sexou,
+            paisu = paisu
+        )
+        Usuario.is_admin = True
+        Usuario.save()
+        return Usuario
+    
+    
 class Usuario(AbstractBaseUser):
     username = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
     nombreu = models.CharField('Nombre del usuario',null=False,blank=False,max_length=20)
@@ -46,6 +62,8 @@ class Usuario(AbstractBaseUser):
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
+    es_admin = models.BooleanField(default=False)
+    u_activo = models.BooleanField(default=True)
     sub_fk = models.ForeignKey(Suscripcion, models.DO_NOTHING,null=True,blank=True)
     objects = UsuarioManager()
 
@@ -54,21 +72,25 @@ class Usuario(AbstractBaseUser):
 
     def __str__(self):
         return self.idu + ' - ' + self.correou
+    
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.es_admin
+    
+    @property
+    def is_superuser(self):
+        return self.es_admin
 
     class Meta:
         managed = False
         db_table =u'"infousuarios\".\"usuario"'
 
-class Task(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    datecompleted = models.DateField(null=True, blank=True)
-    important = models.BooleanField(default=False)
-    user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title + ' - hecha por ' + self.user.username
 
 class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)

@@ -60,7 +60,7 @@ def singin(request):
                 return redirect('home')
             else:
                 return redirect('sub')
-        
+"""        
 @login_required
 def tasks(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -124,7 +124,7 @@ def delete_task(request,task_id):
     if request.method == 'POST':
         task.delete()
         return redirect('tasks')
-
+"""
 @login_required
 def singout(request):
     logout(request)

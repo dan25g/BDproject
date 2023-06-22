@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django_countries.widgets import CountrySelectWidget
 
-
+"""
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -13,7 +13,7 @@ class TaskForm(forms.ModelForm):
             'description' : forms.Textarea(attrs={'class':'form-control','placeholder':'Escribe la descripcion de la tarea'}),
             'important' : forms.CheckboxInput(attrs={'class':'form-check-input m-auto'}),
         }
-
+"""
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

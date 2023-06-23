@@ -60,71 +60,7 @@ def singin(request):
                 return redirect('home')
             else:
                 return redirect('sub')
-"""        
-@login_required
-def tasks(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
-    return render(request,'Tasks.html',{
-        'tasks':tasks
-    })
 
-@login_required
-def tasks_completed(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False)
-    return render(request,'Tasks.html',{
-        'tasks':tasks
-    })
-
-@login_required
-def create_task(request):
-    if request.method == 'GET':
-        return render(request,'create_task.html', {
-            'form': TaskForm,           
-        })
-    else:
-        try:
-            form = TaskForm(request.POST)
-            Newtask = form.save(commit=False)
-            Newtask.user = request.user
-            Newtask.save()
-            return redirect('tasks')
-        except ValueError:
-            return render(request,'create_task.html', {
-                'form': TaskForm,
-                'error':'Por favor ingrese datos validos'           
-            })
-        
-@login_required
-def task_detail(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'GET':
-        form = TaskForm(instance=task)
-        return render(request,'task_detail.html', {'task': task,'form': form })
-    else:
-        try:
-            form = TaskForm(request.POST,instance=task)
-            form.save()
-            return redirect('tasks')
-        except ValueError:
-            return render(request,'task_detail.html', {'task': task,'form': form,
-                'error':"ERROR. No se ha podido actualizar la tarea"
-            })
-        
-@login_required
-def complete_task(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'POST':
-        task.datecompleted = timezone.now()
-        task.save()
-        return redirect('tasks')
-    
-@login_required
-def delete_task(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'POST':
-        task.delete()
-        return redirect('tasks')
-"""
 @login_required
 def singout(request):
     logout(request)
@@ -400,3 +336,62 @@ def actualiza_pelicula(request,pel_id):
             return redirect('peliculas')
         except ValueError:
             return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def series(request):
+    ser = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.serie s on m.medio_id = s.medio_id")
+    seinfo = Serie.objects.all()
+    return render(request,'series.html',{
+        'series':ser,
+        'sinfo':seinfo
+    })
+
+@login_required
+def elimina_serie(request,se_id):
+    ser = get_object_or_404(Serie,pk=se_id)
+    med = get_object_or_404(Medio,pk=se_id)
+    ser.delete()
+    med.delete()
+    return redirect('series')  
+
+@login_required
+def new_serie(request):
+    if request.method == 'GET':
+        return render(request,'new_serie.html', {
+            'form': MedioForm,
+            'form2': SerieForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = SerieForm(request.POST)
+            NewSer = form.save(commit=False)
+            ser = form2.save(commit=False)
+            NewSer.save()
+            ser.medio = NewSer
+            ser.save()
+            return redirect('series')
+        except ValueError:
+            return render(request,'new_serie.html', {
+                'form': MedioForm,
+                'form2': SerieForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_serie(request,ser_id):
+    ser = get_object_or_404(Serie,pk=ser_id)
+    med = get_object_or_404(Medio,pk=ser_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = SerieForm(instance=ser)
+        return render(request,'act_serie.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = SerieForm(request.POST,instance=ser)
+            form.save()
+            form2.save()
+            return redirect('series')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 

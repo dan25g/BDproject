@@ -45,6 +45,10 @@ urlpatterns = [
     path('peliculas/crear',views.new_pelicula,name='new_pelicula'),
     path('peliculas/<int:pel_id>/act',views.actualiza_pelicula,name='pelicula_act'),
     path('peliculas/<int:pel_id>/eli',views.elimina_pelicula,name='pelicula_eli'),
+    path('series/',views.series,name='series'),
+    path('series/crear',views.new_serie,name='new_serie'),
+    path('series/<int:se_id>/act',views.actualiza_serie,name='serie_act'),
+    path('series/<int:se_id>/eli',views.elimina_serie,name='serie_eli'),
     path('rep1/',Index.as_view(), name='index'),
 ]
 

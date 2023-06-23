@@ -253,11 +253,12 @@ class HistoricoPersonaje(models.Model):
 
 class Medio(models.Model):
     medio_id = models.AutoField(primary_key=True)
-    medfecestreno = models.DateField()
-    medcomcreacion = models.CharField(max_length=20)
-    medcomproduc = models.CharField(max_length=40)
-    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")])
-    medsinopsis = models.CharField(max_length=120)
+    medfecestreno = models.DateField('Fecha de estreno',null=False,blank=False)
+    medcomcreacion = models.CharField('Creador',max_length=20)
+    medcomproduc = models.CharField('Productor',max_length=40)
+    medrating = models.IntegerField('Rating',choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")])
+    medsinopsis = models.CharField('Sinopsis',max_length=300)
+    medionombre = models.CharField('Nombre del medio',max_length=50, blank=False, null=False)
 
     class Meta:
         managed = False
@@ -270,6 +271,9 @@ class Jueplataforma(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"jueplataforma"'
+
+    def __str__(self):
+        return f"{self.id_plataforma} - {self.plataforma}"
 
 class Juego(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
@@ -337,11 +341,11 @@ class OrganizacionMedio(models.Model):
 
 class Pelicula(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
-    peldirector = models.CharField(max_length=40)
-    pelduracion = models.IntegerField()
-    pelcosteprod = models.DecimalField(max_digits=5, decimal_places=4)
-    pelganancias = models.DecimalField(max_digits=5, decimal_places=4)
+    medtipo = models.CharField('Tipo de pelicula',choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')],max_length=20)
+    peldirector = models.CharField('Director de la pelicula',max_length=40)
+    pelduracion = models.IntegerField('Duracion de la pelicula')
+    pelcosteprod = models.DecimalField('Coste de produccion',max_digits=10, decimal_places=2)
+    pelganancias = models.DecimalField('Ganancias de la pelicula',max_digits=10, decimal_places=2)
 
     class Meta:
         managed = False
@@ -432,10 +436,10 @@ class Sede(models.Model):
 
 class Serie(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
-    sercreador = models.CharField(max_length=40)
-    serepisodios = models.IntegerField()
-    sercanal = models.CharField(max_length=20)
+    medtipo = models.CharField('Tipo de serie',choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
+    sercreador = models.CharField('Creador de la serie',max_length=40)
+    serepisodios = models.IntegerField('Episodios de la serie')
+    sercanal = models.CharField('Canal de transmision de la serie',max_length=20)
 
     class Meta:
         managed = False
@@ -443,8 +447,8 @@ class Serie(models.Model):
 
 class Villano(models.Model):
     personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
-    nombre_supervillano = models.CharField(max_length=20)
-    objetivo = models.CharField(max_length=50)
+    nombre_supervillano = models.CharField('nombre de villano',max_length=20)
+    objetivo = models.CharField('Objetivo del villano',max_length=50)
     archienemigo = models.OneToOneField(Heroe, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:

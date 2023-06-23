@@ -279,9 +279,7 @@ def actualiza_heroe(request,heroe_id):
             form2.save()
             return redirect('heroes')
         except ValueError:
-            return render(request,'act_heroe.html', {'civil': hero,'form': form,
-                'error':"ERROR. No se ha podido actualizar"
-            }) 
+            return render(request,'act_heroe.html', {'heroe': pers,'adinfo':hero,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
         
 @login_required
 def villanos(request):
@@ -341,6 +339,64 @@ def actualiza_vilano(request,vil_id):
             form2.save()
             return redirect('villanos')
         except ValueError:
-            return render(request,'act_villano.html', {'civil': vil,'form': form,
-                'error':"ERROR. No se ha podido actualizar"
-            }) 
+            return render(request,'act_villano.html', {'villano': pers,'adinfo':vil,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
+        
+
+@login_required
+def peliculas(request):
+    pel = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.pelicula p on m.medio_id = p.medio_id")
+    pinfo = Pelicula.objects.all()
+    return render(request,'peliculas.html',{
+        'peliculas':pel,
+        'pinfo':pinfo
+    })
+
+@login_required
+def elimina_pelicula(request,pel_id):
+    pel = get_object_or_404(Pelicula,pk=pel_id)
+    med = get_object_or_404(Medio,pk=pel_id)
+    pel.delete()
+    med.delete()
+    return redirect('peliculas')  
+
+@login_required
+def new_pelicula(request):
+    if request.method == 'GET':
+        return render(request,'new_pelicula.html', {
+            'form': MedioForm,
+            'form2': PeliForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = PeliForm(request.POST)
+            NewPel = form.save(commit=False)
+            peli = form2.save(commit=False)
+            NewPel.save()
+            peli.medio = NewPel
+            peli.save()
+            return redirect('peliculas')
+        except ValueError:
+            return render(request,'new_pelicula.html', {
+                'form': MedioForm,
+                'form2': PeliForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_pelicula(request,pel_id):
+    pel = get_object_or_404(Pelicula,pk=pel_id)
+    med = get_object_or_404(Medio,pk=pel_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = PeliForm(instance=pel)
+        return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = PeliForm(request.POST,instance=pel)
+            form.save()
+            form2.save()
+            return redirect('peliculas')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 

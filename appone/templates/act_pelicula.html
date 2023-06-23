@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+        <h1 class="fw-bold">{{pelicula.medionombre}} </h1>
+        {% if error is not none %} 
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %} 
+            {{form.as_p}}
+            {{form2.as_p}}
+            <button class="btn btn-primary">Crear</button>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

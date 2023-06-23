@@ -277,8 +277,8 @@ class Jueplataforma(models.Model):
 
 class Juego(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
-    medtipo = models.CharField(choices=[('accion','accion'),('aventura','aventura'),('estrategia','estrategia'),('rpg','rpg'),('mundo abierto','mundo abierto'),('simulacion','simulacion')])
-    juegocompania = models.CharField(max_length=20)
+    medtipo = models.CharField('Tipo de Juego',choices=[('accion','accion'),('aventura','aventura'),('estrategia','estrategia'),('rpg','rpg'),('mundo abierto','mundo abierto'),('simulacion','simulacion')])
+    juegocompania = models.CharField('Compañia desarrolladora',max_length=20)
     fk_plataforma = models.ForeignKey(Jueplataforma, models.DO_NOTHING)
 
     class Meta:

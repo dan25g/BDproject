@@ -379,9 +379,9 @@ def new_serie(request):
             })
         
 @login_required
-def actualiza_serie(request,ser_id):
-    ser = get_object_or_404(Serie,pk=ser_id)
-    med = get_object_or_404(Medio,pk=ser_id)
+def actualiza_serie(request,se_id):
+    ser = get_object_or_404(Serie,pk=se_id)
+    med = get_object_or_404(Medio,pk=se_id)
     if request.method == 'GET':
         form = MedioForm(instance=med)
         form2 = SerieForm(instance=ser)
@@ -395,3 +395,62 @@ def actualiza_serie(request,ser_id):
             return redirect('series')
         except ValueError:
             return render(request,'act_pelicula.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def juegos(request):
+    juego = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.juego j on m.medio_id = j.medio_id")
+    vdinfo = Juego.objects.all()
+    return render(request,'juegos.html',{
+        'juegos':juego,
+        'vdinfo':vdinfo
+    })
+
+@login_required
+def elimina_juego(request,jue_id):
+    jue = get_object_or_404(Juego,pk=jue_id)
+    med = get_object_or_404(Medio,pk=jue_id)
+    jue.delete()
+    med.delete()
+    return redirect('juegos')  
+
+@login_required
+def new_juego(request):
+    if request.method == 'GET':
+        return render(request,'new_juego.html', {
+            'form': MedioForm,
+            'form2': JuegoForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = JuegoForm(request.POST)
+            NewJue = form.save(commit=False)
+            jue = form2.save(commit=False)
+            NewJue.save()
+            jue.medio = NewJue
+            jue.save()
+            return redirect('juegos')
+        except ValueError:
+            return render(request,'new_juego.html', {
+                'form': MedioForm,
+                'form2': JuegoForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_juego(request,jue_id):
+    jue = get_object_or_404(Juego,pk=jue_id)
+    med = get_object_or_404(Medio,pk=jue_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = JuegoForm(instance=jue)
+        return render(request,'act_juego.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = JuegoForm(request.POST,instance=jue)
+            form.save()
+            form2.save()
+            return redirect('juegos')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 

@@ -49,6 +49,10 @@ urlpatterns = [
     path('series/crear',views.new_serie,name='new_serie'),
     path('series/<int:se_id>/act',views.actualiza_serie,name='serie_act'),
     path('series/<int:se_id>/eli',views.elimina_serie,name='serie_eli'),
+    path('juegos/',views.juegos,name='juegos'),
+    path('juegos/crear',views.new_juego,name='new_juego'),
+    path('juegos/<int:jue_id>/act',views.actualiza_juego,name='juego_act'),
+    path('juegos/<int:jue_id>/eli',views.elimina_juego,name='juego_eli'),
     path('rep1/',Index.as_view(), name='index'),
 ]
 

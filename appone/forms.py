@@ -121,3 +121,13 @@ class SerieForm(forms.ModelForm):
             'serepisodios' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Numero de episodios de la serie'}),
             'sercanal' : forms.TextInput(attrs={'class':'form-control','placeholder':'Canal de transmision de la serie'}),
         }       
+
+class JuegoForm(forms.ModelForm):
+    class Meta:
+        model = Juego
+        fields = ['medtipo','juegocompania','fk_plataforma']
+        widgets = {
+            'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Juego'}),
+            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Comapañia desarrolladora del juego'}),
+            'fk_plataforma' : forms.Select(attrs={'class':'form-control','placeholder':'Plataforma del juego'}),
+        } 

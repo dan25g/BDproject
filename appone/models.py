@@ -35,7 +35,23 @@ class UsuarioManager(BaseUserManager):
         Usuario.set_password(password)
         Usuario.save()
         return Usuario
-
+    def create_superuser(self,username,correou,nombreu,apellidou,fechanacu,password,ciudadu,sexou,paisu):
+        Usuario = self.create_user(
+            username = username,
+            correou = correou,
+            nombreu = nombreu,
+            apellidou = apellidou,
+            fechanacu = fechanacu,
+            password = password,
+            ciudadu = ciudadu,
+            sexou = sexou,
+            paisu = paisu
+        )
+        Usuario.is_admin = True
+        Usuario.save()
+        return Usuario
+    
+    
 class Usuario(AbstractBaseUser):
     username = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
     nombreu = models.CharField('Nombre del usuario',null=False,blank=False,max_length=20)
@@ -46,6 +62,8 @@ class Usuario(AbstractBaseUser):
     ciudadu = models.CharField('Ciudad del usuario',null=False,blank=False,max_length=30)
     sexou = models.CharField('Sexo del usuario',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')],max_length=10)
     paisu = CountryField('Pais del usuario',null=False,blank=False,max_length=15)
+    es_admin = models.BooleanField(default=False)
+    u_activo = models.BooleanField(default=True)
     sub_fk = models.ForeignKey(Suscripcion, models.DO_NOTHING,null=True,blank=True)
     objects = UsuarioManager()
 
@@ -54,21 +72,25 @@ class Usuario(AbstractBaseUser):
 
     def __str__(self):
         return self.idu + ' - ' + self.correou
+    
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.es_admin
+    
+    @property
+    def is_superuser(self):
+        return self.es_admin
 
     class Meta:
         managed = False
         db_table =u'"infousuarios\".\"usuario"'
 
-class Task(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    datecompleted = models.DateField(null=True, blank=True)
-    important = models.BooleanField(default=False)
-    user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title + ' - hecha por ' + self.user.username
 
 class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)
@@ -122,24 +144,24 @@ class Tarjetacredito(models.Model):
         db_table =u'"infousuarios\".\"tarjetacredito"'
 
 class Personaje(models.Model):
-    id_personaje = models.IntegerField(primary_key=True)
-    genC = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
+    personaje_id = models.AutoField(primary_key=True)
+    genc = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
     primer_nombre = models.CharField('Primer nombre del personaje',max_length=20)
-    segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20)
+    segundo_nombre = models.CharField('Segundo nombre del personaje',max_length=20, blank=True, null=True)
     primer_apellido = models.CharField('Primer apellido del personaje',max_length=20)
-    segundo_apellido = models.CharField('Segundo apellido del personaje',max_length=20)
+    segundo_apellido = models.CharField('Segundo apellido del personaje',max_length=20, blank=True, null=True)
     color_pelo = models.CharField('Color del pelo del personaje',max_length=15)
     color_ojos = models.CharField('Color de los ojos del personaje',max_length=15)
     frase_celebre = models.CharField('Frase más celebre del personaje',max_length=75, blank=True, null=True)
     comic_primer_vez = models.CharField('Primera aparición en comics del personaje',max_length=50)
-    estadoMarital = models.CharField('Estado Marital del personaje',choices=[('Casado','Casado'),('Soltero','Soltero'),('Viudo','Viudo'),('Divorciado','Divorciado')])
+    estadomarital = models.CharField('Estado Marital del personaje',choices=[('Casado','Casado'),('Soltero','Soltero'),('Viudo','Viudo'),('Divorciado','Divorciado')])
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"personaje"'
 
 class Civil(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
@@ -167,7 +189,7 @@ class Combate(models.Model):
 
 
 class Creador(models.Model):
-    id_personaje_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
+    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
     id_creador = models.IntegerField()
     creador_nombre = models.CharField(max_length=20)
     creador_apellido = models.CharField(max_length=20)
@@ -175,11 +197,11 @@ class Creador(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"creador"'
-        unique_together = (('id_personaje_cre', 'id_creador'),)
+        unique_together = (('personaje_id_cre', 'id_creador'),)
 
 
 class Heroe(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_superheroe = models.CharField(max_length=20)
     color_traje = models.CharField(max_length=15)
     logotipo = models.CharField(max_length=75)
@@ -187,6 +209,9 @@ class Heroe(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"heroe"'
+
+    def __str__(self):
+        return f"{self.personaje.personaje_id} - {self.nombre_superheroe}"
 
 
 class HistoricoMatrimonio(models.Model):
@@ -231,7 +256,7 @@ class Medio(models.Model):
     medfecestreno = models.DateField()
     medcomcreacion = models.CharField(max_length=20)
     medcomproduc = models.CharField(max_length=40)
-    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"3-Excelente")])
+    medrating = models.IntegerField(choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")])
     medsinopsis = models.CharField(max_length=120)
 
     class Meta:
@@ -258,7 +283,7 @@ class Juego(models.Model):
 
 
 class Nacionalidad(models.Model):
-    id_personaje_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
+    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
     id_nacion = models.IntegerField()
     nacion_nombre = models.CharField(max_length=20)
     nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
@@ -266,7 +291,7 @@ class Nacionalidad(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"nacionalidad"'
-        unique_together = (('id_personaje_nac', 'id_nacion'),)
+        unique_together = (('personaje_id_nac', 'id_nacion'),)
 
 class Tipoobj(models.Model):
     idtipo = models.AutoField(primary_key=True)
@@ -290,14 +315,14 @@ class Objeto(models.Model):
 
 
 class Ocupacion(models.Model):
-    id_personaje_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     id_ocupacion = models.IntegerField()
     ocupa_nombre = models.CharField(max_length=20)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"ocupacion"'
-        unique_together = (('id_personaje_ocu', 'id_ocupacion'),)
+        unique_together = (('personaje_id_ocu', 'id_ocupacion'),)
 
 class OrganizacionMedio(models.Model):
     fk_med_org = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True) 
@@ -417,7 +442,7 @@ class Serie(models.Model):
         db_table = 'serie'
 
 class Villano(models.Model):
-    id_personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
+    personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_supervillano = models.CharField(max_length=20)
     objetivo = models.CharField(max_length=50)
     archienemigo = models.OneToOneField(Heroe, models.DO_NOTHING, blank=True, null=True)

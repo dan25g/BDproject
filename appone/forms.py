@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django_countries.widgets import CountrySelectWidget
 
-
+"""
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -13,7 +13,7 @@ class TaskForm(forms.ModelForm):
             'description' : forms.Textarea(attrs={'class':'form-control','placeholder':'Escribe la descripcion de la tarea'}),
             'important' : forms.CheckboxInput(attrs={'class':'form-check-input m-auto'}),
         }
-
+"""
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -61,9 +61,9 @@ class TDCForm(forms.ModelForm):
 class PersonajeForm(forms.ModelForm):
     class Meta:
         model = Personaje
-        fields = ['genC','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadoMarital']
+        fields = ['genc','primer_nombre','segundo_nombre','primer_apellido','segundo_apellido','color_pelo','color_ojos','comic_primer_vez','estadomarital']
         widgets = {
-            'genC' : forms.Select(attrs={'class':'form-control','placeholder':'Genero del personaje'}),
+            'genc' : forms.Select(attrs={'class':'form-control','placeholder':'Genero del personaje'}),
             'primer_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer nombre del personaje'}),
             'segundo_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Segundo nombre del personaje'}),
             'primer_apellido' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primer apellido de personaje'}),
@@ -71,7 +71,25 @@ class PersonajeForm(forms.ModelForm):
             'color_pelo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color del pelo del personaje'}),
             'color_ojos' : forms.TextInput(attrs={'class':'form-control','placeholder':'Color de los ojos del personaje'}),
             'comic_primer_vez' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primera aparición en comics del personaje'}),  
-            'estadoMarital' : forms.Select(attrs={'class':'form-control','placeholder':'Estado Marital del personaje'}),
+            'estadomarital' : forms.Select(attrs={'class':'form-control','placeholder':'Estado Marital del personaje'}),
         }
 
-    
+class HeroeForm(forms.ModelForm):
+    class Meta:
+        model = Heroe
+        fields = ['nombre_superheroe','color_traje','logotipo']
+        widgets = {
+            'nombre_superheroe' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el nombre de Héroe del personaje'}),
+            'color_traje' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el color del traje del héroe'}),
+            'logotipo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el logotipo del personaje del héroe'}),
+        }      
+
+class VilanoForm(forms.ModelForm):
+    class Meta:
+        model = Villano
+        fields = ['nombre_supervillano','objetivo','archienemigo']
+        widgets = {
+            'nombre_supervillano' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el nombre de Villano del personaje'}),
+            'objetivo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el objetivo del villano'}),
+            'archienemigo' : forms.Select(attrs={'class':'form-control','placeholder':'Archienemigo del villano'}),
+        }              

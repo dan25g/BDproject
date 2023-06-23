@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+
+<main class="container">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <h1>
+        {{civil.primer_nombre}} 
+        {% if civil.segundo_nombre is not none %}   
+          {{civil.segundo_nombre}}
+        {% endif %}
+        {{civil.primer_apellido}}
+        {% if civil.segundo_apellido is not none %}   
+          {{civil.segundo_apellido}}
+        {% endif %} 
+      </h1>
+      {% if error is not none %} 
+        <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+      {% endif %}
+      <form method="POST">
+        {% csrf_token %} 
+        {{form.as_p}}
+        <button class="btn btn-primary">Actualizar</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

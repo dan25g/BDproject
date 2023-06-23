@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout, authenticate
 from django.db import IntegrityError
-from .forms import TaskForm,UsuarioForm,LoginForm,TDCForm,Tarjetacredito
-from .models import Task,Usuario,Suscripcion
+from .forms import *
+from .models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 # Create your views here.
 
+class Index(TemplateView):
+            template_name = "index.html"
 
 def Home(request):
     return render(request, 'home.html')
@@ -57,7 +60,7 @@ def singin(request):
                 return redirect('home')
             else:
                 return redirect('sub')
-        
+"""        
 @login_required
 def tasks(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -121,15 +124,10 @@ def delete_task(request,task_id):
     if request.method == 'POST':
         task.delete()
         return redirect('tasks')
-
+"""
 @login_required
 def singout(request):
     logout(request)
-    comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
-    if not comtdc:
-        sub = Suscripcion.objects.filter(fk_usuario=request.user)
-        if sub:
-            sub.delete()
     return redirect('home')
 
 @login_required
@@ -168,3 +166,181 @@ def registro_tdc(request):
                 'form': TDCForm,
                 'error':'Por favor ingrese datos validos'           
             })
+        
+@login_required
+def Civiles(request):
+    civiles = Personaje.objects.raw(
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.civil c on p.personaje_id = c.personaje_id")
+    return render(request,'civiles.html',{
+        'civiles':civiles
+    })
+
+@login_required
+def new_civil(request):
+    if request.method == 'GET':
+        return render(request,'new_civil.html', {
+            'form': PersonajeForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            NewCiv = form.save(commit=False)
+            NewCiv.save()
+            civil = Civil.objects.create(personaje=NewCiv)
+            civil.save()
+            return redirect('civiles')
+        except ValueError:
+            return render(request,'new_civil.html', {
+                'form': PersonajeForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+
+@login_required
+def elimina_civil(request,civil_id):
+    civ = Civil.objects.filter(personaje=civil_id)
+    pers = Personaje.objects.filter(personaje_id=civil_id)
+    civ.delete()
+    pers.delete()
+    return redirect('civiles')     
+
+@login_required
+def actualiza_civil(request,civil_id):
+    civil = get_object_or_404(Personaje,pk=civil_id)
+    if request.method == 'GET':
+        form = PersonajeForm(instance=civil)
+        return render(request,'act_civil.html', {'civil': civil,'form': form })
+    else:
+        try:
+            form = PersonajeForm(request.POST,instance=civil)
+            form.save()
+            return redirect('civiles')
+        except ValueError:
+            return render(request,'act_civil.html', {'civil': civil,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
+            }) 
+
+@login_required
+def Heroes(request):
+    heroes = Personaje.objects.raw(
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.heroe h on p.personaje_id = h.personaje_id")
+    hinfo = Heroe.objects.all()
+    return render(request,'heroes.html',{
+        'heroes':heroes,
+        'hinfo':hinfo
+    })
+
+@login_required
+def elimina_heroe(request,heroe_id):
+    hero = get_object_or_404(Heroe,pk=heroe_id)
+    pers = get_object_or_404(Personaje,pk=heroe_id)
+    hero.delete()
+    pers.delete()
+    return redirect('heroes')     
+
+@login_required
+def new_heroe(request):
+    if request.method == 'GET':
+        return render(request,'new_heroe.html', {
+            'form': PersonajeForm,
+            'form2': HeroeForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            form2 = HeroeForm(request.POST)
+            NewHer = form.save(commit=False)
+            hero = form2.save(commit=False)
+            NewHer.save()
+            hero.personaje = NewHer
+            hero.save()
+            return redirect('heroes')
+        except ValueError:
+            return render(request,'new_heroe.html', {
+                'form': PersonajeForm,
+                'form2': HeroeForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+
+@login_required
+def actualiza_heroe(request,heroe_id):
+    pers = get_object_or_404(Personaje,pk=heroe_id)
+    hero = get_object_or_404(Heroe,pk=heroe_id)
+    if request.method == 'GET':
+        form = PersonajeForm(instance=pers)
+        form2 = HeroeForm(instance=hero)
+        return render(request,'act_heroe.html', {'heroe': pers,'adinfo':hero,'form': form,'form2': form2 })
+    else:
+        try:
+            form = PersonajeForm(request.POST,instance=pers)
+            form2 = HeroeForm(request.POST,instance=hero)
+            form.save()
+            form2.save()
+            return redirect('heroes')
+        except ValueError:
+            return render(request,'act_heroe.html', {'civil': hero,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
+            }) 
+        
+@login_required
+def villanos(request):
+    vil = Personaje.objects.raw(
+        "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.villano v on p.personaje_id = v.personaje_id")
+    vinfo = Villano.objects.all()
+    return render(request,'villanos.html',{
+        'villanos':vil,
+        'vinfo':vinfo
+    })
+
+@login_required
+def elimina_villano(request,vil_id):
+    vil = get_object_or_404(Villano,pk=vil_id)
+    pers = get_object_or_404(Personaje,pk=vil_id)
+    vil.delete()
+    pers.delete()
+    return redirect('villanos')  
+
+@login_required
+def new_villano(request):
+    if request.method == 'GET':
+        return render(request,'new_villano.html', {
+            'form': PersonajeForm,
+            'form2': VilanoForm,           
+        })
+    else:
+        try:
+            form = PersonajeForm(request.POST)
+            form2 = VilanoForm(request.POST)
+            NewVil = form.save(commit=False)
+            vil = form2.save(commit=False)
+            NewVil.save()
+            vil.personaje = NewVil
+            vil.save()
+            return redirect('villanos')
+        except ValueError:
+            return render(request,'new_villano.html', {
+                'form': PersonajeForm,
+                'form2': VilanoForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_vilano(request,vil_id):
+    pers = get_object_or_404(Personaje,pk=vil_id)
+    vil = get_object_or_404(Villano,pk=vil_id)
+    if request.method == 'GET':
+        form = PersonajeForm(instance=pers)
+        form2 = VilanoForm(instance=vil)
+        return render(request,'act_villano.html', {'villano': pers,'adinfo':vil,'form': form,'form2': form2 })
+    else:
+        try:
+            form = PersonajeForm(request.POST,instance=pers)
+            form2 = VilanoForm(request.POST,instance=vil)
+            form.save()
+            form2.save()
+            return redirect('villanos')
+        except ValueError:
+            return render(request,'act_villano.html', {'civil': vil,'form': form,
+                'error':"ERROR. No se ha podido actualizar"
+            }) 

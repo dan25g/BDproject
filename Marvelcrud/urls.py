@@ -18,21 +18,29 @@ from django.contrib import admin
 from django.urls import path
 from appone import views
 
+from appone.views import Index
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Home,name='home'),
     path('singup/',views.Singup,name='singup'),
-    path('tasks/',views.tasks,name='tasks'),
-    path('tasks_completed/',views.tasks_completed,name='tasks_completed'),
-    path('tasks/create',views.create_task,name='create_task'),
-    path('tasks/<int:task_id>',views.task_detail,name='task_detail'),
-    path('tasks/<int:task_id>/complete',views.complete_task,name='complete_task'),
-    path('tasks/<int:task_id>/delete',views.delete_task,name='delete_task'),
     path('logout/',views.singout,name='logout'),
     path('singin/',views.singin,name='singin'),
     path('sub/',views.seleccionar_subscripcion,name='sub'),
     path('sub/<int:susid>',views.registrar_subscripcion,name='reg_sub'),
     path('newtdc',views.registro_tdc,name='newtdc'),
-    
+    path('civiles/',views.Civiles,name='civiles'),
+    path('civiles/crear',views.new_civil,name='new_civil'),
+    path('civiles/<int:civil_id>/act',views.actualiza_civil,name='civiles_act'),
+    path('civiles/<int:civil_id>/eli',views.elimina_civil,name='civiles_eli'),
+    path('heroes/',views.Heroes,name='heroes'),
+    path('heroes/crear',views.new_heroe,name='new_heroe'),
+    path('heroes/<int:heroe_id>/act',views.actualiza_heroe,name='heroes_act'),
+    path('heroes/<int:heroe_id>/eli',views.elimina_heroe,name='heroes_eli'),
+    path('villanos/',views.villanos,name='villanos'),
+    path('villanos/crear',views.new_villano,name='new_villano'),
+    path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
+    path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
+    path('rep1/',Index.as_view(), name='index'),
 ]
 

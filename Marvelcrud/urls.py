@@ -53,6 +53,10 @@ urlpatterns = [
     path('juegos/crear',views.new_juego,name='new_juego'),
     path('juegos/<int:jue_id>/act',views.actualiza_juego,name='juego_act'),
     path('juegos/<int:jue_id>/eli',views.elimina_juego,name='juego_eli'),
+    path('organizaciones/',views.organizaciones,name='organizaciones'),
+    path('organizaciones/crear',views.new_organizacion,name='new_organizacion'),
+    path('organizaciones/<int:org_id>/act',views.actualiza_organizacion,name='organizacion_act'),
+    path('organizaciones/<int:org_id>/eli',views.elimina_organizacion,name='organizacion_eli'),
     path('rep1/',Index.as_view(), name='index'),
 ]
 

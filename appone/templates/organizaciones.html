@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Organizaciones</strong></h1>
+        <ul class="list-group ">
+        {% for og in orgs %}
+            <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{og.org_nombre}} </h1>
+                            <h4 class="mb-3 ms-4">Eslogan: "{{og.eslogan}}"</h4>
+                        </header>
+                        <p>Tipo: {{og.tipo_organizacion}}</p>
+                        <p>Lugar de creacion: {{og.lugar_creacion}}</p>
+                        <h6>Objetivo Principal: {{og.objetivo_principal}}</h6>
+                        <h5>Aparecio por primera vez en: {{og.comic_primer_vez}}</h5>
+            </a>
+            <div>
+                <a href="{% url 'organizacion_act' og.id_organizacion %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Organización</button>
+                </a>
+                <a href="{% url 'organizacion_eli' og.id_organizacion %}">
+                    <button class="btn btn-danger mb-3 ms-4">Eliminar Organización</button>
+                </a>
+            </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_organizacion' %}">
+            <button class="btn btn-success ">Nueva Organización</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

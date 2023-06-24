@@ -227,12 +227,12 @@ class HistoricoMatrimonio(models.Model):
 
 class Organizacion(models.Model):
     id_organizacion = models.AutoField(primary_key=True)
-    org_nombre = models.CharField(max_length=40)
-    eslogan = models.CharField(max_length=100)
-    tipo_organizacion = models.CharField(choices=[('Malvada','Malvada'),('Civil','Civil'),('Heroica','Heroica')])
-    comic_primer_vez = models.CharField(max_length=30)
-    objetivo_principal = models.CharField(max_length=70)
-    lugar_creacion = models.CharField(max_length=20)
+    org_nombre = models.CharField('Nombre de la organizacion',max_length=40)
+    eslogan = models.CharField('Eslogan de la organizacion',max_length=100)
+    tipo_organizacion = models.CharField('Tipo de organizacion',choices=[('Malvada','Malvada'),('Civil','Civil'),('Heroica','Heroica')])
+    comic_primer_vez = models.CharField('Primera aparicion en comics de la organizacion',max_length=30)
+    objetivo_principal = models.CharField('Objetivo principal de la organizacion',max_length=70)
+    lugar_creacion = models.CharField('Lugar de creacion de la organizacion',max_length=20)
 
     class Meta:
         managed = False

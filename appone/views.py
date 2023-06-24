@@ -69,7 +69,23 @@ def singout(request):
 @login_required
 def seleccionar_subscripcion(request):
     if request.method == 'GET':
-        return render(request,'select_sub.html')
+        gold = Suscripcion.objects.filter(sustipo='Gold')
+        prem = Suscripcion.objects.filter(sustipo='Premium')
+        vip = Suscripcion.objects.filter(sustipo='VIP')
+        bengold = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on  s.susid = sb.fk_sus_ben where sustipo like 'Gold'")
+        benprem = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on s.susid = sb.fk_sus_ben where sustipo like 'Premium'")
+        benvip = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on  s.susid = sb.fk_sus_ben where sustipo like 'VIP'")
+        return render(request,'select_sub.html',{
+            'gold':gold,
+            'prem':prem,
+            'vip':vip,
+            'bengold':bengold,
+            'benprem':benprem,
+            'benvip':benvip,
+        })
 
 @login_required
 def registrar_subscripcion(request,susid):
@@ -454,3 +470,49 @@ def actualiza_juego(request,jue_id):
             return redirect('juegos')
         except ValueError:
             return render(request,'act_pelicula.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def organizaciones(request):
+    org = Organizacion.objects.all()
+    return render(request,'organizaciones.html',{
+        'orgs':org,
+    })
+
+@login_required
+def elimina_organizacion(request,org_id):
+    org = get_object_or_404(Organizacion,pk=org_id)
+    org.delete()
+    return redirect('organizaciones')  
+
+@login_required
+def new_organizacion(request):
+    if request.method == 'GET':
+        return render(request,'new_organizacion.html', {
+            'form': OrganizacionForm,          
+        })
+    else:
+        try:
+            form = OrganizacionForm(request.POST)
+            NewOrg = form.save(commit=False)
+            NewOrg.save()
+            return redirect('organizaciones')
+        except ValueError:
+            return render(request,'new_organizacion.html', {
+                'form': OrganizacionForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_organizacion(request,org_id):
+    Org = get_object_or_404(Organizacion,pk=org_id)
+    if request.method == 'GET':
+        form = OrganizacionForm(instance=Org)
+        return render(request,'act_organizacion.html', {'organizacion': Org,'form': form})
+    else:
+        try:
+            form = OrganizacionForm(request.POST,instance=Org)
+            form.save()
+
+            return redirect('organizaciones')
+        except ValueError:
+            return render(request,'act_organizacion.html', {'organizacion': Org,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

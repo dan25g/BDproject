@@ -131,3 +131,16 @@ class JuegoForm(forms.ModelForm):
             'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Comapañia desarrolladora del juego'}),
             'fk_plataforma' : forms.Select(attrs={'class':'form-control','placeholder':'Plataforma del juego'}),
         } 
+        
+class OrganizacionForm(forms.ModelForm):
+    class Meta:
+        model = Organizacion
+        fields = ['org_nombre','eslogan','tipo_organizacion','comic_primer_vez','objetivo_principal','lugar_creacion']
+        widgets = {
+            'org_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de la organizacion'}),
+            'eslogan' : forms.TextInput(attrs={'class':'form-control','placeholder':'Eslogan de la organizacion'}),
+            'tipo_organizacion' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Organizacion'}),
+            'comic_primer_vez' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primera aparicion en comics de la organizacion'}),
+            'objetivo_principal' : forms.Textarea(attrs={'class':'form-control','placeholder':'Objetivo principal de la organizacion'}),
+            'lugar_creacion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Lugar de creacion de la organizacion'}),
+        } 

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Juegos</strong></h1>
+        <ul class="list-group ">
+        {% for jue in juegos %}
+            {% for vdinf in vdinfo %}
+                {% if jue.medio_id == vdinf.medio.medio_id %} 
+                    <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{jue.medionombre}} </h1>
+                            <h3>Desarrollado por: {{vdinf.juegocompania}}</h3>
+                        </header>
+                        <p>Fecha de Estreno: {{jue.medfecestreno}}</p>
+                        <p>Productor:  {{jue.medcomproduc}}</p>
+                        <p>Rating: {{jue.medrating}}</p>
+                        <p>Tipo: {{vdinf.medtipo}}</p>
+                        <p>Disponible para: {{vdinf.fk_plataforma.plataforma}}</p>
+                        <p>Sinopsis: {{jue.medsinopsis}}</p>
+                    </a>
+                {% endif %}
+            {% endfor %}    
+        <div>
+            <a href="{% url 'juego_act' jue.medio_id %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Juego</button>
+            </a>
+            <a href="{% url 'juego_eli' jue.medio_id %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Juego</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_juego' %}">
+            <button class="btn btn-success ">Nuevo Juego</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

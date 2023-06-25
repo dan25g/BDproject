@@ -60,71 +60,7 @@ def singin(request):
                 return redirect('home')
             else:
                 return redirect('sub')
-"""        
-@login_required
-def tasks(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
-    return render(request,'Tasks.html',{
-        'tasks':tasks
-    })
 
-@login_required
-def tasks_completed(request):
-    tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False)
-    return render(request,'Tasks.html',{
-        'tasks':tasks
-    })
-
-@login_required
-def create_task(request):
-    if request.method == 'GET':
-        return render(request,'create_task.html', {
-            'form': TaskForm,           
-        })
-    else:
-        try:
-            form = TaskForm(request.POST)
-            Newtask = form.save(commit=False)
-            Newtask.user = request.user
-            Newtask.save()
-            return redirect('tasks')
-        except ValueError:
-            return render(request,'create_task.html', {
-                'form': TaskForm,
-                'error':'Por favor ingrese datos validos'           
-            })
-        
-@login_required
-def task_detail(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'GET':
-        form = TaskForm(instance=task)
-        return render(request,'task_detail.html', {'task': task,'form': form })
-    else:
-        try:
-            form = TaskForm(request.POST,instance=task)
-            form.save()
-            return redirect('tasks')
-        except ValueError:
-            return render(request,'task_detail.html', {'task': task,'form': form,
-                'error':"ERROR. No se ha podido actualizar la tarea"
-            })
-        
-@login_required
-def complete_task(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'POST':
-        task.datecompleted = timezone.now()
-        task.save()
-        return redirect('tasks')
-    
-@login_required
-def delete_task(request,task_id):
-    task = get_object_or_404(Task,pk=task_id, user=request.user)
-    if request.method == 'POST':
-        task.delete()
-        return redirect('tasks')
-"""
 @login_required
 def singout(request):
     logout(request)
@@ -133,7 +69,23 @@ def singout(request):
 @login_required
 def seleccionar_subscripcion(request):
     if request.method == 'GET':
-        return render(request,'select_sub.html')
+        gold = Suscripcion.objects.filter(sustipo='Gold')
+        prem = Suscripcion.objects.filter(sustipo='Premium')
+        vip = Suscripcion.objects.filter(sustipo='VIP')
+        bengold = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on  s.susid = sb.fk_sus_ben where sustipo like 'Gold'")
+        benprem = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on s.susid = sb.fk_sus_ben where sustipo like 'Premium'")
+        benvip = Beneficio.objects.raw(
+            "select b.benid, bendescripcion from infousuarios.beneficio b inner join infousuarios.suscripcion_beneficio sb on b.benid = sb.fk_ben_sus inner join infousuarios.suscripcion s on  s.susid = sb.fk_sus_ben where sustipo like 'VIP'")
+        return render(request,'select_sub.html',{
+            'gold':gold,
+            'prem':prem,
+            'vip':vip,
+            'bengold':bengold,
+            'benprem':benprem,
+            'benvip':benvip,
+        })
 
 @login_required
 def registrar_subscripcion(request,susid):
@@ -279,9 +231,7 @@ def actualiza_heroe(request,heroe_id):
             form2.save()
             return redirect('heroes')
         except ValueError:
-            return render(request,'act_heroe.html', {'civil': hero,'form': form,
-                'error':"ERROR. No se ha podido actualizar"
-            }) 
+            return render(request,'act_heroe.html', {'heroe': pers,'adinfo':hero,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
         
 @login_required
 def villanos(request):
@@ -341,6 +291,228 @@ def actualiza_vilano(request,vil_id):
             form2.save()
             return redirect('villanos')
         except ValueError:
-            return render(request,'act_villano.html', {'civil': vil,'form': form,
-                'error':"ERROR. No se ha podido actualizar"
-            }) 
+            return render(request,'act_villano.html', {'villano': pers,'adinfo':vil,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
+        
+
+@login_required
+def peliculas(request):
+    pel = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.pelicula p on m.medio_id = p.medio_id")
+    pinfo = Pelicula.objects.all()
+    return render(request,'peliculas.html',{
+        'peliculas':pel,
+        'pinfo':pinfo
+    })
+
+@login_required
+def elimina_pelicula(request,pel_id):
+    pel = get_object_or_404(Pelicula,pk=pel_id)
+    med = get_object_or_404(Medio,pk=pel_id)
+    pel.delete()
+    med.delete()
+    return redirect('peliculas')  
+
+@login_required
+def new_pelicula(request):
+    if request.method == 'GET':
+        return render(request,'new_pelicula.html', {
+            'form': MedioForm,
+            'form2': PeliForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = PeliForm(request.POST)
+            NewPel = form.save(commit=False)
+            peli = form2.save(commit=False)
+            NewPel.save()
+            peli.medio = NewPel
+            peli.save()
+            return redirect('peliculas')
+        except ValueError:
+            return render(request,'new_pelicula.html', {
+                'form': MedioForm,
+                'form2': PeliForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_pelicula(request,pel_id):
+    pel = get_object_or_404(Pelicula,pk=pel_id)
+    med = get_object_or_404(Medio,pk=pel_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = PeliForm(instance=pel)
+        return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = PeliForm(request.POST,instance=pel)
+            form.save()
+            form2.save()
+            return redirect('peliculas')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def series(request):
+    ser = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.serie s on m.medio_id = s.medio_id")
+    seinfo = Serie.objects.all()
+    return render(request,'series.html',{
+        'series':ser,
+        'sinfo':seinfo
+    })
+
+@login_required
+def elimina_serie(request,se_id):
+    ser = get_object_or_404(Serie,pk=se_id)
+    med = get_object_or_404(Medio,pk=se_id)
+    ser.delete()
+    med.delete()
+    return redirect('series')  
+
+@login_required
+def new_serie(request):
+    if request.method == 'GET':
+        return render(request,'new_serie.html', {
+            'form': MedioForm,
+            'form2': SerieForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = SerieForm(request.POST)
+            NewSer = form.save(commit=False)
+            ser = form2.save(commit=False)
+            NewSer.save()
+            ser.medio = NewSer
+            ser.save()
+            return redirect('series')
+        except ValueError:
+            return render(request,'new_serie.html', {
+                'form': MedioForm,
+                'form2': SerieForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_serie(request,se_id):
+    ser = get_object_or_404(Serie,pk=se_id)
+    med = get_object_or_404(Medio,pk=se_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = SerieForm(instance=ser)
+        return render(request,'act_serie.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = SerieForm(request.POST,instance=ser)
+            form.save()
+            form2.save()
+            return redirect('series')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def juegos(request):
+    juego = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre from infopersonajes.medio m inner join infopersonajes.juego j on m.medio_id = j.medio_id")
+    vdinfo = Juego.objects.all()
+    return render(request,'juegos.html',{
+        'juegos':juego,
+        'vdinfo':vdinfo
+    })
+
+@login_required
+def elimina_juego(request,jue_id):
+    jue = get_object_or_404(Juego,pk=jue_id)
+    med = get_object_or_404(Medio,pk=jue_id)
+    jue.delete()
+    med.delete()
+    return redirect('juegos')  
+
+@login_required
+def new_juego(request):
+    if request.method == 'GET':
+        return render(request,'new_juego.html', {
+            'form': MedioForm,
+            'form2': JuegoForm,           
+        })
+    else:
+        try:
+            form = MedioForm(request.POST)
+            form2 = JuegoForm(request.POST)
+            NewJue = form.save(commit=False)
+            jue = form2.save(commit=False)
+            NewJue.save()
+            jue.medio = NewJue
+            jue.save()
+            return redirect('juegos')
+        except ValueError:
+            return render(request,'new_juego.html', {
+                'form': MedioForm,
+                'form2': JuegoForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_juego(request,jue_id):
+    jue = get_object_or_404(Juego,pk=jue_id)
+    med = get_object_or_404(Medio,pk=jue_id)
+    if request.method == 'GET':
+        form = MedioForm(instance=med)
+        form2 = JuegoForm(instance=jue)
+        return render(request,'act_juego.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2 })
+    else:
+        try:
+            form = MedioForm(request.POST,instance=med)
+            form2 = JuegoForm(request.POST,instance=jue)
+            form.save()
+            form2.save()
+            return redirect('juegos')
+        except ValueError:
+            return render(request,'act_pelicula.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def organizaciones(request):
+    org = Organizacion.objects.all()
+    return render(request,'organizaciones.html',{
+        'orgs':org,
+    })
+
+@login_required
+def elimina_organizacion(request,org_id):
+    org = get_object_or_404(Organizacion,pk=org_id)
+    org.delete()
+    return redirect('organizaciones')  
+
+@login_required
+def new_organizacion(request):
+    if request.method == 'GET':
+        return render(request,'new_organizacion.html', {
+            'form': OrganizacionForm,          
+        })
+    else:
+        try:
+            form = OrganizacionForm(request.POST)
+            NewOrg = form.save(commit=False)
+            NewOrg.save()
+            return redirect('organizaciones')
+        except ValueError:
+            return render(request,'new_organizacion.html', {
+                'form': OrganizacionForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_organizacion(request,org_id):
+    Org = get_object_or_404(Organizacion,pk=org_id)
+    if request.method == 'GET':
+        form = OrganizacionForm(instance=Org)
+        return render(request,'act_organizacion.html', {'organizacion': Org,'form': form})
+    else:
+        try:
+            form = OrganizacionForm(request.POST,instance=Org)
+            form.save()
+
+            return redirect('organizaciones')
+        except ValueError:
+            return render(request,'act_organizacion.html', {'organizacion': Org,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

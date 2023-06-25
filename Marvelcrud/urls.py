@@ -41,7 +41,27 @@ urlpatterns = [
     path('villanos/crear',views.new_villano,name='new_villano'),
     path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
     path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
+<<<<<<< HEAD
     path('index/',Index.as_view(), name='index'),
     path('report/', include(('report.urls', 'report')))
+=======
+    path('peliculas/',views.peliculas,name='peliculas'),
+    path('peliculas/crear',views.new_pelicula,name='new_pelicula'),
+    path('peliculas/<int:pel_id>/act',views.actualiza_pelicula,name='pelicula_act'),
+    path('peliculas/<int:pel_id>/eli',views.elimina_pelicula,name='pelicula_eli'),
+    path('series/',views.series,name='series'),
+    path('series/crear',views.new_serie,name='new_serie'),
+    path('series/<int:se_id>/act',views.actualiza_serie,name='serie_act'),
+    path('series/<int:se_id>/eli',views.elimina_serie,name='serie_eli'),
+    path('juegos/',views.juegos,name='juegos'),
+    path('juegos/crear',views.new_juego,name='new_juego'),
+    path('juegos/<int:jue_id>/act',views.actualiza_juego,name='juego_act'),
+    path('juegos/<int:jue_id>/eli',views.elimina_juego,name='juego_eli'),
+    path('organizaciones/',views.organizaciones,name='organizaciones'),
+    path('organizaciones/crear',views.new_organizacion,name='new_organizacion'),
+    path('organizaciones/<int:org_id>/act',views.actualiza_organizacion,name='organizacion_act'),
+    path('organizaciones/<int:org_id>/eli',views.elimina_organizacion,name='organizacion_eli'),
+    path('rep1/',Index.as_view(), name='index'),
+>>>>>>> 4c3ecb08353f7c39231186223d2115c9941e34e2
 ]
 

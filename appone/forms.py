@@ -3,17 +3,7 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django_countries.widgets import CountrySelectWidget
 
-"""
-class TaskForm(forms.ModelForm):
-    class Meta:
-        model = Task
-        fields = ['title','description','important']
-        widgets = {
-            'title' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escribe el titulo de la tarea'}),
-            'description' : forms.Textarea(attrs={'class':'form-control','placeholder':'Escribe la descripcion de la tarea'}),
-            'important' : forms.CheckboxInput(attrs={'class':'form-check-input m-auto'}),
-        }
-"""
+
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -93,3 +83,64 @@ class VilanoForm(forms.ModelForm):
             'objetivo' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el objetivo del villano'}),
             'archienemigo' : forms.Select(attrs={'class':'form-control','placeholder':'Archienemigo del villano'}),
         }              
+
+
+class MedioForm(forms.ModelForm):
+    class Meta:
+        model = Medio
+        fields = ['medfecestreno','medcomcreacion','medcomproduc','medrating','medsinopsis','medionombre']
+        widgets = {
+            'medfecestreno' : forms.DateInput(attrs={'class':'date','label':'Fecha de estreno','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'medcomcreacion' : forms.TextInput(attrs={'class':'form-control','placeholder':'compañia creadora del medio'}),
+            'medcomproduc' : forms.TextInput(attrs={'class':'form-control','placeholder':'compañia productora del medio'}),
+            'medrating' : forms.Select(attrs={'class':'form-control','placeholder':'Rating del medio'}),
+            'medsinopsis' : forms.Textarea(attrs={'class':'form-control','placeholder':'Sipnopsis del medio'}),
+            'medionombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del medio'}),
+        }  
+
+class PeliForm(forms.ModelForm):
+    class Meta:
+        model = Pelicula
+        fields = ['medtipo','peldirector','pelduracion','pelcosteprod','pelganancias']
+        widgets = {
+            'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de la pelicula'}),
+            'peldirector' : forms.TextInput(attrs={'class':'form-control','placeholder':'Director de la pelicula'}),
+            'pelduracion' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Duracion de la pelicula (En minutos)'}),
+            'pelcosteprod' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Coste de producción de la pelicula (en M$)'}),
+            'pelganancias' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Ganancias de la pelicula (en M$)'}),
+
+        }       
+
+class SerieForm(forms.ModelForm):
+    class Meta:
+        model = Serie
+        fields = ['medtipo','sercreador','serepisodios','sercanal']
+        widgets = {
+            'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de serie'}),
+            'sercreador' : forms.TextInput(attrs={'class':'form-control','placeholder':'Creador de la serie'}),
+            'serepisodios' : forms.NumberInput(attrs={'class':'form-control','placeholder':'Numero de episodios de la serie'}),
+            'sercanal' : forms.TextInput(attrs={'class':'form-control','placeholder':'Canal de transmision de la serie'}),
+        }       
+
+class JuegoForm(forms.ModelForm):
+    class Meta:
+        model = Juego
+        fields = ['medtipo','juegocompania','fk_plataforma']
+        widgets = {
+            'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Juego'}),
+            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Comapañia desarrolladora del juego'}),
+            'fk_plataforma' : forms.Select(attrs={'class':'form-control','placeholder':'Plataforma del juego'}),
+        } 
+        
+class OrganizacionForm(forms.ModelForm):
+    class Meta:
+        model = Organizacion
+        fields = ['org_nombre','eslogan','tipo_organizacion','comic_primer_vez','objetivo_principal','lugar_creacion']
+        widgets = {
+            'org_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de la organizacion'}),
+            'eslogan' : forms.TextInput(attrs={'class':'form-control','placeholder':'Eslogan de la organizacion'}),
+            'tipo_organizacion' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Organizacion'}),
+            'comic_primer_vez' : forms.TextInput(attrs={'class':'form-control','placeholder':'Primera aparicion en comics de la organizacion'}),
+            'objetivo_principal' : forms.Textarea(attrs={'class':'form-control','placeholder':'Objetivo principal de la organizacion'}),
+            'lugar_creacion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Lugar de creacion de la organizacion'}),
+        } 

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Series</strong></h1>
+        <ul class="list-group ">
+        {% for ser in series %}
+            {% for sinf in sinfo %}
+                {% if ser.medio_id == sinf.medio.medio_id %} 
+                    <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{ser.medionombre}} </h1>
+                            <h3>Creada por: {{sinf.sercreador}}</h3>
+                        </header>
+                        <p>Fecha de Estreno: {{ser.medfecestreno}}</p>
+                        <p>Productor:  {{ser.medcomproduc}}</p>
+                        <p>Rating: {{ser.medrating}}</p>
+                        <p>Tipo: {{sinf.medtipo}}</p>
+                        <p>Episodios: {{sinf.serepisodios}}</p>
+                        <p>Canal: {{sinf.sercanal}}</p>
+                        <p>Sinopsis: {{ser.medsinopsis}}</p>
+                    </a>
+                {% endif %}
+            {% endfor %}    
+        <div>
+            <a href="{% url 'serie_act' ser.medio_id %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Serie</button>
+            </a>
+            <a href="{% url 'serie_eli' ser.medio_id %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Serie</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_serie' %}">
+            <button class="btn btn-success ">Nuevo Pelicula</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

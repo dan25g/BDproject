@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Peliculas</strong></h1>
+        <ul class="list-group ">
+        {% for peli in peliculas %}
+            {% for pinf in pinfo %}
+                {% if peli.medio_id == pinf.medio.medio_id %} 
+                    <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{peli.medionombre}} </h1>
+                            <h3>Dirigida por: {{pinf.peldirector}}</h3>
+                        </header>
+                        <p>Fecha de Estreno: {{peli.medfecestreno}}</p>
+                        <p>Creaador: {{peli.medcomcreacion}}</p>
+                        <p>Productor:  {{peli.medcomproduc}}</p>
+                        <p>Rating: {{peli.medrating}}</p>
+                        <p>Tipo: {{pinf.medtipo}}</p>
+                        <p>Duracion: {{pinf.pelduracion}} min</p>
+                        <p>Coste de Produccion: {{pinf.pelcosteprod}} M$</p>
+                        <p>Ganancias: {{pinf.pelganancias}} M$</p>
+                        <p>Sinopsis: {{peli.medsinopsis}}</p>
+                    </a>
+                {% endif %}
+            {% endfor %}    
+        <div>
+            <a href="{% url 'pelicula_act' peli.medio_id %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Pelicula</button>
+            </a>
+            <a href="{% url 'pelicula_eli' peli.medio_id %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Pelicula</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_pelicula' %}">
+            <button class="btn btn-success ">Nuevo Pelicula</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

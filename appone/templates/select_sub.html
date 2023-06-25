@@ -4,37 +4,48 @@
 
     <main class="container">
         <div class="card-group">
-            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+            {% for vi in vip %}
+            <div class="card text-white bg-secondary mb-3 ms-5" style="max-width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">VIP</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt sunt repellat similique quaerat molestiae aliquam error tempore assumenda ut earum, illo ad mollitia amet eos.</p>
-                    <form action="{% url 'reg_sub' 3 %}" method="POST">
+                    <h5 class="card-title"> {{vi.sustipo}} </h5>
+                    {% for bv in benvip %}
+                    <p class="card-text"> ● {{bv.bendescripcion}} </p>
+                    {% endfor %} 
+                    <form action="{% url 'reg_sub' vi.susid %}" method="POST">
                         {% csrf_token %}
-                        <button class="btn btn-primary">9.99</button>
+                        <button class="btn btn-primary">{{vi.sustarifa}} $ </button>
                     </form>
                 </div>
             </div>
-            <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
+            {% endfor %}
+            {% for go in gold %}
+            <div class="card text-dark bg-warning mb-3 ms-5" style="max-width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Gold</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia modi voluptatem reiciendis molestiae quasi delectus nostrum incidunt nisi veritatis quaerat, eaque adipisci accusantium. Ea consectetur architecto debitis. Numquam, fugiat quis?</p>
-                    <form action="{% url 'reg_sub' 4 %}" method="POST">
+                    <h5 class="card-title"> {{go.sustipo}} </h5>
+                    {% for bg in bengold %}
+                    <p class="card-text"> ● {{bg.bendescripcion}} </p>
+                    {% endfor %} 
+                    <form action="{% url 'reg_sub' go.susid %}" method="POST">
                         {% csrf_token %}
-                        <button class="btn btn-primary">19.99</button>
-                    </form>
-
-                </div>
-            </div>
-            <div class="card text-dark bg-info mb-3" style="max-width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Premium</h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos alias ipsum qui officia corrupti reiciendis, consectetur odit iste excepturi voluptatum tempore omnis quidem quod totam atque accusamus ut voluptas magni aspernatur? Tempore voluptatem, eum, suscipit similique doloribus dolore recusandae praesentium nam natus optio, corrupti fugit sit repudiandae molestiae quo?</p>
-                    <form action="{% url 'reg_sub' 5 %}" method="POST">
-                        {% csrf_token %}
-                        <button class="btn btn-primary">29.99</button>
+                        <button class="btn btn-primary">{{go.sustarifa}} $ </button>
                     </form>
                 </div>
             </div>
+            {% endfor %} 
+            {% for pr in prem %}
+            <div class="card text-dark bg-info mb-3 ms-5" style="max-width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{pr.sustipo}}</h5>
+                    {% for bp in benprem %}
+                    <p class="card-text"> ● {{bp.bendescripcion}} </p>
+                    {% endfor %} 
+                    <form action="{% url 'reg_sub' pr.susid %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary">{{pr.sustarifa}} $</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %} 
         </div>
     </main>
 

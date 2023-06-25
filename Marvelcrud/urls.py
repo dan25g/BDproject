@@ -61,7 +61,6 @@ urlpatterns = [
     path('organizaciones/crear',views.new_organizacion,name='new_organizacion'),
     path('organizaciones/<int:org_id>/act',views.actualiza_organizacion,name='organizacion_act'),
     path('organizaciones/<int:org_id>/eli',views.elimina_organizacion,name='organizacion_eli'),
-    path('rep1/',Index.as_view(), name='index'),
 >>>>>>> 4c3ecb08353f7c39231186223d2115c9941e34e2
 ]
 

@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from appone import views
 
 from appone.views import Index
@@ -41,6 +41,7 @@ urlpatterns = [
     path('villanos/crear',views.new_villano,name='new_villano'),
     path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
     path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
-    path('rep1/',Index.as_view(), name='index'),
+    path('index/',Index.as_view(), name='index'),
+    path('report/', include(('report.urls', 'report')))
 ]
 

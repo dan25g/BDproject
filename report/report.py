@@ -11,14 +11,14 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from reportbro import Report, ReportBroError
 from timeit import default_timer as timer
 
-from ..appone.models import ReportDefinition, ReportRequest
-from .utils import create_album_report_template, json_default, get_menu_items
+from report.models import ReportDefinition, ReportRequest
+from report.utils import create_base_report_template, json_default
 
 MAX_CACHE_SIZE = 1000 * 1024 * 1024  # keep max. 1000 MB of generated pdf files in db
 
 
 @ensure_csrf_cookie
-def edit(request):
+def edit(request, report_type):
     """Shows a page with ReportBro Designer to edit our albums report template.
 
     The report template is loaded from the db (report_definition table),
@@ -28,14 +28,14 @@ def edit(request):
     in the Designer) in this case.
     """
     context = dict()
-    context['menu_items'] = get_menu_items('report')
-    if ReportDefinition.objects.filter(report_type='albums_report').count() == 0:
-        create_album_report_template()
+    if ReportDefinition.objects.filter(report_type=report_type).count() == 0:
+        create_base_report_template(report_type)
 
     # load ReportBro report definition stored in our report_definition table
-    row = ReportDefinition.objects.get(report_type='albums_report')
+    row = ReportDefinition.objects.get(report_type=report_type)
+    context['report_type'] = report_type
     context['report_definition'] = SafeString(row.report_definition)
-    return render(request, 'albums/report/edit.html', context)
+    return render(request, 'edit.html', context)
 
 
 @xframe_options_exempt
@@ -194,9 +194,7 @@ def save(request, report_type):
     The url is called in *saveReport* callback from the Designer,
     see *saveCallback* in templates/albums/report/edit.html
     """
-    if report_type != 'albums_report':
-        #  currently we only support the albums report
-        raise Http404('report_type not supported')
+    
     json_data = json.loads(request.body.decode('utf-8'))
 
     # perform some basic checks if all necessary fields for report_definition are present

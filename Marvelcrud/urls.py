@@ -67,6 +67,9 @@ urlpatterns = [
     path('poderes/crear',views.new_poder,name='new_poder'),
     path('poderes/<int:pod_id>/act',views.actualiza_poder,name='poder_act'),
     path('poderes/<int:pod_id>/eli',views.elimina_poder,name='poder_eli'),
-    
+    path('objetos/',views.objetos,name='objetos'),
+    path('objetos/crear',views.new_objeto,name='new_objeto'),
+    path('objetos/<int:obj_id>/act',views.actualiza_objeto,name='objeto_act'),
+    path('objetos/<int:obj_id>/eli',views.elimina_objeto,name='objeto_eli'),
 ]
 

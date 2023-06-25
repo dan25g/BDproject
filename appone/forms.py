@@ -162,6 +162,17 @@ class PoderForm(forms.ModelForm):
         fields = ['ponombre','podescripcion','ponaturaleza']
         widgets = {
             'ponombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Poder'}),
-            'podescripcion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Descripción del Poder'}),
+            'podescripcion' : forms.Textarea(attrs={'class':'form-control','placeholder':'Descripción del Poder'}),
             'ponaturaleza' : forms.TextInput(attrs={'class':'form-control','placeholder':'Naturaleza del Poder'}),
+        } 
+
+class ObjetoForm(forms.ModelForm):
+    class Meta:
+        model = Objeto
+        fields = ['objnombre','objmaterial','objdescripcion','objtipo']
+        widgets = {
+            'objnombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Objeto'}),
+            'objmaterial' : forms.TextInput(attrs={'class':'form-control','placeholder':'Material del Objeto'}),
+            'objdescripcion' : forms.Textarea(attrs={'class':'form-control','placeholder':'Descripción del Objeto'}),
+            'objtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo del Objeto'}),
         } 

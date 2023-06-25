@@ -606,3 +606,48 @@ def actualiza_poder(request,pod_id):
             return redirect('poderes')
         except ValueError:
             return render(request,'act_poder.html', {'poder': pod,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def objetos(request):
+    obj = Objeto.objects.all()
+    return render(request,'objetos.html',{
+        'objetos':obj,
+    })
+
+@login_required
+def elimina_objeto(request,obj_id):
+    obj = get_object_or_404(Objeto,pk=obj_id)
+    obj.delete()
+    return redirect('objetos')  
+
+@login_required
+def new_objeto(request):
+    if request.method == 'GET':
+        return render(request,'new_objeto.html', {
+            'form': ObjetoForm,          
+        })
+    else:
+        try:
+            form = ObjetoForm(request.POST)
+            NewObj = form.save(commit=False)
+            NewObj.save()
+            return redirect('objetos')
+        except ValueError:
+            return render(request,'new_objeto.html', {
+                'form': ObjetoForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_objeto(request,obj_id):
+    obj = get_object_or_404(Objeto,pk=obj_id)
+    if request.method == 'GET':
+        form = ObjetoForm(instance=obj)
+        return render(request,'act_objeto.html', {'objeto': obj,'form': form})
+    else:
+        try:
+            form = ObjetoForm(request.POST,instance=obj)
+            form.save()
+            return redirect('objetos')
+        except ValueError:
+            return render(request,'act_objeto.html', {'objeto': obj,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

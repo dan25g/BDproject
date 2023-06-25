@@ -309,16 +309,22 @@ class Tipoobj(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"tipoobj"'
 
+    def __str__(self):
+        return f"{self.idtipo} - {self.tipo_nombre}"
+
 class Objeto(models.Model):
     obid = models.AutoField(primary_key=True)
-    objnombre = models.CharField(max_length=20)
-    objmaterial = models.CharField(max_length=20)
-    objdescripcion = models.CharField(max_length=70)
+    objnombre = models.CharField('Nombre del Objeto',max_length=20)
+    objmaterial = models.CharField('Material del Objeto',max_length=20)
+    objdescripcion = models.CharField('Descripción del Objeto',max_length=70)
     objtipo = models.ForeignKey(Tipoobj, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"objeto"'
+
+    def __str__(self):
+        return f"{self.obid} - {self.objnombre}"
 
 
 class Ocupacion(models.Model):

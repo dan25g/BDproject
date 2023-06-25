@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Lista de Guardados</strong></h1>
+        <ul class="list-group ">
+        {% for med in medios %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">{{med.fk_med_perf}} </h1>
+                    <h6>Vista en: {{med.fecha_vista}}</h6>
+                </header>
+                <h2>Calificacion: {{med.calificacion}}</h2>
+            </a>  
+        <div>
+            <a href="{% url 'lg_calificar' med.id %}">
+                <button class="btn btn-warning mb-3 ms-2">Cambiar Calificacion</button>
+            </a>
+            <a href="{% url 'lg_eli' med.id %}">
+                <button class="btn btn-danger mb-3 ms-4">Quitar de la lista</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

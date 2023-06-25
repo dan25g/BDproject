@@ -678,3 +678,41 @@ def actualiza_objeto(request,obj_id):
             return redirect('objetos')
         except ValueError:
             return render(request,'act_objeto.html', {'objeto': obj,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def Lista_guardados(request):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = PerfilMedio.objects.filter(fk_perf_med=per)
+    return render(request,'listguar.html',{
+        'medios':med,
+    })
+
+@login_required
+def lg_eliminar(request,med_id):
+    Permed = get_object_or_404(PerfilMedio,pk=med_id)
+    Permed.delete()
+    return redirect('listguardados')
+
+@login_required
+def lg_guardar(request,med_id):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = get_object_or_404(Medio,pk=med_id)
+    Permed = PerfilMedio.objects.create(fk_perf_med=per,fk_med_perf=med,fecha_vista=timezone.now())
+    Permed.save()
+    return redirect('lg_calificar',Permed.id)
+
+@login_required
+def lg_calificar(request,med_id):
+    Permed = get_object_or_404(PerfilMedio,pk=med_id)
+    if request.method == 'GET':
+        form = CalMedioForm(instance=Permed)
+        return render(request,'cal_medio.html', {'medio': Permed,'form': form})
+    else:
+        try:
+            form = CalMedioForm(request.POST,instance=Permed)
+            form.save()
+            return redirect('listguardados')
+        except ValueError:
+            return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+            

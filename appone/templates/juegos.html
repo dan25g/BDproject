@@ -31,6 +31,9 @@
             <a href="{% url 'juego_eli' jue.medio_id %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Juego</button>
             </a>
+            <a href="{% url 'lg_guardar' jue.medio_id %}">
+                <button class="btn btn-info mb-3 ms-4">Agregar a la Lista</button>
+            </a>
         </div>
         {% endfor %}
         </ul>

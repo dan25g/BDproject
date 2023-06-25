@@ -41,10 +41,8 @@ urlpatterns = [
     path('villanos/crear',views.new_villano,name='new_villano'),
     path('villanos/<int:vil_id>/act',views.actualiza_vilano,name='villanos_act'),
     path('villanos/<int:vil_id>/eli',views.elimina_villano,name='villanos_eli'),
-<<<<<<< HEAD
     path('index/',Index.as_view(), name='index'),
     path('report/', include(('report.urls', 'report')))
-=======
     path('peliculas/',views.peliculas,name='peliculas'),
     path('peliculas/crear',views.new_pelicula,name='new_pelicula'),
     path('peliculas/<int:pel_id>/act',views.actualiza_pelicula,name='pelicula_act'),
@@ -61,6 +59,5 @@ urlpatterns = [
     path('organizaciones/crear',views.new_organizacion,name='new_organizacion'),
     path('organizaciones/<int:org_id>/act',views.actualiza_organizacion,name='organizacion_act'),
     path('organizaciones/<int:org_id>/eli',views.elimina_organizacion,name='organizacion_eli'),
->>>>>>> 4c3ecb08353f7c39231186223d2115c9941e34e2
 ]
 

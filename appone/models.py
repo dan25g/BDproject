@@ -106,7 +106,7 @@ class Perfil(models.Model):
 class Actividad(models.Model):
     act_id = models.AutoField(primary_key=True)
     act_ingreso = models.DateTimeField()
-    act_dispositivo = models.CharField(max_length=10)
+    act_dispositivo = models.CharField(max_length=10, default='PC')
     act_fin = models.DateTimeField()
     fk_perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 

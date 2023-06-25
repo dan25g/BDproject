@@ -71,6 +71,9 @@ def singin(request):
 def singout(request):
     user = request.user
     desper = get_object_or_404(Perfil,fk_usuario=user,esta_activo=True)
+    act = Actividad.objects.filter(fk_perfil=desper).order_by('-act_ingreso').first()
+    act.act_fin = timezone.now()
+    act.save()
     desper.esta_activo = False
     desper.save()
     logout(request)
@@ -139,6 +142,8 @@ def activo_perfil(request,pf_id):
     perf = get_object_or_404(Perfil, pk=pf_id)
     perf.esta_activo = True
     perf.save()
+    act = Actividad.objects.create(act_ingreso=timezone.now(),fk_perfil=perf)
+    act.save()
     return redirect('home')
 
 @login_required

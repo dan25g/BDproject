@@ -237,6 +237,9 @@ class Organizacion(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"organizacion"'
+        
+    def __str__(self):
+        return f"{self.id_organizacion} - {self.org_nombre}"
 
 class HistoricoPersonaje(models.Model):
     fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
@@ -424,10 +427,10 @@ class RegistroCombates(models.Model):
 
 class Sede(models.Model):
     id_sede = models.AutoField(primary_key=True)
-    sede_nombre = models.CharField(max_length=20)
-    sede_ubicacion = models.CharField(max_length=20)
-    tipo_edificacion = models.CharField(choices=[('Subterranea','Subterranea'),('voladora','voladora'),('Superficial','Superficial')])
-    id_org = models.OneToOneField(Organizacion, models.DO_NOTHING)
+    sede_nombre = models.CharField('Nombre de la sede',max_length=20)
+    sede_ubicacion = models.CharField('Ubicación de la sede',max_length=20)
+    tipo_edificacion = models.CharField('Tipo de edificacion de la sede',choices=[('Subterranea','Subterranea'),('voladora','voladora'),('Superficial','Superficial')])
+    org = models.ForeignKey(Organizacion, models.DO_NOTHING)
 
     class Meta:
         managed = False

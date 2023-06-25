@@ -516,3 +516,49 @@ def actualiza_organizacion(request,org_id):
             return redirect('organizaciones')
         except ValueError:
             return render(request,'act_organizacion.html', {'organizacion': Org,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def sedes(request):
+    sed = Sede.objects.all()
+    return render(request,'sedes.html',{
+        'sedes':sed,
+    })
+
+@login_required
+def elimina_sede(request,sed_id):
+    sed = get_object_or_404(Sede,pk=sed_id)
+    sed.delete()
+    return redirect('sedes')  
+
+@login_required
+def new_sede(request):
+    if request.method == 'GET':
+        return render(request,'new_sede.html', {
+            'form': SedeForm,          
+        })
+    else:
+        try:
+            form = SedeForm(request.POST)
+            NewSed = form.save(commit=False)
+            NewSed.save()
+            return redirect('sedes')
+        except ValueError:
+            return render(request,'new_sede.html', {
+                'form': SedeForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_sede(request,sed_id):
+    sed = get_object_or_404(Sede,pk=sed_id)
+    if request.method == 'GET':
+        form = SedeForm(instance=sed)
+        return render(request,'act_sede.html', {'organizacion': sed,'form': form})
+    else:
+        try:
+            form = SedeForm(request.POST,instance=sed)
+            form.save()
+            return redirect('sedes')
+        except ValueError:
+            return render(request,'act_sede.html', {'organizacion': sed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        

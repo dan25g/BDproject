@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Sede</strong></h1>
+        <ul class="list-group ">
+        {% for sede in sedes %}
+            <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{sede.sede_nombre}} </h1>
+                            <h4 class="mb-3 ms-4">Pertence a: {{sede.org.org_nombre}}</h4>
+                        </header>
+                        <p>Tipo de Edificación: {{sede.tipo_edificacion}}</p>
+                        <p>Ubicación: {{sede.sede_ubicacion}}</p>
+            </a>
+            <div>
+                <a href="{% url 'sede_act' sede.id_sede %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Sede</button>
+                </a>
+                <a href="{% url 'sede_eli' sede.id_sede %}">
+                    <button class="btn btn-danger mb-3 ms-4">Eliminar Sede</button>
+                </a>
+            </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_sede' %}">
+            <button class="btn btn-success ">Nueva Sede</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

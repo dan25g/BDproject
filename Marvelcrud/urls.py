@@ -63,5 +63,10 @@ urlpatterns = [
     path('sedes/crear',views.new_sede,name='new_sede'),
     path('sedes/<int:sed_id>/act',views.actualiza_sede,name='sede_act'),
     path('sedes/<int:sed_id>/eli',views.elimina_sede,name='sede_eli'),
+    path('poderes/',views.poderes,name='poderes'),
+    path('poderes/crear',views.new_poder,name='new_poder'),
+    path('poderes/<int:pod_id>/act',views.actualiza_poder,name='poder_act'),
+    path('poderes/<int:pod_id>/eli',views.elimina_poder,name='poder_eli'),
+    
 ]
 

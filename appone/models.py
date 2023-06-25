@@ -403,9 +403,9 @@ class PersonajePoder(models.Model):
 
 class Poder(models.Model):
     podid = models.AutoField(primary_key=True)
-    ponombre = models.CharField(max_length=30)
-    podescripcion = models.CharField(max_length=70)
-    ponaturaleza = models.CharField(max_length=20)
+    ponombre = models.CharField('Nombre del Poder',max_length=30)
+    podescripcion = models.CharField('Descripción del Poder',max_length=70)
+    ponaturaleza = models.CharField('Naturaleza del Poder',max_length=20)
 
     class Meta:
         managed = False

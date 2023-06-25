@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Poderes</strong></h1>
+        <ul class="list-group ">
+        {% for poder in poderes %}
+            <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{poder.ponombre}} </h1>
+                        </header>
+                        <h6>Naturaleza: {{poder.ponaturaleza}}</h6>
+                        <p>Descripción: {{poder.podescripcion}}</p>
+                        
+            </a>
+            <div>
+                <a href="{% url 'poder_act' poder.podid %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Poder</button>
+                </a>
+                <a href="{% url 'poder_eli' poder.podid %}">
+                    <button class="btn btn-danger mb-3 ms-4">Eliminar Poder</button>
+                </a>
+            </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_poder' %}">
+            <button class="btn btn-success ">Nueva Poder</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

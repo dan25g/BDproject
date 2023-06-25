@@ -155,3 +155,13 @@ class SedeForm(forms.ModelForm):
             'tipo_edificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de edificacion de la sede'}),
             'org' : forms.Select(attrs={'class':'form-control','placeholder':'Organización dueña de la sede'}),
         } 
+
+class PoderForm(forms.ModelForm):
+    class Meta:
+        model = Poder
+        fields = ['ponombre','podescripcion','ponaturaleza']
+        widgets = {
+            'ponombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Poder'}),
+            'podescripcion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Descripción del Poder'}),
+            'ponaturaleza' : forms.TextInput(attrs={'class':'form-control','placeholder':'Naturaleza del Poder'}),
+        } 

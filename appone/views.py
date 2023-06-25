@@ -553,12 +553,56 @@ def actualiza_sede(request,sed_id):
     sed = get_object_or_404(Sede,pk=sed_id)
     if request.method == 'GET':
         form = SedeForm(instance=sed)
-        return render(request,'act_sede.html', {'organizacion': sed,'form': form})
+        return render(request,'act_sede.html', {'sede': sed,'form': form})
     else:
         try:
             form = SedeForm(request.POST,instance=sed)
             form.save()
             return redirect('sedes')
         except ValueError:
-            return render(request,'act_sede.html', {'organizacion': sed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+            return render(request,'act_sede.html', {'sede': sed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
         
+@login_required
+def poderes(request):
+    pod = Poder.objects.all()
+    return render(request,'poderes.html',{
+        'poderes':pod,
+    })
+
+@login_required
+def elimina_poder(request,pod_id):
+    pod = get_object_or_404(Poder,pk=pod_id)
+    pod.delete()
+    return redirect('poderes')  
+
+@login_required
+def new_poder(request):
+    if request.method == 'GET':
+        return render(request,'new_poder.html', {
+            'form': PoderForm,          
+        })
+    else:
+        try:
+            form = PoderForm(request.POST)
+            NewPod = form.save(commit=False)
+            NewPod.save()
+            return redirect('poderes')
+        except ValueError:
+            return render(request,'new_poder.html', {
+                'form': PoderForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_poder(request,pod_id):
+    pod = get_object_or_404(Poder,pk=pod_id)
+    if request.method == 'GET':
+        form = PoderForm(instance=pod)
+        return render(request,'act_poder.html', {'poder': pod,'form': form})
+    else:
+        try:
+            form = PoderForm(request.POST,instance=pod)
+            form.save()
+            return redirect('poderes')
+        except ValueError:
+            return render(request,'act_poder.html', {'poder': pod,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

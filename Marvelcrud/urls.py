@@ -23,6 +23,8 @@ from appone.views import Index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Home,name='home'),
+    path('perfiles/',views.escoger_perfl,name='escoger_perfil'),
+    path('perfiles/<int:pf_id>',views.activo_perfil,name='act_perf'),
     path('singup/',views.Singup,name='singup'),
     path('logout/',views.singout,name='logout'),
     path('singin/',views.singin,name='singin'),
@@ -71,5 +73,6 @@ urlpatterns = [
     path('objetos/crear',views.new_objeto,name='new_objeto'),
     path('objetos/<int:obj_id>/act',views.actualiza_objeto,name='objeto_act'),
     path('objetos/<int:obj_id>/eli',views.elimina_objeto,name='objeto_eli'),
+    
 ]
 

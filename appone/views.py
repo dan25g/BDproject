@@ -30,6 +30,8 @@ def Singup(request):
                     ciudadu=request.POST['ciudadu'],sexou=request.POST['sexou'],paisu=request.POST['paisu'])
                 user.save()
                 login(request,user)
+                for i in range(1,6):
+                    Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
                 return redirect('sub')
             except IntegrityError:
                 return render(request, 'singup.html', {
@@ -56,13 +58,21 @@ def singin(request):
             }) 
         else:
             login(request,user)
+            p = Perfil.objects.filter(fk_usuario=user).count()
+            if p != 5:
+                for i in range(1,6-p):
+                    Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
             if user.sub_fk:
-                return redirect('home')
+                return redirect('escoger_perfil')
             else:
                 return redirect('sub')
 
 @login_required
 def singout(request):
+    user = request.user
+    desper = get_object_or_404(Perfil,fk_usuario=user,esta_activo=True)
+    desper.esta_activo = False
+    desper.save()
     logout(request)
     return redirect('home')
 
@@ -94,9 +104,9 @@ def registrar_subscripcion(request,susid):
         user = request.user
         user.sub_fk = sub
         user.save()
-        comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
+        comtdc = Tarjetacredito.objects.filter(fk_usuario=user)
         if comtdc:
-            return redirect('home')
+            return redirect('escoger_perfil')
         else:
             return redirect('newtdc')
 
@@ -112,13 +122,25 @@ def registro_tdc(request):
             NewTdc = form.save(commit=False)
             NewTdc.fk_usuario = request.user
             NewTdc.save()
-            return redirect('home')
+            return redirect('escoger_perfil')
         except ValueError:
             return render(request,'registrar_tarjeta.html', {
                 'form': TDCForm,
                 'error':'Por favor ingrese datos validos'           
             })
         
+@login_required
+def escoger_perfl(request):
+    user = request.user
+    perf = Perfil.objects.filter(fk_usuario=user)
+    return render(request,'esc_perfil.html', {'Perfiles': perf})
+
+def activo_perfil(request,pf_id):
+    perf = get_object_or_404(Perfil, pk=pf_id)
+    perf.esta_activo = True
+    perf.save()
+    return redirect('home')
+
 @login_required
 def Civiles(request):
     civiles = Personaje.objects.raw(

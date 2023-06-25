@@ -96,6 +96,7 @@ class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)
     idioma = models.CharField(max_length=10)
     percorreo = models.CharField()
+    esta_activo = models.BooleanField(default=False)
     fk_usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
 
     class Meta:

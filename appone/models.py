@@ -96,6 +96,7 @@ class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)
     idioma = models.CharField(max_length=10)
     percorreo = models.CharField()
+    esta_activo = models.BooleanField(default=False)
     fk_usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
 
     class Meta:
@@ -105,7 +106,7 @@ class Perfil(models.Model):
 class Actividad(models.Model):
     act_id = models.AutoField(primary_key=True)
     act_ingreso = models.DateTimeField()
-    act_dispositivo = models.CharField(max_length=10)
+    act_dispositivo = models.CharField(max_length=10, default='PC')
     act_fin = models.DateTimeField()
     fk_perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 
@@ -237,6 +238,9 @@ class Organizacion(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"organizacion"'
+        
+    def __str__(self):
+        return f"{self.id_organizacion} - {self.org_nombre}"
 
 class HistoricoPersonaje(models.Model):
     fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
@@ -263,6 +267,9 @@ class Medio(models.Model):
     class Meta:
         managed = False
         db_table = 'medio'
+
+    def __str__(self):
+        return f"{self.medionombre}"
 
 class Jueplataforma(models.Model):
     id_plataforma = models.AutoField(primary_key=True)
@@ -306,16 +313,22 @@ class Tipoobj(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"tipoobj"'
 
+    def __str__(self):
+        return f"{self.idtipo} - {self.tipo_nombre}"
+
 class Objeto(models.Model):
     obid = models.AutoField(primary_key=True)
-    objnombre = models.CharField(max_length=20)
-    objmaterial = models.CharField(max_length=20)
-    objdescripcion = models.CharField(max_length=70)
+    objnombre = models.CharField('Nombre del Objeto',max_length=20)
+    objmaterial = models.CharField('Material del Objeto',max_length=20)
+    objdescripcion = models.CharField('Descripción del Objeto',max_length=70)
     objtipo = models.ForeignKey(Tipoobj, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"objeto"'
+
+    def __str__(self):
+        return f"{self.obid} - {self.objnombre}"
 
 
 class Ocupacion(models.Model):
@@ -352,9 +365,10 @@ class Pelicula(models.Model):
         db_table =u'"infopersonajes\".\"pelicula"'        
 
 class PerfilMedio(models.Model):
-    fk_perf_med = models.OneToOneField(Perfil, models.DO_NOTHING, primary_key=True)  
-    fk_med_perf = models.OneToOneField(Medio, models.DO_NOTHING)
-    calificacion = models.IntegerField()
+    id = models.AutoField(primary_key=True)
+    fk_perf_med = models.ForeignKey(Perfil, models.DO_NOTHING)  
+    fk_med_perf = models.ForeignKey(Medio, models.DO_NOTHING)
+    calificacion = models.IntegerField('Calificacion del medio del perfil',choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")],default=1)
     fecha_vista = models.DateTimeField()
 
     class Meta:
@@ -400,9 +414,9 @@ class PersonajePoder(models.Model):
 
 class Poder(models.Model):
     podid = models.AutoField(primary_key=True)
-    ponombre = models.CharField(max_length=30)
-    podescripcion = models.CharField(max_length=70)
-    ponaturaleza = models.CharField(max_length=20)
+    ponombre = models.CharField('Nombre del Poder',max_length=30)
+    podescripcion = models.CharField('Descripción del Poder',max_length=70)
+    ponaturaleza = models.CharField('Naturaleza del Poder',max_length=20)
 
     class Meta:
         managed = False
@@ -424,10 +438,10 @@ class RegistroCombates(models.Model):
 
 class Sede(models.Model):
     id_sede = models.AutoField(primary_key=True)
-    sede_nombre = models.CharField(max_length=20)
-    sede_ubicacion = models.CharField(max_length=20)
-    tipo_edificacion = models.CharField(choices=[('Subterranea','Subterranea'),('voladora','voladora'),('Superficial','Superficial')])
-    id_org = models.OneToOneField(Organizacion, models.DO_NOTHING)
+    sede_nombre = models.CharField('Nombre de la sede',max_length=20)
+    sede_ubicacion = models.CharField('Ubicación de la sede',max_length=20)
+    tipo_edificacion = models.CharField('Tipo de edificacion de la sede',choices=[('Subterranea','Subterranea'),('voladora','voladora'),('Superficial','Superficial')])
+    org = models.ForeignKey(Organizacion, models.DO_NOTHING)
 
     class Meta:
         managed = False

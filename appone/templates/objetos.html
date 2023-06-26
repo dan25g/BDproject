@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Objetos</strong></h1>
+        <ul class="list-group ">
+        {% for objeto in objetos %}
+            <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">{{objeto.objnombre}} </h1>
+                            <h5 class="mb-3 ms-4">Tipo: {{objeto.objtipo.tipo_nombre}}</h5>
+                        </header>
+                        <h6>Material: {{objeto.objmaterial}}</h6>
+                        <p>Descripción: {{objeto.objdescripcion}}</p>
+            </a>
+            <div>
+                <a href="{% url 'objeto_act' objeto.obid %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Objeto</button>
+                </a>
+                <a href="{% url 'objeto_eli' objeto.obid %}">
+                    <button class="btn btn-danger mb-3 ms-4">Eliminar Objeto</button>
+                </a>
+            </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_objeto' %}">
+            <button class="btn btn-success mb-3 ">Nuevo Objeto</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

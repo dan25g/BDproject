@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+
+        <h1 class="text-center display-3 py-5"><strong>Perflies</strong></h1>
+        <div class="card-group">
+            {% for perf in Perfiles %}
+            <div class="card text-white bg-secondary mb-3 ms-5" >
+                <div class="card-body">
+                <h5 class="card-title"> Perfil {{ forloop.counter }}</h5>
+                <p class="card-text">
+                    {% load static %}
+                    <img src="{% static 'images/profpic.png' %} " class="img-thumbnail" >
+                </p>
+                    <form action="{% url 'act_perf' perf.per_id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-primary"> Escoger </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+
+    </div>
+</main>
+
+
+
+
+{% endblock %}

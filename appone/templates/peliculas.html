@@ -34,6 +34,9 @@
             <a href="{% url 'pelicula_eli' peli.medio_id %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Pelicula</button>
             </a>
+            <a href="{% url 'lg_guardar' peli.medio_id %}">
+                <button class="btn btn-info mb-3 ms-4">Agregar a la Lista</button>
+            </a>
         </div>
         {% endfor %}
         </ul>

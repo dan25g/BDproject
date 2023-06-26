@@ -23,6 +23,9 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                  <a href="/lista" class="nav-link">Lista de Guardados</a>
+                </li>
                 </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,6 +39,11 @@
                       <li><a class="dropdown-item" href="/series">Series</a></li>
                       <li><a class="dropdown-item" href="/juegos">Juegos</a></li>
                       <li><a class="dropdown-item" href="/organizaciones">Organizaciones</a></li>
+                      <li><a class="dropdown-item" href="/sedes">Sedes</a></li>
+                      <li><a class="dropdown-item" href="/poderes">Poderes</a></li>
+                      <li><a class="dropdown-item" href="/objetos">Objetos</a></li>
+                      <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
+                      <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                       <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                       <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                     </ul>

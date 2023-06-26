@@ -50,6 +50,8 @@ def Singup(request):
                     ciudadu=request.POST['ciudadu'],sexou=request.POST['sexou'],paisu=request.POST['paisu'])
                 user.save()
                 login(request,user)
+                for i in range(1,6):
+                    Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
                 return redirect('sub')
             except IntegrityError:
                 return render(request, 'singup.html', {
@@ -76,13 +78,24 @@ def singin(request):
             }) 
         else:
             login(request,user)
+            p = Perfil.objects.filter(fk_usuario=user).count()
+            if p != 5:
+                for i in range(1,6-p):
+                    Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
             if user.sub_fk:
-                return redirect('home')
+                return redirect('escoger_perfil')
             else:
                 return redirect('sub')
 
 @login_required
 def singout(request):
+    user = request.user
+    desper = get_object_or_404(Perfil,fk_usuario=user,esta_activo=True)
+    act = Actividad.objects.filter(fk_perfil=desper).order_by('-act_ingreso').first()
+    act.act_fin = timezone.now()
+    act.save()
+    desper.esta_activo = False
+    desper.save()
     logout(request)
     return redirect('home')
 
@@ -114,9 +127,9 @@ def registrar_subscripcion(request,susid):
         user = request.user
         user.sub_fk = sub
         user.save()
-        comtdc = Tarjetacredito.objects.filter(fk_usuario=request.user)
+        comtdc = Tarjetacredito.objects.filter(fk_usuario=user)
         if comtdc:
-            return redirect('home')
+            return redirect('escoger_perfil')
         else:
             return redirect('newtdc')
 
@@ -132,13 +145,27 @@ def registro_tdc(request):
             NewTdc = form.save(commit=False)
             NewTdc.fk_usuario = request.user
             NewTdc.save()
-            return redirect('home')
+            return redirect('escoger_perfil')
         except ValueError:
             return render(request,'registrar_tarjeta.html', {
                 'form': TDCForm,
                 'error':'Por favor ingrese datos validos'           
             })
         
+@login_required
+def escoger_perfl(request):
+    user = request.user
+    perf = Perfil.objects.filter(fk_usuario=user)
+    return render(request,'esc_perfil.html', {'Perfiles': perf})
+
+def activo_perfil(request,pf_id):
+    perf = get_object_or_404(Perfil, pk=pf_id)
+    perf.esta_activo = True
+    perf.save()
+    act = Actividad.objects.create(act_ingreso=timezone.now(),fk_perfil=perf)
+    act.save()
+    return redirect('home')
+
 @login_required
 def Civiles(request):
     civiles = Personaje.objects.raw(
@@ -536,3 +563,176 @@ def actualiza_organizacion(request,org_id):
             return redirect('organizaciones')
         except ValueError:
             return render(request,'act_organizacion.html', {'organizacion': Org,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def sedes(request):
+    sed = Sede.objects.all()
+    return render(request,'sedes.html',{
+        'sedes':sed,
+    })
+
+@login_required
+def elimina_sede(request,sed_id):
+    sed = get_object_or_404(Sede,pk=sed_id)
+    sed.delete()
+    return redirect('sedes')  
+
+@login_required
+def new_sede(request):
+    if request.method == 'GET':
+        return render(request,'new_sede.html', {
+            'form': SedeForm,          
+        })
+    else:
+        try:
+            form = SedeForm(request.POST)
+            NewSed = form.save(commit=False)
+            NewSed.save()
+            return redirect('sedes')
+        except ValueError:
+            return render(request,'new_sede.html', {
+                'form': SedeForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_sede(request,sed_id):
+    sed = get_object_or_404(Sede,pk=sed_id)
+    if request.method == 'GET':
+        form = SedeForm(instance=sed)
+        return render(request,'act_sede.html', {'sede': sed,'form': form})
+    else:
+        try:
+            form = SedeForm(request.POST,instance=sed)
+            form.save()
+            return redirect('sedes')
+        except ValueError:
+            return render(request,'act_sede.html', {'sede': sed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def poderes(request):
+    pod = Poder.objects.all()
+    return render(request,'poderes.html',{
+        'poderes':pod,
+    })
+
+@login_required
+def elimina_poder(request,pod_id):
+    pod = get_object_or_404(Poder,pk=pod_id)
+    pod.delete()
+    return redirect('poderes')  
+
+@login_required
+def new_poder(request):
+    if request.method == 'GET':
+        return render(request,'new_poder.html', {
+            'form': PoderForm,          
+        })
+    else:
+        try:
+            form = PoderForm(request.POST)
+            NewPod = form.save(commit=False)
+            NewPod.save()
+            return redirect('poderes')
+        except ValueError:
+            return render(request,'new_poder.html', {
+                'form': PoderForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_poder(request,pod_id):
+    pod = get_object_or_404(Poder,pk=pod_id)
+    if request.method == 'GET':
+        form = PoderForm(instance=pod)
+        return render(request,'act_poder.html', {'poder': pod,'form': form})
+    else:
+        try:
+            form = PoderForm(request.POST,instance=pod)
+            form.save()
+            return redirect('poderes')
+        except ValueError:
+            return render(request,'act_poder.html', {'poder': pod,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def objetos(request):
+    obj = Objeto.objects.all()
+    return render(request,'objetos.html',{
+        'objetos':obj,
+    })
+
+@login_required
+def elimina_objeto(request,obj_id):
+    obj = get_object_or_404(Objeto,pk=obj_id)
+    obj.delete()
+    return redirect('objetos')  
+
+@login_required
+def new_objeto(request):
+    if request.method == 'GET':
+        return render(request,'new_objeto.html', {
+            'form': ObjetoForm,          
+        })
+    else:
+        try:
+            form = ObjetoForm(request.POST)
+            NewObj = form.save(commit=False)
+            NewObj.save()
+            return redirect('objetos')
+        except ValueError:
+            return render(request,'new_objeto.html', {
+                'form': ObjetoForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_objeto(request,obj_id):
+    obj = get_object_or_404(Objeto,pk=obj_id)
+    if request.method == 'GET':
+        form = ObjetoForm(instance=obj)
+        return render(request,'act_objeto.html', {'objeto': obj,'form': form})
+    else:
+        try:
+            form = ObjetoForm(request.POST,instance=obj)
+            form.save()
+            return redirect('objetos')
+        except ValueError:
+            return render(request,'act_objeto.html', {'objeto': obj,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def Lista_guardados(request):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = PerfilMedio.objects.filter(fk_perf_med=per)
+    return render(request,'listguar.html',{
+        'medios':med,
+    })
+
+@login_required
+def lg_eliminar(request,med_id):
+    Permed = get_object_or_404(PerfilMedio,pk=med_id)
+    Permed.delete()
+    return redirect('listguardados')
+
+@login_required
+def lg_guardar(request,med_id):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = get_object_or_404(Medio,pk=med_id)
+    Permed = PerfilMedio.objects.create(fk_perf_med=per,fk_med_perf=med,fecha_vista=timezone.now())
+    Permed.save()
+    return redirect('lg_calificar',Permed.id)
+
+@login_required
+def lg_calificar(request,med_id):
+    Permed = get_object_or_404(PerfilMedio,pk=med_id)
+    if request.method == 'GET':
+        form = CalMedioForm(instance=Permed)
+        return render(request,'cal_medio.html', {'medio': Permed,'form': form})
+    else:
+        try:
+            form = CalMedioForm(request.POST,instance=Permed)
+            form.save()
+            return redirect('listguardados')
+        except ValueError:
+            return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+            

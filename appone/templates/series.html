@@ -32,6 +32,9 @@
             <a href="{% url 'serie_eli' ser.medio_id %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Serie</button>
             </a>
+            <a href="{% url 'lg_guardar' ser.medio_id %}">
+                <button class="btn btn-info mb-3 ms-4">Agregar a la Lista</button>
+            </a>
         </div>
         {% endfor %}
         </ul>

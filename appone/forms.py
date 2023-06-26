@@ -144,3 +144,43 @@ class OrganizacionForm(forms.ModelForm):
             'objetivo_principal' : forms.Textarea(attrs={'class':'form-control','placeholder':'Objetivo principal de la organizacion'}),
             'lugar_creacion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Lugar de creacion de la organizacion'}),
         } 
+
+class SedeForm(forms.ModelForm):
+    class Meta:
+        model = Sede
+        fields = ['sede_nombre','sede_ubicacion','tipo_edificacion','org']
+        widgets = {
+            'sede_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de la sede'}),
+            'sede_ubicacion' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ubicación de la sede'}),
+            'tipo_edificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de edificacion de la sede'}),
+            'org' : forms.Select(attrs={'class':'form-control','placeholder':'Organización dueña de la sede'}),
+        } 
+
+class PoderForm(forms.ModelForm):
+    class Meta:
+        model = Poder
+        fields = ['ponombre','podescripcion','ponaturaleza']
+        widgets = {
+            'ponombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Poder'}),
+            'podescripcion' : forms.Textarea(attrs={'class':'form-control','placeholder':'Descripción del Poder'}),
+            'ponaturaleza' : forms.TextInput(attrs={'class':'form-control','placeholder':'Naturaleza del Poder'}),
+        } 
+
+class ObjetoForm(forms.ModelForm):
+    class Meta:
+        model = Objeto
+        fields = ['objnombre','objmaterial','objdescripcion','objtipo']
+        widgets = {
+            'objnombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Objeto'}),
+            'objmaterial' : forms.TextInput(attrs={'class':'form-control','placeholder':'Material del Objeto'}),
+            'objdescripcion' : forms.Textarea(attrs={'class':'form-control','placeholder':'Descripción del Objeto'}),
+            'objtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo del Objeto'}),
+        } 
+
+class CalMedioForm(forms.ModelForm):
+    class Meta:
+        model = PerfilMedio
+        fields = ['calificacion']
+        widgets = {
+            'calificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Calificacion del medio del perfil'}),
+        } 

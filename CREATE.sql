@@ -35,6 +35,8 @@ create table infousuarios.usuario(
     paisU varchar(30) not null,
     last_login timestamp,
     sub_fk_id int,
+    es_admin boolean default (false),
+    u_activo boolean default (true),
 
     constraint pk_user primary key (username),
     constraint usuario_sub foreign key (sub_fk_id) references infousuarios.suscripcion,
@@ -102,9 +104,10 @@ create table infopersonajes.personaje(
     segundo_apellido varchar(20) ,
     color_pelo varchar(15) not null,
     color_ojos varchar(15) not null,
-    frase_celebre varchar(75) null,
+    frase_celebre varchar(75),
     comic_primer_vez varchar(50) not null,
     estadoMarital estadoMar,
+    tipo varchar(20) not null,
 
     constraint pk_personaje primary key (id_personaje)
 );

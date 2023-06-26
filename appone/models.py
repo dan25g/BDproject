@@ -263,6 +263,7 @@ class Medio(models.Model):
     medrating = models.IntegerField('Rating',choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")])
     medsinopsis = models.CharField('Sinopsis',max_length=300)
     medionombre = models.CharField('Nombre del medio',max_length=50, blank=False, null=False)
+    tipomed = models.CharField('Tipo de medio',choices=[('Pelicula','Película'),('Serie','Serie'),('Juego','Juego')])
 
     class Meta:
         managed = False

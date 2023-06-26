@@ -176,3 +176,11 @@ class ObjetoForm(forms.ModelForm):
             'objdescripcion' : forms.Textarea(attrs={'class':'form-control','placeholder':'Descripción del Objeto'}),
             'objtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo del Objeto'}),
         } 
+
+class CalMedioForm(forms.ModelForm):
+    class Meta:
+        model = PerfilMedio
+        fields = ['calificacion']
+        widgets = {
+            'calificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Calificacion del medio del perfil'}),
+        } 

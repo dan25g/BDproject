@@ -268,6 +268,9 @@ class Medio(models.Model):
         managed = False
         db_table = 'medio'
 
+    def __str__(self):
+        return f"{self.medionombre}"
+
 class Jueplataforma(models.Model):
     id_plataforma = models.AutoField(primary_key=True)
     plataforma = models.CharField(max_length=20)
@@ -362,9 +365,10 @@ class Pelicula(models.Model):
         db_table =u'"infopersonajes\".\"pelicula"'        
 
 class PerfilMedio(models.Model):
-    fk_perf_med = models.OneToOneField(Perfil, models.DO_NOTHING, primary_key=True)  
-    fk_med_perf = models.OneToOneField(Medio, models.DO_NOTHING)
-    calificacion = models.IntegerField()
+    id = models.AutoField(primary_key=True)
+    fk_perf_med = models.ForeignKey(Perfil, models.DO_NOTHING)  
+    fk_med_perf = models.ForeignKey(Medio, models.DO_NOTHING)
+    calificacion = models.IntegerField('Calificacion del medio del perfil',choices=[(1,"1-Mala"),(2,"2-Mediocre"),(3,"3-Regular"),(4,"4-Buena"),(5,"5-Excelente")],default=1)
     fecha_vista = models.DateTimeField()
 
     class Meta:

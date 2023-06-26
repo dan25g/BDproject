@@ -6,10 +6,30 @@ from .models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+#from django.contrib.auth.models import Personaje
+from psycopg2 import *
+from report.report import report
 # Create your views here.
 
 class Index(TemplateView):
             template_name = "index.html"
+
+def exportReport1(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute( "select h.nombre_superheroe as nombre, p2.tipo from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.heroe h, infopersonajes.personaje p2 where (h.id_personaje=p2.id_personaje) and ((h.id_personaje = a.fk_pers_pod)) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') UNION ALL select v.nombre_supervillano as nombre, p2.tipo from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.villano v, infopersonajes.personaje p2 where (v.id_personaje=p2.id_personaje) and (v.id_personaje = a.fk_pers_pod) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial');")
+
+    personajes_list= []
+    for nombre, tipo in cur.fetchall():
+        personajes_list.append({
+            'nombre': nombre,
+            'tipo': tipo
+        })
+
+        return report(request, 'rep1', personajes_list)
+
+
 
 def Home(request):
     return render(request, 'home.html')

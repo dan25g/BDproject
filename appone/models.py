@@ -319,7 +319,7 @@ class Tipoobj(models.Model):
 
 class Objeto(models.Model):
     obid = models.AutoField(primary_key=True)
-    objnombre = models.CharField('Nombre del Objeto',max_length=20)
+    objnombre = models.CharField('Nombre del Objeto',max_length=50)
     objmaterial = models.CharField('Material del Objeto',max_length=20)
     objdescripcion = models.CharField('Descripción del Objeto',max_length=70)
     objtipo = models.ForeignKey(Tipoobj, models.DO_NOTHING)

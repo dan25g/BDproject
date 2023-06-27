@@ -136,7 +136,7 @@ def run(request):
                 return HttpResponseBadRequest(
                     'report not found (preview probably too old), update report preview and try again')
             if output_format == 'pdf' and report_request.pdf_file:
-                report_file = report_request.pdf_file
+                report_file = report_request.pdf_file.tobytes()
             else:
                 report_definition = json.loads(report_request.report_definition)
                 data = json.loads(report_request.data)

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from appone import views
 
-from appone.views import Index, exportReport1
+from appone.views import Index, exportReport1, exportReport21, exportReport3
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -62,6 +62,8 @@ urlpatterns = [
     path('organizaciones/<int:org_id>/act',views.actualiza_organizacion,name='organizacion_act'),
     path('organizaciones/<int:org_id>/eli',views.elimina_organizacion,name='organizacion_eli'),
     path('export_reporte_1/', exportReport1, name='export_reporte1'),
+    path('export_reporte_2/', exportReport21, name='export_reporte2'),
+    path('export_reporte_3/', exportReport3, name='export_reporte3'),
     path('sedes/',views.sedes,name='sedes'),
     path('sedes/crear',views.new_sede,name='new_sede'),
     path('sedes/<int:sed_id>/act',views.actualiza_sede,name='sede_act'),

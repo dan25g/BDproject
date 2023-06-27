@@ -870,3 +870,5 @@ def combates(request):
         'combates':comb,
         'cmbinfo':cmbinfo
     })
+def recom_menu(request):
+    return render(request,'recomenu.html')

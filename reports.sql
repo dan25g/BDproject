@@ -13,21 +13,23 @@
                                --
 select h.nombre_superheroe as nombre, p2.tipo
       from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.heroe h, infopersonajes.personaje p2, infopersonajes.historico_personaje o
-        where (h.id_personaje=p2.id_personaje) and ((h.id_personaje = a.fk_pers_pod)) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (h.id_personaje=o.fk_pers_org) and (o.lider = true)
+        where (h.personaje_id=p2.personaje_id) and ((h.personaje_id = a.fk_pers_pod)) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (h.personaje_id=o.fk_pers_org) and (o.lider = true)
 UNION ALL
 select v.nombre_supervillano as nombre, p2.tipo
     from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.villano v, infopersonajes.personaje p2, infopersonajes.historico_personaje o
-        where (v.id_personaje=p2.id_personaje) and (v.id_personaje = a.fk_pers_pod) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (v.id_personaje=o.fk_pers_org) and (o.lider = true);
+        where (v.personaje_id=p2.personaje_id) and (v.personaje_id = a.fk_pers_pod) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (v.personaje_id=o.fk_pers_org) and (o.lider = true);
 
-select AVG(s.serepisodios)
-from infopersonajes.serie s;
+select round(t.promedio,2)
+from (select AVG(s.serepisodios) promedio
+from infopersonajes.serie s) t;
 
-select m.medionombre, s.serepisodios
+
+select m.medionombre as nombre, s.serepisodios as episodios
     from infopersonajes.serie s, infopersonajes.medio m
         where (s.medio_id = m.medio_id)
         group by s.medio_id, m.medio_id, s.serepisodios
-            having s.serepisodios >= (select AVG(s.serepisodios)
-                                    from infopersonajes.serie s);
+            having s.serepisodios >= (select AVG(s.serepisodios) promedio
+                                    from infopersonajes.serie s) ;
         --and (s.medio_id = m.medio_id);
 
 select c.cmblugar
@@ -47,10 +49,25 @@ select c.cmblugar, count(c.cmblugar) contador
     from infopersonajes.combate c
     group by c.cmblugar;
 
-select t.cmblugar ,max(contador)
+select t.cmblugar as lugar ,max(contador)
 from (select c.cmblugar, count(c.cmblugar) contador
     from infopersonajes.combate c
     group by c.cmblugar) t
     group by t.cmblugar
     order by max(contador) DESC
+    limit 3;
+
+select k.nombre, k.poseedor, k.tipo
+from(select t.objnombre as nombre,t.nombre_superheroe as poseedor,t.tipo, t.contador
+        from(select o.objnombre, h.nombre_superheroe, p.tipo, count(r.fk_obj_reg) contador
+             from infopersonajes.personaje p, infopersonajes.heroe h, infopersonajes.objeto o, infopersonajes.registro_combates r
+             where (p.personaje_id = h.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg)
+             group by h.nombre_superheroe, o.objnombre, p.tipo) t
+    UNION all
+    select t.objnombre as nombre,t.nombre_supervillano as poseedor ,t.tipo, t.contador
+    from(select o.objnombre, v.nombre_supervillano, p.tipo, count(r.fk_obj_reg) contador
+             from infopersonajes.personaje p, infopersonajes.villano v, infopersonajes.objeto o, infopersonajes.registro_combates r
+             where (p.personaje_id = v.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg)
+             group by v.nombre_supervillano, o.objnombre, p.tipo) t) k
+    order by k.contador desc limit 3
 

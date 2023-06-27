@@ -24,6 +24,9 @@
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                 <li class="nav-item">
+                  <a href="/recomendaciones" class="nav-link">Recomendaciones</a>
+                </li>
+                <li class="nav-item">
                   <a href="/lista" class="nav-link">Lista de Guardados</a>
                 </li>
                 </li>
@@ -56,7 +59,22 @@
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                   <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep1' %}">Reporte 1</a></li>
                   <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep2' %}">Reporte 2</a></li>
-                  <li><a class="dropdown-item" href="#">Reporte 3</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep3' %}">Reporte 3</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep4' %}">Reporte 4</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep5' %}">Reporte 5</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep6' %}">Reporte 6</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep7' %}">Reporte 7</a></li>
+                  <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep8' %}">Reporte 8</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Exportar Reportes
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="/export_reporte_1">Reporte 1</a></li>
+                  <li><a class="dropdown-item" href="/export_reporte_2">Reporte 2</a></li>
+                  <li><a class="dropdown-item" href="/export_reporte_3">Reporte 3</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 4</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 5</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 6</a></li>

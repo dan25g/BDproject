@@ -6,10 +6,123 @@ from .models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+#from django.contrib.auth.models import Personaje
+from psycopg2 import *
+from report.report import report
 # Create your views here.
 
 class Index(TemplateView):
             template_name = "index.html"
+
+def exportReport1(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute("select h.nombre_superheroe as nombre, p2.tipo "+
+                " from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.heroe h, infopersonajes.personaje p2, infopersonajes.historico_personaje o "+
+                " where (h.personaje_id=p2.personaje_id) and ((h.personaje_id = a.fk_pers_pod)) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (h.personaje_id=o.fk_pers_org) and (o.lider = true) "+
+                " UNION ALL "+ 
+                " select v.nombre_supervillano as nombre, p2.tipo "+
+                " from infopersonajes.poder p, infopersonajes.personaje_poder a, infopersonajes.villano v, infopersonajes.personaje p2, infopersonajes.historico_personaje o "+
+                " where (v.personaje_id=p2.personaje_id) and (v.personaje_id = a.fk_pers_pod) and (p.podid = a.fk_pod_pers) and (p.ponaturaleza = 'Artificial') and (v.personaje_id=o.fk_pers_org) and (o.lider = true);")
+
+    personajes_list= []
+    for nombre, tipo in cur.fetchall():# data={nombre:tipo}
+        personajes_list.append({
+            'nombre': nombre,
+            'tipo': tipo
+        })
+        
+       # for personajes in personajes_list: 
+        data={ 
+      #      personajes:personajes
+        'personajes': personajes_list
+            }
+        #    
+    for i in data.items():print(i)
+
+    return report(request, 'rep1', data)
+
+def exportReport21(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute("select m.medionombre as nombre, s.serepisodios as episodios "+
+                " from infopersonajes.serie s, infopersonajes.medio m "+
+                " where (s.medio_id = m.medio_id) "+
+                " group by s.medio_id, m.medio_id, s.serepisodios "+ 
+                " having s.serepisodios >= (select AVG(s.serepisodios) from infopersonajes.serie s) ; ")
+
+    series_list= []
+    for nombre, episodios,  in cur.fetchall():# data={nombre:tipo}promedio
+        series_list.append({
+            'nombre_medio': nombre,
+            'numero_episodios': episodios,
+            #'promedio': promedio,
+        })
+        
+       # for personajes in personajes_list: 
+        data2={ 
+      #      personajes:personajes
+        'series': series_list
+            }
+        #    
+    for i in data2.items():print(i)
+
+    return  report(request, 'rep2', data2)
+
+def exportReport20(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute("select AVG(s.serepisodios) promedio "+ " from infopersonajes.serie s ; ")
+
+    #series_list= []
+    for promedio in cur.fetchall():# data={nombre:tipo}nombre, episodios,
+        #series_list.append({
+            #'nombre_medio': nombre,
+            #'numero_episodios': episodios,
+            data3={ 'promedio':promedio}
+        #})
+        
+        
+       # for personajes in personajes_list: 
+    
+      #      personajes:personajes
+         
+            
+        #    
+    for i in data3.items():print(i)
+
+    return report(request, 'rep2', exportReport21+data3)
+
+def exportReport3(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute("select t.cmblugar as lugar ,max(contador) "+
+                " from (select c.cmblugar, count(c.cmblugar) contador "+
+                " from infopersonajes.combate c "+
+                " group by c.cmblugar) t "+
+                " group by t.cmblugar "+
+                " order by max(contador) DESC limit 3;")
+
+    combate_list= []
+    for lugar, max in cur.fetchall():# data={nombre:tipo}
+        combate_list.append({
+            'lugar': lugar,
+            'max': max
+        })
+        
+       # for personajes in personajes_list: 
+        data1={ 
+      #      personajes:personajes
+        'combates': combate_list
+            }
+        #    
+    for i in data1.items():print(i)
+
+    return report(request, 'rep3', data1)
 
 def Home(request):
     return render(request, 'home.html')
@@ -715,4 +828,5 @@ def lg_calificar(request,med_id):
         except ValueError:
             return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
 
-            
+def recom_menu(request):
+    return render(request,'recomenu.html')

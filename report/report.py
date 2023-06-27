@@ -3,7 +3,7 @@ import json
 import uuid
 
 from django.db.models import Sum
-from django.http import HttpResponseBadRequest, HttpResponse, Http404
+from django.http import HttpResponseBadRequest, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render
 from django.utils.safestring import SafeString
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -136,7 +136,7 @@ def run(request):
                 return HttpResponseBadRequest(
                     'report not found (preview probably too old), update report preview and try again')
             if output_format == 'pdf' and report_request.pdf_file:
-                report_file = report_request.pdf_file
+                report_file = report_request.pdf_file.tobytes()
             else:
                 report_definition = json.loads(report_request.report_definition)
                 data = json.loads(report_request.data)
@@ -214,3 +214,35 @@ def save(request, report_type):
         ReportDefinition.objects.create(
             report_type=report_type, report_definition=report_definition, last_modified_at=now)
     return HttpResponse('ok')
+
+def report(request, report_type, data):
+    """Prints a pdf file
+    """
+
+    # NOTE: these params must match exactly with the parameters defined in the
+    # report definition in ReportBro Designer, check the name and type (Number, Date, List, ...)
+    # of those parameters in the Designer.
+    params = data
+
+    if ReportDefinition.objects.filter(report_type=report_type).count() == 0:
+        create_base_report_template()
+
+    report_definition = ReportDefinition.objects.get(report_type=report_type)
+    if not report_definition:
+        return HttpResponseServerError('no report_definition available')
+
+    try:
+        report_inst = Report(json.loads(report_definition.report_definition), params)
+        if report_inst.errors:
+            # report definition should never contain any errors,
+            # unless you saved an invalid report and didn't test in ReportBro Designer
+            raise ReportBroError(report_inst.errors[0])
+
+        pdf_report = report_inst.generate_pdf()
+        response = HttpResponse(bytes(pdf_report), content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename="{filename}"'.format(filename='albums.pdf')
+        return response
+    except ReportBroError as ex:
+        return HttpResponseServerError('report error: ' + str(ex.error))
+    except Exception as ex:
+        return HttpResponseServerError('report exception: ' + str(ex))

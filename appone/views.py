@@ -127,15 +127,15 @@ def exportReport4(request):
 
     cur.execute("select k.nombre, k.poseedor, k.tipo "+
                     " from(select t.objnombre as nombre,t.nombre_superheroe as poseedor,t.tipo, t.contador "+
-                     " from(select o.objnombre, h.nombre_superheroe, p.tipo, count(r.fk_obj_reg) contador "+
+                     " from(select o.objnombre, h.nombre_superheroe, p.tipo, count(r.fk_obj_reg_id) contador "+
                          " from infopersonajes.personaje p, infopersonajes.heroe h, infopersonajes.objeto o, infopersonajes.registro_combates r "+
-                             " where (p.personaje_id = h.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg) "+
+                             " where (p.personaje_id = h.personaje_id) and (p.personaje_id = r.id_pers_reg_id) and (o.obid=r.fk_obj_reg_id) "+
                              " group by h.nombre_superheroe, o.objnombre, p.tipo) t "+
                 " UNION all "+
                 " select t.objnombre as nombre,t.nombre_supervillano as poseedor ,t.tipo, t.contador "+
-                    " from(select o.objnombre, v.nombre_supervillano, p.tipo, count(r.fk_obj_reg) contador "+
+                    " from(select o.objnombre, v.nombre_supervillano, p.tipo, count(r.fk_obj_reg_id) contador "+
                         " from infopersonajes.personaje p, infopersonajes.villano v, infopersonajes.objeto o, infopersonajes.registro_combates r "+
-                            " where (p.personaje_id = v.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg) "+
+                            " where (p.personaje_id = v.personaje_id) and (p.personaje_id = r.id_pers_reg_id) and (o.obid=r.fk_obj_reg_id) "+
                             " group by v.nombre_supervillano, o.objnombre, p.tipo) t) k "+
                  " order by k.contador desc limit 3; ")
 

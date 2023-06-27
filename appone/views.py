@@ -828,4 +828,5 @@ def lg_calificar(request,med_id):
         except ValueError:
             return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
 
-            
+def recom_menu(request):
+    return render(request,'recomenu.html')

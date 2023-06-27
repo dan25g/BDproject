@@ -80,5 +80,7 @@ urlpatterns = [
     path('lista/<int:med_id>/cal',views.lg_calificar,name='lg_calificar'),
     path('lista/<int:med_id>/eli',views.lg_eliminar,name='lg_eli'),
     path('lista/<int:med_id>/guardar',views.lg_guardar,name='lg_guardar'),
+    path('recomendaciones/',views.recom_menu,name='recomendaciones'),
+    
 ]
 

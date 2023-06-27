@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Combates</strong></h1>
+        <ul class="list-group ">
+        {% for cmb in combates %}
+            {% for cmbinf in cmbinfo %}
+                {% if cmb.cmbid == cmbinf.fk_cmb_reg.cmbid %} 
+                    <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">Combate Nro {{cmb.cmbid}} </h1>
+                            <h3>Fecha: {{cmbinf.cmbfecha}}</h3>
+                        </header>
+                        <h4>Combatiente: {{cmbinf.id_pers_reg.primer_nombre}} {{cmbinf.id_pers_reg.primer_apellido}}</h4>
+                        <p>Objeto:  {{cmbinf.fk_obj_reg.objnombre}}</p>
+                        <p>Poder:  {{cmbinf.id_pod_reg.ponombre}}</p>
+                        <h5>Lugar: {{cmb.cmblugar}}</h5>
+                    </a>
+                {% endif %}
+            {% endfor %}    
+        <div>
+            <a href="{% url 'juego_act' cmb.cmbid %}">
+                <button class="btn btn-warning mb-3 ms-2">Actualizar Combate</button>
+            </a>
+            <a href="{% url 'juego_eli' cmb.cmbid %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Combate</button>
+            </a>
+        </div>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_juego' %}">
+            <button class="btn btn-success ">Nuevo Combate</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

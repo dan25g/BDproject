@@ -54,6 +54,8 @@ def exportReport21(request):
                 " having s.serepisodios >= (select AVG(s.serepisodios) from infopersonajes.serie s) ; ")
 
     series_list= []
+    #promedio = exportReport20
+    #print(promedio)
     for nombre, episodios,  in cur.fetchall():# data={nombre:tipo}promedio
         series_list.append({
             'nombre_medio': nombre,
@@ -62,39 +64,34 @@ def exportReport21(request):
         })
         
        # for personajes in personajes_list: 
-        data2={ 
+    cur.execute("select round(t.promedio,2) "+ " from (select AVG(s.serepisodios) promedio "+" from infopersonajes.serie s) t;")
+    promedio = cur.fetchone()[0]
+    print(promedio)
+    
+    data2={ 
       #      personajes:personajes
-        'series': series_list
+        'series': series_list,
+        'promedio': promedio
             }
         #    
-    for i in data2.items():print(i)
+    #for i in data2.items():print(i)
 
     return  report(request, 'rep2', data2)
 
-def exportReport20(request):
+def exportReport20():
     conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
     cur=conexion.cursor()
 
     cur.execute("select AVG(s.serepisodios) promedio "+ " from infopersonajes.serie s ; ")
 
     #series_list= []
+    prom = 0,00
     for promedio in cur.fetchall():# data={nombre:tipo}nombre, episodios,
-        #series_list.append({
-            #'nombre_medio': nombre,
-            #'numero_episodios': episodios,
-            data3={ 'promedio':promedio}
-        #})
+            prom: promedio
         
-        
-       # for personajes in personajes_list: 
     
-      #      personajes:personajes
-         
-            
-        #    
-    for i in data3.items():print(i)
 
-    return report(request, 'rep2', exportReport21+data3)
+    return prom
 
 def exportReport3(request):
     conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
@@ -123,6 +120,42 @@ def exportReport3(request):
     for i in data1.items():print(i)
 
     return report(request, 'rep3', data1)
+
+def exportReport4(request):
+    conexion= connect(host="localhost",database="marveldb",user="postgres",password="12345679")
+    cur=conexion.cursor()
+
+    cur.execute("select k.nombre, k.poseedor, k.tipo "+
+                    " from(select t.objnombre as nombre,t.nombre_superheroe as poseedor,t.tipo, t.contador "+
+                     " from(select o.objnombre, h.nombre_superheroe, p.tipo, count(r.fk_obj_reg) contador "+
+                         " from infopersonajes.personaje p, infopersonajes.heroe h, infopersonajes.objeto o, infopersonajes.registro_combates r "+
+                             " where (p.personaje_id = h.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg) "+
+                             " group by h.nombre_superheroe, o.objnombre, p.tipo) t "+
+                " UNION all "+
+                " select t.objnombre as nombre,t.nombre_supervillano as poseedor ,t.tipo, t.contador "+
+                    " from(select o.objnombre, v.nombre_supervillano, p.tipo, count(r.fk_obj_reg) contador "+
+                        " from infopersonajes.personaje p, infopersonajes.villano v, infopersonajes.objeto o, infopersonajes.registro_combates r "+
+                            " where (p.personaje_id = v.personaje_id) and (p.personaje_id = r.id_pers_reg) and (o.obid=r.fk_obj_reg) "+
+                            " group by v.nombre_supervillano, o.objnombre, p.tipo) t) k "+
+                 " order by k.contador desc limit 3; ")
+
+    objetos_list= []
+    for nombre,poseedor,tipo in cur.fetchall():# data={nombre:tipo}
+        objetos_list.append({
+            'nombre':nombre,
+            'poseedor': poseedor,
+            'tipo': tipo
+        })
+        
+       # for personajes in personajes_list: 
+        data4={ 
+      #      personajes:personajes
+            'objetos':objetos_list
+            }
+        #    
+    for i in data4.items():print(i)
+
+    return report(request, 'rep4', data4)
 
 def Home(request):
     return render(request, 'home.html')
@@ -829,3 +862,11 @@ def lg_calificar(request,med_id):
             return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
 
             
+@login_required
+def combates(request):
+    comb = Combate.objects.all()
+    cmbinfo = RegistroCombates.objects.all()
+    return render(request,'combates.html',{
+        'combates':comb,
+        'cmbinfo':cmbinfo
+    })

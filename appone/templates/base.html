@@ -45,16 +45,17 @@
                       <li><a class="dropdown-item" href="/sedes">Sedes</a></li>
                       <li><a class="dropdown-item" href="/poderes">Poderes</a></li>
                       <li><a class="dropdown-item" href="/objetos">Objetos</a></li>
-                      <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
+                      <li><a class="dropdown-item" href="/combates">Combates</a></li>
                       <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                       <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                       <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
                     </ul>
                 </li>
               </li>
+              {% if user.es_admin %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Reportes
+                  Editar Reportes
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                   <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep1' %}">Reporte 1</a></li>
@@ -67,15 +68,16 @@
                   <li><a class="dropdown-item" href="{% url 'report:report_edit' 'rep8' %}">Reporte 8</a></li>
                 </ul>
               </li>
+              {% endif %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Exportar Reportes
+                  Ver Reportes
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                   <li><a class="dropdown-item" href="/export_reporte_1">Reporte 1</a></li>
                   <li><a class="dropdown-item" href="/export_reporte_2">Reporte 2</a></li>
                   <li><a class="dropdown-item" href="/export_reporte_3">Reporte 3</a></li>
-                  <li><a class="dropdown-item" href="#">Reporte 4</a></li>
+                  <li><a class="dropdown-item" href="/export_reporte_4">Reporte 4</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 5</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 6</a></li>
                   <li><a class="dropdown-item" href="#">Reporte 7</a></li>

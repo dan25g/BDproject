@@ -86,6 +86,7 @@ urlpatterns = [
     path('combates/<int:cmb_id>/eli',views.cmb_elimina,name='combate_eli'),
     path('combates/<int:cmb_id>/act',views.actualiza_combate,name='combate_act'),
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
+    path('recomendaciones/mejores',views.recom_mejores,name='recom_mejores'),
     path('actividad/',views.actividad_admin,name='actividades'),
 
 ]

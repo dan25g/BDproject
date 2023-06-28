@@ -940,3 +940,10 @@ def actividad_admin(request):
     return render(request,'actividad.html',{
         'actividad':act,
     })
+
+@login_required
+def recom_mejores(request):
+    med = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed from infopersonajes.medio m where medrating between 4 and 5;")
+    return render(request,'mejores.html',{
+        'medios':med,
+    })

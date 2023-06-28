@@ -160,6 +160,9 @@ class Personaje(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"personaje"'
+    
+    def __str__(self):
+        return f"{self.personaje_id} - {self.primer_nombre} {self.primer_apellido}"
 
 class Civil(models.Model):
     personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
@@ -424,6 +427,9 @@ class Poder(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"poder"'
+    
+    def __str__(self):
+        return f"{self.podid} - {self.ponombre}"
 
 
 class RegistroCombates(models.Model):

@@ -175,13 +175,13 @@ class Civil(models.Model):
 
 class Amistad(models.Model):
     id = models.AutoField(primary_key=True)
-    id_civil = models.ForeignKey(Civil, models.DO_NOTHING)  
-    id_amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
+    civil = models.ForeignKey(Civil, models.DO_NOTHING)  
+    amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"amistad"'
-        unique_together = (('id_civil', 'id_amispers'),)
+        unique_together = (('civil', 'amispers'),)
 
 
 
@@ -223,7 +223,8 @@ class Heroe(models.Model):
 
 
 class HistoricoMatrimonio(models.Model):
-    id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING) 
     id_pers_conyug2 = models.ForeignKey(Civil, models.DO_NOTHING,)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)

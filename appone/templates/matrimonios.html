@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Matrimonios</strong></h1>
+        <ul class="list-group ">
+        {% for mat in matrimonios %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">Matrimonio Nro {{mat.id}} </h1>
+                </header>
+                <h2>{{mat.id_pers_conyug1.primer_nombre}} {{mat.id_pers_conyug1.primer_apellido}}</h2>
+                <p> Se casó con </p>
+                <h2>{{mat.id_pers_conyug2.personaje.primer_nombre}} {{mat.id_pers_conyug2.personaje.primer_apellido}}</h2>
+                <h5>Fecha de casamiento: {{mat.fecha_inicio}}</h5>
+                <h5>Fecha de fin relación: {{mat.fecha_fin}}</h5>
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'matrimonio_act' mat.id %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Matrimonio</button>
+                </a>  
+                <a href="{% url 'matrimonio_eli' mat.id %}">
+                    <button class="btn btn-danger mb-3 ms-4">Eliminar Matrimonio</button>
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_matrimonio' %}">
+            <button class="btn btn-success ">Nueva Matrimonio</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

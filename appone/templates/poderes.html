@@ -17,18 +17,22 @@
                         
             </a>
             <div>
+                {% if user.es_admin %}
                 <a href="{% url 'poder_act' poder.podid %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Poder</button>
                 </a>
                 <a href="{% url 'poder_eli' poder.podid %}">
                     <button class="btn btn-danger mb-3 ms-4">Eliminar Poder</button>
                 </a>
+                {% endif %}
             </div>
         {% endfor %}
         </ul>
+        {% if user.es_admin %}
         <a href="{% url 'new_poder' %}">
             <button class="btn btn-success ">Nueva Poder</button>
         </a>
+        {% endif %}
         </div>
     </div>
 </main>

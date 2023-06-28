@@ -128,7 +128,7 @@ class JuegoForm(forms.ModelForm):
         fields = ['medtipo','juegocompania','fk_plataforma']
         widgets = {
             'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Juego'}),
-            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Comapañia desarrolladora del juego'}),
+            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Compañia desarrolladora del juego'}),
             'fk_plataforma' : forms.Select(attrs={'class':'form-control','placeholder':'Plataforma del juego'}),
         } 
         
@@ -208,8 +208,19 @@ class CmbRegForm(forms.ModelForm):
 class AmistadForm(forms.ModelForm):
     class Meta:
         model = Amistad
-        fields = ['id_civil','id_amispers']
+        fields = ['civil','amispers']
         widgets = {
-            'id_civil' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
-            'id_amispers' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'civil' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
+            'amispers' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+        } 
+
+class MatrimonioForm(forms.ModelForm):
+    class Meta:
+        model = HistoricoMatrimonio
+        fields = ['id_pers_conyug1','id_pers_conyug2','fecha_inicio', 'fecha_fin']
+        widgets = {
+            'id_pers_conyug1' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
+            'id_pers_conyug2' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'fecha_inicio' : forms.DateInput(attrs={'class':'date','label':'Fecha de inicio de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'fecha_fin' : forms.DateInput(attrs={'class':'date','label':'Fecha de fin de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
         } 

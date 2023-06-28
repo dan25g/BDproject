@@ -12,18 +12,22 @@
                 <header class="d-flex justify-content-between">
                     <h1 class="fw-bold">Amistad Nro {{ami.id}} </h1>
                 </header>
-                <h2>{{ami.id_civil.personaje.primer_nombre}} {{ami.id_civil.personaje.primer_apellido}}</h2>
+                <h2>{{ami.civil.personaje.primer_nombre}} {{ami.civil.personaje.primer_apellido}}</h2>
                 <p> Es amigo de </p>
-                <h2>{{ami.id_amispers.primer_nombre}} {{ami.id_amispers.primer_apellido}}</h2>
-            </a>  
+                <h2>{{ami.amispers.primer_nombre}} {{ami.amispers.primer_apellido}}</h2>
+            </a> 
+            {% if user.es_admin %} 
             <a href="{% url 'amistad_eli' ami.id %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Amistad</button>
             </a>
+            {% endif %}
         {% endfor %}
         </ul>
+        {% if user.es_admin %} 
         <a href="{% url 'new_amistad' %}">
-            <button class="btn btn-success ">Nueva Amistad</button>
+            <button class="btn btn-success ">Nueva Amistad</button> 
         </a>
+        {% endif %}
         </div>
     </div>
 </main>

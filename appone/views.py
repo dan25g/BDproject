@@ -497,6 +497,7 @@ def new_pelicula(request):
             form2 = PeliForm(request.POST)
             NewPel = form.save(commit=False)
             peli = form2.save(commit=False)
+            NewPel.tipomed = 'Pelicula'
             NewPel.save()
             peli.medio = NewPel
             peli.save()
@@ -556,6 +557,7 @@ def new_serie(request):
             form2 = SerieForm(request.POST)
             NewSer = form.save(commit=False)
             ser = form2.save(commit=False)
+            NewSer.tipomed = 'Serie'
             NewSer.save()
             ser.medio = NewSer
             ser.save()
@@ -615,6 +617,7 @@ def new_juego(request):
             form2 = JuegoForm(request.POST)
             NewJue = form.save(commit=False)
             jue = form2.save(commit=False)
+            NewJue.tipomed = 'Juego'
             NewJue.save()
             jue.medio = NewJue
             jue.save()
@@ -986,4 +989,49 @@ def new_amistad(request):
                 'form': AmistadForm, 
                 'error':'Por favor ingrese datos validos'           
             })
+
+@login_required
+def matrimonios(request):
+    mat = HistoricoMatrimonio.objects.all()
+    return render(request,'matrimonios.html',{
+        'matrimonios':mat,
+    })
+
+@login_required
+def elimina_matrimonio(request,mat_id):
+    mat = get_object_or_404(HistoricoMatrimonio,pk=mat_id)
+    mat.delete()
+    redirect('matrimonios')  
+
+@login_required
+def new_matrimonio(request):
+    if request.method == 'GET':
+        return render(request,'new_matrimonio.html', {
+            'form': MatrimonioForm,          
+        })
+    else:
+        try:
+            form = MatrimonioForm(request.POST)
+            NewMat = form.save(commit=False)
+            NewMat.save()
+            return redirect('matrimonios')
+        except ValueError:
+            return render(request,'new_matrimonio.html', {
+                'form': MatrimonioForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
         
+@login_required
+def actualiza_matrimonio(request,mat_id):
+    mat = get_object_or_404(HistoricoMatrimonio,pk=mat_id)
+    if request.method == 'GET':
+        form = MatrimonioForm(instance=mat)
+        return render(request,'act_matrimonio.html', {'matrimonio': mat,'form': form})
+    else:
+        try:
+            form = MatrimonioForm(request.POST,instance=mat)
+            form.save()
+            return redirect('matrimonios')
+        except ValueError:
+            return render(request,'act_matrimonio.html', {'matrimonio': mat,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+       

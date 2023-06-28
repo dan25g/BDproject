@@ -17,18 +17,22 @@
                         <p>Ubicación: {{sede.sede_ubicacion}}</p>
             </a>
             <div>
+                {% if user.es_admin %}
                 <a href="{% url 'sede_act' sede.id_sede %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Sede</button>
                 </a>
                 <a href="{% url 'sede_eli' sede.id_sede %}">
                     <button class="btn btn-danger mb-3 ms-4">Eliminar Sede</button>
                 </a>
+                {% endif %}
             </div>
         {% endfor %}
         </ul>
+        {% if user.es_admin %}
         <a href="{% url 'new_sede' %}">
             <button class="btn btn-success ">Nueva Sede</button>
         </a>
+        {% endif %}
         </div>
     </div>
 </main>

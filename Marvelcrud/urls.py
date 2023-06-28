@@ -92,8 +92,11 @@ urlpatterns = [
     path('amistades/',views.amistades,name='amistades'),
     path('amistades/crear',views.new_amistad,name='new_amistad'),
     path('amistades/<int:ami_id>/eli',views.elimina_amistad,name='amistad_eli'),
-    path('matrimonio/',views.amistades,name='matrimonios'),
-    path('matrimonio/crear',views.new_amistad,name='new_matrimonio'),
-    path('matrimonio/<int:mat_id>/eli',views.elimina_amistad,name='matrimonios_eli'),
+    path('matrimonio/',views.matrimonios,name='matrimonios'),
+    path('matrimonio/crear',views.new_matrimonio,name='new_matrimonio'),
+    path('matrimonio/<int:mat_id>/eli',views.elimina_matrimonio,name='matrimonio_eli'),
+    path('matrimonio/<int:mat_id>/act',views.actualiza_matrimonio,name='matrimonio_act'),
+
+    
 ]
 

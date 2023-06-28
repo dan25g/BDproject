@@ -4,8 +4,8 @@
     <main class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4 mt-5">
-                <form action="/combates/crear" method="POST" class="card-body">
-                    <h1 class="text-center">Nuevo Combate</h1>
+                <form action="/amistades/crear" method="POST" class="card-body">
+                    <h1 class="text-center">Nueva Amistad</h1>
                     {% if error is not none %} 
                         <div class="alert alert-danger" role="alert">
                             {{error}}
@@ -15,10 +15,6 @@
                     {% csrf_token %}
                     
                     {{form.as_p}}
-                    <h2 class="text-center">Combatiente 1</h2>
-                    {{form2.as_p}}
-                    <h2 class="text-center">Combatiente 2</h2>
-                    {{form3.as_p}}
                     
                     <button class="btn btn-success">Guardar</button>
                 </form>

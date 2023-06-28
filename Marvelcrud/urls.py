@@ -88,6 +88,8 @@ urlpatterns = [
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
     path('recomendaciones/mejores',views.recom_mejores,name='recom_mejores'),
     path('actividad/',views.actividad_admin,name='actividades'),
-
+    path('amistades/',views.amistades,name='amistades'),
+    path('amistades/crear',views.new_amistad,name='new_amistad'),
+    path('amistades/<int:ami_id>/eli',views.elimina_amistad,name='amistad_eli'),
 ]
 

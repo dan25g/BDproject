@@ -203,3 +203,13 @@ class CmbRegForm(forms.ModelForm):
             'id_pod_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Poder'}),
             'cmbfecha' : forms.DateInput(attrs={'class':'date','label':'Fecha del combate','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
         } 
+
+
+class AmistadForm(forms.ModelForm):
+    class Meta:
+        model = Amistad
+        fields = ['id_civil','id_amispers']
+        widgets = {
+            'id_civil' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
+            'id_amispers' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+        } 

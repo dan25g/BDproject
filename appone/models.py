@@ -170,10 +170,12 @@ class Civil(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"civil"'
-
+    def __str__(self):
+        return f"{self.personaje.personaje_id} - {self.personaje.primer_nombre} {self.personaje.primer_apellido}"
 
 class Amistad(models.Model):
-    id_civil = models.OneToOneField(Civil, models.DO_NOTHING,primary_key=True)  
+    id = models.AutoField(primary_key=True)
+    id_civil = models.ForeignKey(Civil, models.DO_NOTHING)  
     id_amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
 
     class Meta:

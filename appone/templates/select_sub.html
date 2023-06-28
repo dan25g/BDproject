@@ -3,11 +3,12 @@
 {% block content %}
 
     <main class="container">
+        <h1 class="text-center display-3 py-5"><strong>Seleciona una Suscripción</strong></h1>
         <div class="card-group">
             {% for vi in vip %}
             <div class="card text-white bg-secondary mb-3 ms-5" style="max-width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title"> {{vi.sustipo}} </h5>
+                    <h1 class="card-title"> {{vi.sustipo}} </h1>
                     {% for bv in benvip %}
                     <p class="card-text"> ● {{bv.bendescripcion}} </p>
                     {% endfor %} 
@@ -21,7 +22,7 @@
             {% for go in gold %}
             <div class="card text-dark bg-warning mb-3 ms-5" style="max-width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title"> {{go.sustipo}} </h5>
+                    <h1 class="card-title"> {{go.sustipo}} </h1>
                     {% for bg in bengold %}
                     <p class="card-text"> ● {{bg.bendescripcion}} </p>
                     {% endfor %} 
@@ -35,7 +36,7 @@
             {% for pr in prem %}
             <div class="card text-dark bg-info mb-3 ms-5" style="max-width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{pr.sustipo}}</h5>
+                    <h1 class="card-title">{{pr.sustipo}}</h1>
                     {% for bp in benprem %}
                     <p class="card-text"> ● {{bp.bendescripcion}} </p>
                     {% endfor %} 

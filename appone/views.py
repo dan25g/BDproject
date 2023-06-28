@@ -947,3 +947,35 @@ def recom_mejores(request):
     return render(request,'mejores.html',{
         'medios':med,
     })
+
+@login_required
+def amistades(request):
+    ami = Amistad.objects.all()
+    return render(request,'amistades.html',{
+        'amistades':ami,
+    })
+
+@login_required
+def elimina_amistad(request,ami_id):
+    ami = get_object_or_404(Amistad,pk=ami_id)
+    ami.delete()
+    return redirect('amistades')  
+
+@login_required
+def new_amistad(request):
+    if request.method == 'GET':
+        return render(request,'new_amistad.html', {
+            'form': AmistadForm,          
+        })
+    else:
+        try:
+            form = AmistadForm(request.POST)
+            NewAmi = form.save(commit=False)
+            NewAmi.save()
+            return redirect('amistades')
+        except ValueError:
+            return render(request,'new_amistad.html', {
+                'form': AmistadForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        

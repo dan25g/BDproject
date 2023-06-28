@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Amistades</strong></h1>
+        <ul class="list-group ">
+        {% for ami in amistades %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">Amistad Nro {{ami.id}} </h1>
+                </header>
+                <h2>{{ami.id_civil.personaje.primer_nombre}} {{ami.id_civil.personaje.primer_apellido}}</h2>
+                <p> Es amigo de </p>
+                <h2>{{ami.id_amispers.primer_nombre}} {{ami.id_amispers.primer_apellido}}</h2>
+            </a>  
+            <a href="{% url 'amistad_eli' ami.id %}">
+                <button class="btn btn-danger mb-3 ms-4">Eliminar Amistad</button>
+            </a>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'new_amistad' %}">
+            <button class="btn btn-success ">Nueva Amistad</button>
+        </a>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

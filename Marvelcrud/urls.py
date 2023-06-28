@@ -87,9 +87,13 @@ urlpatterns = [
     path('combates/<int:cmb_id>/act',views.actualiza_combate,name='combate_act'),
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
     path('recomendaciones/mejores',views.recom_mejores,name='recom_mejores'),
+    path('recomendaciones/nuevas',views.recom_nuevas,name='recom_nuevas'),
     path('actividad/',views.actividad_admin,name='actividades'),
     path('amistades/',views.amistades,name='amistades'),
     path('amistades/crear',views.new_amistad,name='new_amistad'),
     path('amistades/<int:ami_id>/eli',views.elimina_amistad,name='amistad_eli'),
+    path('matrimonio/',views.amistades,name='matrimonios'),
+    path('matrimonio/crear',views.new_amistad,name='new_matrimonio'),
+    path('matrimonio/<int:mat_id>/eli',views.elimina_amistad,name='matrimonios_eli'),
 ]
 

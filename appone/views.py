@@ -949,6 +949,14 @@ def recom_mejores(request):
     })
 
 @login_required
+def recom_nuevas(request):
+    med = Medio.objects.raw("SELECT m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed FROM infopersonajes.medio m WHERE medfecestreno >= (now() - interval '3 months');")
+    return render(request,'nuevas.html',{
+        'medios':med,
+    })
+
+
+@login_required
 def amistades(request):
     ami = Amistad.objects.all()
     return render(request,'amistades.html',{

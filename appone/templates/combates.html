@@ -23,16 +23,16 @@
                 {% endif %}
             {% endfor %}    
         <div>
-            <a href="{% url 'juego_act' cmb.cmbid %}">
+            <a href="{% url 'combate_act' cmb.cmbid %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Combate</button>
             </a>
-            <a href="{% url 'juego_eli' cmb.cmbid %}">
+            <a href="{% url 'combate_eli' cmb.cmbid %}">
                 <button class="btn btn-danger mb-3 ms-4">Eliminar Combate</button>
             </a>
         </div>
         {% endfor %}
         </ul>
-        <a href="{% url 'new_juego' %}">
+        <a href="{% url 'new_combate' %}">
             <button class="btn btn-success ">Nuevo Combate</button>
         </a>
         </div>

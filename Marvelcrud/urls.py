@@ -82,7 +82,11 @@ urlpatterns = [
     path('lista/<int:med_id>/eli',views.lg_eliminar,name='lg_eli'),
     path('lista/<int:med_id>/guardar',views.lg_guardar,name='lg_guardar'),
     path('combates/',views.combates,name='combates'),
+    path('combates/crear',views.new_combate,name='new_combate'),
+    path('combates/<int:cmb_id>/eli',views.cmb_elimina,name='combate_eli'),
+    path('combates/<int:cmb_id>/act',views.actualiza_combate,name='combate_act'),
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
-    
+    path('actividad/',views.actividad_admin,name='actividades'),
+
 ]
 

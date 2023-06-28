@@ -188,6 +188,8 @@ class Combate(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"combate"'
 
+    def __str__(self):
+        return f"Combate Nro {self.cmbid}"
 
 class Creador(models.Model):
     personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
@@ -425,11 +427,12 @@ class Poder(models.Model):
 
 
 class RegistroCombates(models.Model):
-    fk_cmb_reg = models.ForeignKey(Combate, models.DO_NOTHING,primary_key=True)
+    id = models.AutoField(primary_key=True)
+    fk_cmb_reg = models.ForeignKey(Combate, models.DO_NOTHING)
     fk_obj_reg = models.ForeignKey(Objeto, models.DO_NOTHING)
     id_pers_reg = models.ForeignKey(Personaje, models.DO_NOTHING)
     id_pod_reg = models.ForeignKey(Poder, models.DO_NOTHING)
-    cmbfecha = models.DateField()
+    cmbfecha = models.DateField("Fecha de Combate")
 
     class Meta:
         managed = False

@@ -861,7 +861,6 @@ def lg_calificar(request,med_id):
         except ValueError:
             return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
 
-            
 @login_required
 def combates(request):
     comb = Combate.objects.all()
@@ -870,5 +869,74 @@ def combates(request):
         'combates':comb,
         'cmbinfo':cmbinfo
     })
+
+@login_required
+def cmb_elimina(request,cmb_id):
+    cmb = get_object_or_404(Combate,pk=cmb_id)
+    Regcmb = RegistroCombates.objects.filter(fk_cmb_reg=cmb_id)
+    cmb.delete()
+    Regcmb.delete()
+    return redirect('combates')
+
+@login_required
+def new_combate(request):
+    if request.method == 'GET':
+        return render(request,'new_combate.html', {
+            'form': CombateForm,
+            'form2': CmbRegForm,
+            'form3': CmbRegForm,           
+        })
+    else:
+        try:
+            form = CombateForm(request.POST)
+            form2 = CmbRegForm(request.POST)
+            form3 = CmbRegForm(request.POST)
+            NewCmb = form.save(commit=False)
+            com1 = form2.save(commit=False)
+            com2 = form3.save(commit=False)
+            NewCmb.save()
+            com1.fk_cmb_reg = NewCmb
+            com2.fk_cmb_reg = NewCmb
+            com1.save()
+            com2.save()
+            return redirect('combates')
+        except ValueError:
+            return render(request,'new_combate.html', {
+                'form': CombateForm,
+                'form2': CmbRegForm,
+                'form3': CmbRegForm,
+                'error':'Por favor ingrese datos validos'           
+            })
+
+@login_required
+def actualiza_combate(request,cmb_id):
+    cmb = get_object_or_404(Juego,pk=cmb_id)
+    cmbone = RegistroCombates.objects.filter(fk_cmb_reg=cmb_id).first()
+    cmbtwo = RegistroCombates.objects.filter(fk_cmb_reg=cmb_id).last()
+    if request.method == 'GET':
+        form = CombateForm(instance=cmb)
+        form2 = CmbRegForm(instance=cmbone)
+        form3 = CmbRegForm(instance=cmbtwo)
+        return render(request,'act_combate.html', {'combate': cmb,'cmb1':cmbone,'cmb2':cmbtwo,'form': form,'form2': form2,'form3': form3 })
+    else:
+        try:
+            form = CombateForm(instance=cmb)
+            form2 = CmbRegForm(instance=cmbone)
+            form3 = CmbRegForm(instance=cmbtwo)
+            form.save()
+            form2.save()
+            form3.save()
+            return redirect('combates')
+        except ValueError:
+            return render(request,'act_combate.html', {'combate': cmb,'cmb1':cmbone,'cmb2':cmbtwo,'form': form,'form2': form2,'form3': form3, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
 def recom_menu(request):
     return render(request,'recomenu.html')
+
+@login_required
+def actividad_admin(request):
+    act = Actividad.objects.all()
+    return render(request,'actividad.html',{
+        'actividad':act,
+    })

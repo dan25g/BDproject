@@ -184,3 +184,22 @@ class CalMedioForm(forms.ModelForm):
         widgets = {
             'calificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Calificacion del medio del perfil'}),
         } 
+
+class CombateForm(forms.ModelForm):
+    class Meta:
+        model = Combate
+        fields = ['cmblugar']
+        widgets = {
+            'cmblugar' : forms.TextInput(attrs={'class':'form-control','placeholder':'Lugar del combate'}),
+        } 
+
+class CmbRegForm(forms.ModelForm):
+    class Meta:
+        model = RegistroCombates
+        fields = ['fk_obj_reg','id_pers_reg','id_pod_reg','cmbfecha']
+        widgets = {
+            'fk_obj_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Objeto'}),
+            'id_pers_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'id_pod_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Poder'}),
+            'cmbfecha' : forms.DateInput(attrs={'class':'date','label':'Fecha del combate','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+        } 

@@ -1034,4 +1034,3 @@ def actualiza_matrimonio(request,mat_id):
             return redirect('matrimonios')
         except ValueError:
             return render(request,'act_matrimonio.html', {'matrimonio': mat,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
-       

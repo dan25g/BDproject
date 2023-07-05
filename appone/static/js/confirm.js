@@ -1,8 +1,7 @@
-const btnsEli= document.querySelectorAll('.btnEli');
+const btnsEli = document.querySelectorAll('.btnEli');
 
 (function() {
 
-    notifSwal(document.title,"Listado con exito","success", "Nice!");
 
     btnsEli.forEach(btn => {
         btn.addEventListener('click',function(e) {

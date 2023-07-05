@@ -131,12 +131,21 @@
       <!-- JS modo oscuro -->
       <script src="{% static 'js/switch.js' %}"></script>
       </div>
-    {% block content %}
-    {% endblock %}
       <!-- sweetalert2 -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="{% static 'js/utils/notSwal.js' %}"></script>
-      <!-- alertas y confirmaciones -->
-      <script src="{% static 'js/confirm.js' %}"></script>
+
+      {% if messages %}
+        {% for m in messages %}
+          <script>
+            notifSwal("Exito !","{{m}}","success", "Ok");
+          </script>
+        {% endfor %}
+      {% endif %}
+        
+    {% block content %}
+    {% endblock %}
+    <!-- alertas y confirmaciones -->
+    <script src="{% static 'js/confirm.js' %}"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth import login,logout, authenticate
+from django.contrib import messages
 from django.db import IntegrityError
 from .forms import *
 from .models import *
@@ -178,6 +179,7 @@ def Singup(request):
                 login(request,user)
                 for i in range(1,6):
                     Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
+                messages.success(request,"usuario creado con exito")
                 return redirect('sub')
             except IntegrityError:
                 return render(request, 'singup.html', {
@@ -208,6 +210,7 @@ def singin(request):
             if p != 5:
                 for i in range(1,6-p):
                     Perfil.objects.create(idioma='Español',percorreo=user.correou,fk_usuario=user)
+            messages.success(request,"Inició sesión con exito")
             if user.sub_fk:
                 return redirect('escoger_perfil')
             else:
@@ -223,6 +226,7 @@ def singout(request):
     desper.esta_activo = False
     desper.save()
     logout(request)
+    messages.success(request,"Cerró sesión con exito")
     return redirect('home')
 
 @login_required
@@ -254,6 +258,7 @@ def registrar_subscripcion(request,susid):
         user.sub_fk = sub
         user.save()
         comtdc = Tarjetacredito.objects.filter(fk_usuario=user)
+        messages.success(request,"Subscripcion registrada con exito")
         if comtdc:
             return redirect('escoger_perfil')
         else:
@@ -271,6 +276,7 @@ def registro_tdc(request):
             NewTdc = form.save(commit=False)
             NewTdc.fk_usuario = request.user
             NewTdc.save()
+            messages.success(request,"Tarjeta registrada con exito")
             return redirect('escoger_perfil')
         except ValueError:
             return render(request,'registrar_tarjeta.html', {
@@ -290,6 +296,7 @@ def activo_perfil(request,pf_id):
     perf.save()
     act = Actividad.objects.create(act_ingreso=timezone.now(),fk_perfil=perf)
     act.save()
+    messages.success(request,"Escogió el perfil con exito")
     return redirect('home')
 
 @login_required
@@ -313,6 +320,7 @@ def new_civil(request):
             NewCiv.save()
             civil = Civil.objects.create(personaje=NewCiv)
             civil.save()
+            messages.success(request,"Civil creado con exito")
             return redirect('civiles')
         except ValueError:
             return render(request,'new_civil.html', {
@@ -327,6 +335,7 @@ def elimina_civil(request,civil_id):
     pers = Personaje.objects.filter(personaje_id=civil_id)
     civ.delete()
     pers.delete()
+    messages.success(request,"Civil borrado con exito")
     return redirect('civiles')     
 
 @login_required
@@ -339,6 +348,7 @@ def actualiza_civil(request,civil_id):
         try:
             form = PersonajeForm(request.POST,instance=civil)
             form.save()
+            messages.success(request,"Civil actualizado con exito")
             return redirect('civiles')
         except ValueError:
             return render(request,'act_civil.html', {'civil': civil,'form': form,
@@ -361,6 +371,7 @@ def elimina_heroe(request,heroe_id):
     pers = get_object_or_404(Personaje,pk=heroe_id)
     hero.delete()
     pers.delete()
+    messages.success(request,"Heroe eliminado con exito")
     return redirect('heroes')     
 
 @login_required
@@ -379,6 +390,7 @@ def new_heroe(request):
             NewHer.save()
             hero.personaje = NewHer
             hero.save()
+            messages.success(request,"Heroe creado con exito")
             return redirect('heroes')
         except ValueError:
             return render(request,'new_heroe.html', {
@@ -402,6 +414,7 @@ def actualiza_heroe(request,heroe_id):
             form2 = HeroeForm(request.POST,instance=hero)
             form.save()
             form2.save()
+            messages.success(request,"Heroe actualizado con exito")
             return redirect('heroes')
         except ValueError:
             return render(request,'act_heroe.html', {'heroe': pers,'adinfo':hero,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
@@ -422,6 +435,7 @@ def elimina_villano(request,vil_id):
     pers = get_object_or_404(Personaje,pk=vil_id)
     vil.delete()
     pers.delete()
+    messages.success(request,"Villano eliminado con exito")
     return redirect('villanos')  
 
 @login_required
@@ -440,6 +454,7 @@ def new_villano(request):
             NewVil.save()
             vil.personaje = NewVil
             vil.save()
+            messages.success(request,"Villano creado con exito")
             return redirect('villanos')
         except ValueError:
             return render(request,'new_villano.html', {
@@ -462,6 +477,7 @@ def actualiza_vilano(request,vil_id):
             form2 = VilanoForm(request.POST,instance=vil)
             form.save()
             form2.save()
+            messages.success(request,"Villano actualizado con exito")
             return redirect('villanos')
         except ValueError:
             return render(request,'act_villano.html', {'villano': pers,'adinfo':vil,'form': form,'form2': form2,'error':"ERROR. No se ha podido actualizar"}) 
@@ -482,6 +498,7 @@ def elimina_pelicula(request,pel_id):
     med = get_object_or_404(Medio,pk=pel_id)
     pel.delete()
     med.delete()
+    messages.success(request,"Pelicula eliminada con exito")
     return redirect('peliculas')  
 
 @login_required
@@ -501,6 +518,7 @@ def new_pelicula(request):
             NewPel.save()
             peli.medio = NewPel
             peli.save()
+            messages.success(request,"Pelicula creada con exito")
             return redirect('peliculas')
         except ValueError:
             return render(request,'new_pelicula.html', {
@@ -523,6 +541,7 @@ def actualiza_pelicula(request,pel_id):
             form2 = PeliForm(request.POST,instance=pel)
             form.save()
             form2.save()
+            messages.success(request,"Pelicula actualizada con exito")
             return redirect('peliculas')
         except ValueError:
             return render(request,'act_pelicula.html', {'pelicula': med,'adinfo':pel,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -542,6 +561,7 @@ def elimina_serie(request,se_id):
     med = get_object_or_404(Medio,pk=se_id)
     ser.delete()
     med.delete()
+    messages.success(request,"Serie eliminada con exito")
     return redirect('series')  
 
 @login_required
@@ -561,6 +581,7 @@ def new_serie(request):
             NewSer.save()
             ser.medio = NewSer
             ser.save()
+            messages.success(request,"Serie Creada con exito")
             return redirect('series')
         except ValueError:
             return render(request,'new_serie.html', {
@@ -583,6 +604,7 @@ def actualiza_serie(request,se_id):
             form2 = SerieForm(request.POST,instance=ser)
             form.save()
             form2.save()
+            messages.success(request,"Serie actualizada con exito")
             return redirect('series')
         except ValueError:
             return render(request,'act_pelicula.html', {'serie': med,'adinfo':ser,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -602,6 +624,7 @@ def elimina_juego(request,jue_id):
     med = get_object_or_404(Medio,pk=jue_id)
     jue.delete()
     med.delete()
+    messages.success(request,"Juego eliminado con exito")
     return redirect('juegos')  
 
 @login_required
@@ -621,6 +644,7 @@ def new_juego(request):
             NewJue.save()
             jue.medio = NewJue
             jue.save()
+            messages.success(request,"Juego creado con exito")
             return redirect('juegos')
         except ValueError:
             return render(request,'new_juego.html', {
@@ -643,6 +667,7 @@ def actualiza_juego(request,jue_id):
             form2 = JuegoForm(request.POST,instance=jue)
             form.save()
             form2.save()
+            messages.success(request,"Juego actualizado con exito")
             return redirect('juegos')
         except ValueError:
             return render(request,'act_pelicula.html', {'juego': med,'adinfo':jue,'form': form,'form2': form2, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -658,6 +683,7 @@ def organizaciones(request):
 def elimina_organizacion(request,org_id):
     org = get_object_or_404(Organizacion,pk=org_id)
     org.delete()
+    messages.success(request,"Organización eliminada con exito")
     return redirect('organizaciones')  
 
 @login_required
@@ -671,6 +697,7 @@ def new_organizacion(request):
             form = OrganizacionForm(request.POST)
             NewOrg = form.save(commit=False)
             NewOrg.save()
+            messages.success(request,"Organización creada con exito")
             return redirect('organizaciones')
         except ValueError:
             return render(request,'new_organizacion.html', {
@@ -688,7 +715,7 @@ def actualiza_organizacion(request,org_id):
         try:
             form = OrganizacionForm(request.POST,instance=Org)
             form.save()
-
+            messages.success(request,"Organización actualizada con exito")
             return redirect('organizaciones')
         except ValueError:
             return render(request,'act_organizacion.html', {'organizacion': Org,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -704,6 +731,7 @@ def sedes(request):
 def elimina_sede(request,sed_id):
     sed = get_object_or_404(Sede,pk=sed_id)
     sed.delete()
+    messages.success(request,"Sede eliminada con exito")
     return redirect('sedes')  
 
 @login_required
@@ -717,6 +745,7 @@ def new_sede(request):
             form = SedeForm(request.POST)
             NewSed = form.save(commit=False)
             NewSed.save()
+            messages.success(request,"Sede creada con exito")
             return redirect('sedes')
         except ValueError:
             return render(request,'new_sede.html', {
@@ -734,6 +763,7 @@ def actualiza_sede(request,sed_id):
         try:
             form = SedeForm(request.POST,instance=sed)
             form.save()
+            messages.success(request,"Sede actualizada con exito")
             return redirect('sedes')
         except ValueError:
             return render(request,'act_sede.html', {'sede': sed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -749,6 +779,7 @@ def poderes(request):
 def elimina_poder(request,pod_id):
     pod = get_object_or_404(Poder,pk=pod_id)
     pod.delete()
+    messages.success(request,"Poder eliminado con exito")
     return redirect('poderes')  
 
 @login_required
@@ -762,6 +793,7 @@ def new_poder(request):
             form = PoderForm(request.POST)
             NewPod = form.save(commit=False)
             NewPod.save()
+            messages.success(request,"Poder creado con exito")
             return redirect('poderes')
         except ValueError:
             return render(request,'new_poder.html', {
@@ -779,6 +811,7 @@ def actualiza_poder(request,pod_id):
         try:
             form = PoderForm(request.POST,instance=pod)
             form.save()
+            messages.success(request,"Poder actualizado con exito")
             return redirect('poderes')
         except ValueError:
             return render(request,'act_poder.html', {'poder': pod,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -794,6 +827,7 @@ def objetos(request):
 def elimina_objeto(request,obj_id):
     obj = get_object_or_404(Objeto,pk=obj_id)
     obj.delete()
+    messages.success(request,"Objeto eliminado con exito")
     return redirect('objetos')  
 
 @login_required
@@ -807,6 +841,7 @@ def new_objeto(request):
             form = ObjetoForm(request.POST)
             NewObj = form.save(commit=False)
             NewObj.save()
+            messages.success(request,"Objeto creado con exito")
             return redirect('objetos')
         except ValueError:
             return render(request,'new_objeto.html', {
@@ -824,6 +859,7 @@ def actualiza_objeto(request,obj_id):
         try:
             form = ObjetoForm(request.POST,instance=obj)
             form.save()
+            messages.success(request,"Objeto actualizado con exito")
             return redirect('objetos')
         except ValueError:
             return render(request,'act_objeto.html', {'objeto': obj,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -840,6 +876,7 @@ def Lista_guardados(request):
 def lg_eliminar(request,med_id):
     Permed = get_object_or_404(PerfilMedio,pk=med_id)
     Permed.delete()
+    messages.success(request,"Quitado de la lista con exito")
     return redirect('listguardados')
 
 @login_required
@@ -848,6 +885,7 @@ def lg_guardar(request,med_id):
     med = get_object_or_404(Medio,pk=med_id)
     Permed = PerfilMedio.objects.create(fk_perf_med=per,fk_med_perf=med,fecha_vista=timezone.now())
     Permed.save()
+    messages.success(request,"Agregado a la lista con exito")
     return redirect('lg_calificar',Permed.id)
 
 @login_required
@@ -860,6 +898,7 @@ def lg_calificar(request,med_id):
         try:
             form = CalMedioForm(request.POST,instance=Permed)
             form.save()
+            messages.success(request,"Calificado con exito")
             return redirect('listguardados')
         except ValueError:
             return render(request,'cal_medio.html', {'medio': Permed,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -879,6 +918,7 @@ def cmb_elimina(request,cmb_id):
     Regcmb = RegistroCombates.objects.filter(fk_cmb_reg=cmb_id)
     cmb.delete()
     Regcmb.delete()
+    messages.success(request,"Combate eliminado con exito")
     return redirect('combates')
 
 @login_required
@@ -902,6 +942,7 @@ def new_combate(request):
             com2.fk_cmb_reg = NewCmb
             com1.save()
             com2.save()
+            messages.success(request,"Combate creado con exito")
             return redirect('combates')
         except ValueError:
             return render(request,'new_combate.html', {
@@ -929,6 +970,7 @@ def actualiza_combate(request,cmb_id):
             form.save()
             form2.save()
             form3.save()
+            messages.success(request,"Combate actualizado con exito")
             return redirect('combates')
         except ValueError:
             return render(request,'act_combate.html', {'combate': cmb,'cmb1':cmbone,'cmb2':cmbtwo,'form': form,'form2': form2,'form3': form3, 'error':"ERROR. No se ha podido actualizar"}) 
@@ -970,6 +1012,7 @@ def amistades(request):
 def elimina_amistad(request,ami_id):
     ami = get_object_or_404(Amistad,pk=ami_id)
     ami.delete()
+    messages.success(request,"Amistad eliminada con exito")
     return redirect('amistades')  
 
 @login_required
@@ -983,6 +1026,7 @@ def new_amistad(request):
             form = AmistadForm(request.POST)
             NewAmi = form.save(commit=False)
             NewAmi.save()
+            messages.success(request,"Amistad creada con exito")
             return redirect('amistades')
         except ValueError:
             return render(request,'new_amistad.html', {
@@ -1001,6 +1045,7 @@ def matrimonios(request):
 def elimina_matrimonio(request,mat_id):
     mat = get_object_or_404(HistoricoMatrimonio,pk=mat_id)
     mat.delete()
+    messages.success(request,"Matrimonio eliminado con exito")
     redirect('matrimonios')  
 
 @login_required
@@ -1014,6 +1059,7 @@ def new_matrimonio(request):
             form = MatrimonioForm(request.POST)
             NewMat = form.save(commit=False)
             NewMat.save()
+            messages.success(request,"Matrimonio creado con exito")
             return redirect('matrimonios')
         except ValueError:
             return render(request,'new_matrimonio.html', {
@@ -1031,6 +1077,7 @@ def actualiza_matrimonio(request,mat_id):
         try:
             form = MatrimonioForm(request.POST,instance=mat)
             form.save()
+            messages.success(request,"Matrimonio actualizado con exito")
             return redirect('matrimonios')
         except ValueError:
             return render(request,'act_matrimonio.html', {'matrimonio': mat,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

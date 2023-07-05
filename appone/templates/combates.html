@@ -27,8 +27,8 @@
             <a href="{% url 'combate_act' cmb.cmbid %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Combate</button>
             </a>
-            <a href="{% url 'combate_eli' cmb.cmbid %}">
-                <button class="btn btn-danger mb-3 ms-4">Eliminar Combate</button>
+            <a href="{% url 'combate_eli' cmb.cmbid %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                Eliminar Combate
             </a>
             {% endif %}
         </div>

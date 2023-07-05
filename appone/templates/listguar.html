@@ -20,8 +20,8 @@
             <a href="{% url 'lg_calificar' med.id %}">
                 <button class="btn btn-warning mb-3 ms-2">Cambiar Calificacion</button>
             </a>
-            <a href="{% url 'lg_eli' med.id %}">
-                <button class="btn btn-danger mb-3 ms-4">Quitar de la lista</button>
+            <a href="{% url 'lg_eli' med.id %}"class="btn btn-danger mb-3 ms-4 btnEli">
+                Quitar de la lista
             </a>
         </div>
         {% endfor %}

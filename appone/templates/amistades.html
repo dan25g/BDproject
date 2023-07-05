@@ -17,8 +17,8 @@
                 <h2>{{ami.amispers.primer_nombre}} {{ami.amispers.primer_apellido}}</h2>
             </a> 
             {% if user.es_admin %} 
-            <a href="{% url 'amistad_eli' ami.id %}">
-                <button class="btn btn-danger mb-3 ms-4">Eliminar Amistad</button>
+            <a href="{% url 'amistad_eli' ami.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                Eliminar Amistad
             </a>
             {% endif %}
         {% endfor %}

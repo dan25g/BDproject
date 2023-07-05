@@ -41,8 +41,8 @@
             <a href="{% url 'villanos_act' villano.personaje_id %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar villano</button>
             </a>
-            <a href="{% url 'villanos_eli' villano.personaje_id %}">
-                <button class="btn btn-danger mb-3 ms-4">Eliminar villano</button>
+            <a href="{% url 'villanos_eli' villano.personaje_id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                Eliminar villano
             </a>
             {% endif %}
         </div>

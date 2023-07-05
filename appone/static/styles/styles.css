@@ -1,9 +1,13 @@
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
 .list-group-item{
     border-color: black;
-    border-radius: 4%;
+    border-radius: 10px 100px / 120px 100px;
 }
 
 .btn{
     border-color: black;
-    border-radius: 10%;
+    border-radius: 32px 64px;
 }

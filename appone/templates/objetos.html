@@ -21,8 +21,8 @@
                 <a href="{% url 'objeto_act' objeto.obid %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Objeto</button>
                 </a>
-                <a href="{% url 'objeto_eli' objeto.obid %}">
-                    <button class="btn btn-danger mb-3 ms-4">Eliminar Objeto</button>
+                <a href="{% url 'objeto_eli' objeto.obid %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Objeto
                 </a>
                 {% endif %}
             </div>

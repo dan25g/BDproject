@@ -23,8 +23,8 @@
                 <a href="{% url 'matrimonio_act' mat.id %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Matrimonio</button>
                 </a>  
-                <a href="{% url 'matrimonio_eli' mat.id %}">
-                    <button class="btn btn-danger mb-3 ms-4">Eliminar Matrimonio</button>
+                <a href="{% url 'matrimonio_eli' mat.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Matrimonio
                 </a>
                 {% endif %}
             </div>

@@ -30,8 +30,8 @@
             <a href="{% url 'serie_act' ser.medio_id %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Serie</button>
             </a>
-            <a href="{% url 'serie_eli' ser.medio_id %}">
-                <button class="btn btn-danger mb-3 ms-4">Eliminar Serie</button>
+            <a href="{% url 'serie_eli' ser.medio_id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                Eliminar Serie
             </a>
             {% endif %}
             <a href="{% url 'lg_guardar' ser.medio_id %}">

@@ -23,8 +23,8 @@
                 <a href="{% url 'organizacion_act' og.id_organizacion %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Organización</button>
                 </a>
-                <a href="{% url 'organizacion_eli' og.id_organizacion %}">
-                    <button class="btn btn-danger mb-3 ms-4">Eliminar Organización</button>
+                <a href="{% url 'organizacion_eli' og.id_organizacion %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Organización
                 </a>
                 {% endif %}
             </div>

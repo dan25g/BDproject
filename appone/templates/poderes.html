@@ -21,8 +21,8 @@
                 <a href="{% url 'poder_act' poder.podid %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Poder</button>
                 </a>
-                <a href="{% url 'poder_eli' poder.podid %}">
-                    <button class="btn btn-danger mb-3 ms-4">Eliminar Poder</button>
+                <a href="{% url 'poder_eli' poder.podid %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Poder
                 </a>
                 {% endif %}
             </div>

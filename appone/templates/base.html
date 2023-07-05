@@ -142,7 +142,11 @@
           </script>
         {% endfor %}
       {% endif %}
-        
+      {% if error is not none %} 
+        <script>
+          notifSwal("Error !","{{error}}","error", "Ok");
+        </script>
+      {% endif %}
     {% block content %}
     {% endblock %}
     <!-- alertas y confirmaciones -->

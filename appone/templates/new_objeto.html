@@ -6,12 +6,7 @@
             <div class="col-md-4 offset-md-4 mt-5">
                 <form action="/objetos/crear" method="POST" class="card-body">
                     <h1 class="text-center">Nuevo Objeto</h1>
-                    {% if error is not none %} 
-                        <div class="alert alert-danger" role="alert">
-                            {{error}}
-                        </div>
-                    {% endif %}
-            
+                    
                     {% csrf_token %}
                     <div class="mb-3 ms-4">{{form.as_p}}</div>
 

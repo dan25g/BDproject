@@ -13,11 +13,7 @@
                     {{heroe.segundo_apellido}}
                 {% endif %} 
             </h1>
-            {% if error is not none %} 
-                <div class="alert alert-danger" role="alert">
-                    {{error}}
-                </div>
-            {% endif %}
+
             <form method="POST">
                 {% csrf_token %} 
                 {{form.as_p}}

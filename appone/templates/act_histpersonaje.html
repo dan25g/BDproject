@@ -3,7 +3,7 @@
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4">
-        <h1 class="fw-bold">Califica a {{medio.fk_med_perf}} </h1>
+        <h1 class="fw-bold">Historico Nro {{historico.id}}  </h1>
         <form method="POST">
             {% csrf_token %} 
             {{form.as_p}}

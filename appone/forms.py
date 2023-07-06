@@ -224,3 +224,16 @@ class MatrimonioForm(forms.ModelForm):
             'fecha_inicio' : forms.DateInput(attrs={'class':'date','label':'Fecha de inicio de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
             'fecha_fin' : forms.DateInput(attrs={'class':'date','label':'Fecha de fin de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
         } 
+
+class HistPersonajeForm(forms.ModelForm):
+    class Meta:
+        model = HistoricoPersonaje
+        fields = ['fk_pers_org','fk_org_pers','fundador', 'lider','fecha_union','fecha_salida']
+        widgets = {
+            'fk_pers_org' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'fk_org_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Organización'}),
+            'fundador' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Fundó la organización?'}),
+            'lider' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Lideró la organización?'}),
+            'fecha_union' : forms.DateInput(attrs={'class':'date','label':'Fecha de unión a la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'fecha_salida' : forms.DateInput(attrs={'class':'date','label':'Fecha de salida de la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+        } 

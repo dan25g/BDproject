@@ -988,14 +988,17 @@ def actividad_admin(request):
 
 @login_required
 def recom_mejores(request):
-    med = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed from infopersonajes.medio m where medrating between 4 and 5;")
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed from infopersonajes.medio m where medrating between 4 and 5 and medio_id not in (select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id ="+str(per.per_id)+");")
+
     return render(request,'mejores.html',{
         'medios':med,
     })
 
 @login_required
 def recom_nuevas(request):
-    med = Medio.objects.raw("SELECT m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed FROM infopersonajes.medio m WHERE medfecestreno >= (now() - interval '3 months');")
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = Medio.objects.raw("SELECT m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed FROM infopersonajes.medio m WHERE medfecestreno >= (now() - interval '3 months') and medio_id not in (select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id ="+str(per.per_id)+");")
     return render(request,'nuevas.html',{
         'medios':med,
     })
@@ -1046,7 +1049,7 @@ def elimina_matrimonio(request,mat_id):
     mat = get_object_or_404(HistoricoMatrimonio,pk=mat_id)
     mat.delete()
     messages.success(request,"Matrimonio eliminado con exito")
-    redirect('matrimonios')  
+    return redirect('matrimonios')  
 
 @login_required
 def new_matrimonio(request):
@@ -1081,3 +1084,51 @@ def actualiza_matrimonio(request,mat_id):
             return redirect('matrimonios')
         except ValueError:
             return render(request,'act_matrimonio.html', {'matrimonio': mat,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def Histpersonajes(request):
+    hit = HistoricoPersonaje.objects.all()
+    return render(request,'Histpersonajes.html',{
+        'historico':hit,
+    })
+
+@login_required
+def elimina_histpersonaje(request,hit_id):
+    hit = get_object_or_404(HistoricoPersonaje,pk=hit_id)
+    hit.delete()
+    messages.success(request,"Historico del personaje eliminado con exito")
+    return redirect('histpersonajes')
+
+@login_required
+def new_histpersonaje(request):
+    if request.method == 'GET':
+        return render(request,'new_histpersonaje.html', {
+            'form': HistPersonajeForm,          
+        })
+    else:
+        try:
+            form = HistPersonajeForm(request.POST)
+            NewHit = form.save(commit=False)
+            NewHit.save()
+            messages.success(request,"Historico del personaje creado con exito")
+            return redirect('histpersonajes')
+        except ValueError:
+            return render(request,'new_histpersonaje.html', {
+                'form': HistPersonajeForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_histpersonaje(request,hit_id):
+    hit = get_object_or_404(HistoricoPersonaje,pk=hit_id)
+    if request.method == 'GET':
+        form = HistPersonajeForm(instance=hit)
+        return render(request,'act_histpersonaje.html', {'historico': hit,'form': form})
+    else:
+        try:
+            form = HistPersonajeForm(request.POST,instance=hit)
+            form.save()
+            messages.success(request,"Historico del personaje actualizado con exito")
+            return redirect('histpersonajes')
+        except ValueError:
+            return render(request,'act_histpersonaje.html', {'historico': hit,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

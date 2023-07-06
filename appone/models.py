@@ -251,12 +251,13 @@ class Organizacion(models.Model):
         return f"{self.id_organizacion} - {self.org_nombre}"
 
 class HistoricoPersonaje(models.Model):
-    fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
-    fk_org_pers = models.OneToOneField(Organizacion, models.DO_NOTHING, blank=True, null=True)
-    fundador = models.BooleanField()
-    lider = models.BooleanField()
-    fecha_union = models.DateField()
-    fecha_salida = models.DateField(blank=True, null=True)
+    id = models.AutoField(primary_key=True)
+    fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING) 
+    fk_org_pers = models.ForeignKey(Organizacion, models.DO_NOTHING, blank=False, null=False)
+    fundador = models.BooleanField('¿Fundó la organización?')
+    lider = models.BooleanField('¿Lideró la organización?')
+    fecha_union = models.DateField('Fecha de unión a la organización', blank=False, null=False)
+    fecha_salida = models.DateField('Fecha de salida de la organización',blank=True, null=True)
 
     class Meta:
         managed = False

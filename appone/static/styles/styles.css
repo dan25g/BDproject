@@ -2,6 +2,13 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+.ttex{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}
+
+
 .list-group-item{
     border-color: black;
     border-radius: 32px;

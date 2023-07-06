@@ -96,7 +96,10 @@ urlpatterns = [
     path('matrimonio/crear',views.new_matrimonio,name='new_matrimonio'),
     path('matrimonio/<int:mat_id>/eli',views.elimina_matrimonio,name='matrimonio_eli'),
     path('matrimonio/<int:mat_id>/act',views.actualiza_matrimonio,name='matrimonio_act'),
-
+    path('histpersonaje/',views.Histpersonajes,name='histpersonajes'),
+    path('histpersonaje/crear',views.new_histpersonaje,name='new_histpersonaje'),
+    path('histpersonaje/<int:hit_id>/eli',views.elimina_histpersonaje,name='histpersonaje_eli'),
+    path('histpersonaje/<int:hit_id>/act',views.actualiza_histpersonaje,name='histpersonaje_act'),
     
 ]
 

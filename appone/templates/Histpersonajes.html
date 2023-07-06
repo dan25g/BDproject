@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Historico Personajes</strong></h1>
+        <ul class="list-group ">
+        {% for hit in historico %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">Historico Nro {{hit.id}} </h1>
+                </header>
+                <h2>{{hit.fk_pers_org.primer_nombre}} {{hit.fk_pers_org.primer_apellido}}</h2>
+                <p> Perteneció a </p>
+                <h2>{{hit.fk_org_pers.org_nombre}}</h2>
+                {% if hit.fundador %}
+                    <h3>Fundador de la organización</h3>
+                {% endif %}
+                {% if hit.lider %}
+                    <h3>Lideró a la organización</h3>
+                {% endif %}
+                <h5>Fecha de entrada: {{hit.fecha_union}}</h5>
+                <h5>Fecha de salida: {{hit.fecha_salida}}</h5>
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'histpersonaje_act' hit.id %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Historico</button>
+                </a>  
+                <a href="{% url 'histpersonaje_eli' hit.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Historico
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_histpersonaje' %}">
+            <button class="btn btn-success ">Nueva Historico</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

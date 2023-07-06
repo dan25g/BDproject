@@ -294,7 +294,13 @@ def activo_perfil(request,pf_id):
     perf = get_object_or_404(Perfil, pk=pf_id)
     perf.esta_activo = True
     perf.save()
-    act = Actividad.objects.create(act_ingreso=timezone.now(),fk_perfil=perf)
+    if request.user_agent.is_mobile:
+        dis=request.user_agent.device.family
+    elif request.user_agent.is_tablet:
+        dis=request.user_agent.device.family
+    elif request.user_agent.is_pc:
+        dis='PC'
+    act = Actividad.objects.create(act_ingreso=timezone.now(),fk_perfil=perf,act_dispositivo=dis)
     act.save()
     messages.success(request,"Escogió el perfil con exito")
     return redirect('home')

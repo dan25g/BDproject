@@ -237,3 +237,13 @@ class HistPersonajeForm(forms.ModelForm):
             'fecha_union' : forms.DateInput(attrs={'class':'date','label':'Fecha de unión a la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
             'fecha_salida' : forms.DateInput(attrs={'class':'date','label':'Fecha de salida de la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
         } 
+
+class PerPodForm(forms.ModelForm):
+    class Meta:
+        model = PersonajePoder
+        fields = ['fk_pod_pers','fk_pers_pod','hereditario']
+        widgets = {
+            'fk_pod_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Poder'}),
+            'fk_pers_pod' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
+        } 

@@ -100,6 +100,10 @@ urlpatterns = [
     path('histpersonaje/crear',views.new_histpersonaje,name='new_histpersonaje'),
     path('histpersonaje/<int:hit_id>/eli',views.elimina_histpersonaje,name='histpersonaje_eli'),
     path('histpersonaje/<int:hit_id>/act',views.actualiza_histpersonaje,name='histpersonaje_act'),
+    path('perpoder/',views.Perpoderes,name='perpoderes'),
+    path('perpoder/crear',views.new_perpoder,name='new_perpoder'),
+    path('perpoder/<int:pp_id>/eli',views.elimina_perpoder,name='perpoder_eli'),
+    path('perpoder/<int:pp_id>/act',views.actualiza_perpoder,name='perpoder_act'),
     
 ]
 

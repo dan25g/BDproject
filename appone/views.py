@@ -1138,3 +1138,52 @@ def actualiza_histpersonaje(request,hit_id):
             return redirect('histpersonajes')
         except ValueError:
             return render(request,'act_histpersonaje.html', {'historico': hit,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+
+@login_required
+def Perpoderes(request):
+    pp = PersonajePoder.objects.all()
+    return render(request,'perpoderes.html',{
+        'perspod':pp,
+    })
+
+@login_required
+def elimina_perpoder(request,pp_id):
+    pp = get_object_or_404(PersonajePoder,pk=pp_id)
+    pp.delete()
+    messages.success(request,"Registro de poder del personaje eliminado con exito")
+    return redirect('perpoderes')
+
+@login_required
+def new_perpoder(request):
+    if request.method == 'GET':
+        return render(request,'new_perpoder.html', {
+            'form': PerPodForm,          
+        })
+    else:
+        try:
+            form = PerPodForm(request.POST)
+            Newpp = form.save(commit=False)
+            Newpp.save()
+            messages.success(request,"Registro de poder del personaje creado con exito")
+            return redirect('perpoderes')
+        except ValueError:
+            return render(request,'new_perpoder.html', {
+                'form': PerPodForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_perpoder(request,pp_id):
+    pp = get_object_or_404(PersonajePoder,pk=pp_id)
+    if request.method == 'GET':
+        form = PerPodForm(instance=pp)
+        return render(request,'act_perpoder.html', {'perpod': pp,'form': form})
+    else:
+        try:
+            form = PerPodForm(request.POST,instance=pp)
+            form.save()
+            messages.success(request,"Registro de poder del personaje actualizado con exito")
+            return redirect('perpoderes')
+        except ValueError:
+            return render(request,'act_perpoder.html', {'perpod': pp,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

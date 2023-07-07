@@ -103,7 +103,11 @@ urlpatterns = [
     path('perpoder/',views.Perpoderes,name='perpoderes'),
     path('perpoder/crear',views.new_perpoder,name='new_perpoder'),
     path('perpoder/<int:pp_id>/eli',views.elimina_perpoder,name='perpoder_eli'),
-    path('perpoder/<int:pp_id>/act',views.actualiza_perpoder,name='perpoder_act'),
+    path('perpoder/<int:pp_id>/act',views.actualiza_perpoder,name='perpoder_act'),  
+    path('perobjeto/',views.Perobjetos,name='perobjetos'),
+    path('perobjeto/crear',views.new_perobjeto,name='new_perobjeto'),
+    path('perobjeto/<int:po_id>/eli',views.elimina_perobjeto,name='perobjeto_eli'),
+    path('perobjeto/<int:po_id>/act',views.actualiza_perobjeto,name='perobjeto_act'),
     
 ]
 

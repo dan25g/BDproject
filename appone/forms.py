@@ -247,3 +247,13 @@ class PerPodForm(forms.ModelForm):
             'fk_pers_pod' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
             'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
         } 
+
+class PerObjForm(forms.ModelForm):
+    class Meta:
+        model = PersonajeObjeto
+        fields = ['fk_obj_pers','fk_pers_obj','hereditario']
+        widgets = {
+            'fk_obj_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Objeto'}),
+            'fk_pers_obj' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
+        } 

@@ -340,7 +340,7 @@ class Objeto(models.Model):
     def __str__(self):
         return f"{self.obid} - {self.objnombre}"
 
-#lista
+#FALTA
 class Ocupacion(models.Model):
     personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     id_ocupacion = models.IntegerField()
@@ -401,7 +401,8 @@ class PersonajeMedio(models.Model):
 
 #FALTA
 class PersonajeObjeto(models.Model):
-    fk_obj_pers = models.OneToOneField(Objeto, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    fk_obj_pers = models.ForeignKey(Objeto, models.DO_NOTHING) 
     fk_pers_obj = models.ForeignKey(Personaje, models.DO_NOTHING)
     hereditario = models.BooleanField()
 
@@ -424,7 +425,7 @@ class Poder(models.Model):
     def __str__(self):
         return f"{self.podid} - {self.ponombre}"
 
-#FALTA
+#lista
 class PersonajePoder(models.Model):
     id = models.AutoField(primary_key=True)
     fk_pod_pers = models.OneToOneField(Poder, models.DO_NOTHING,related_name='Poder',)  

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Registro de objetos del personaje</strong></h1>
+        <ul class="list-group ">
+        {% for po in persobj %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">Registro Nro {{po.id}} </h1>
+                </header>
+                <h2>{{po.fk_pers_obj.primer_nombre}} {{po.fk_pers_obj.primer_apellido}}</h2>
+                <p> Tiene </p>
+                <h2>{{po.fk_obj_pers.objnombre}}</h2>
+                {% if po.hereditario %}
+                    <h3>Es heredado</h3>
+                {% endif %}
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'perobjeto_act' po.id %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Registro</button>
+                </a>  
+                <a href="{% url 'perobjeto_eli' po.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Registro
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_perobjeto' %}">
+            <button class="btn btn-success ">Nueva Registro</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

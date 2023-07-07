@@ -1187,3 +1187,51 @@ def actualiza_perpoder(request,pp_id):
             return redirect('perpoderes')
         except ValueError:
             return render(request,'act_perpoder.html', {'perpod': pp,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def Perobjetos(request):
+    po = PersonajeObjeto.objects.all()
+    return render(request,'perobjetos.html',{
+        'persobj':po,
+    })
+
+@login_required
+def elimina_perobjeto(request,po_id):
+    po = get_object_or_404(PersonajeObjeto,pk=po_id)
+    po.delete()
+    messages.success(request,"Registro de objeto del personaje eliminado con exito")
+    return redirect('perobjetos')
+
+@login_required
+def new_perobjeto(request):
+    if request.method == 'GET':
+        return render(request,'new_perobjeto.html', {
+            'form': PerObjForm,          
+        })
+    else:
+        try:
+            form = PerObjForm(request.POST)
+            Newpo = form.save(commit=False)
+            Newpo.save()
+            messages.success(request,"Registro de objeto del personaje creado con exito")
+            return redirect('perobjetos')
+        except ValueError:
+            return render(request,'new_perobjeto.html', {
+                'form': PerObjForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_perobjeto(request,po_id):
+    po = get_object_or_404(PersonajeObjeto,pk=po_id)
+    if request.method == 'GET':
+        form = PerObjForm(instance=po)
+        return render(request,'act_perobjeto.html', {'perpod': po,'form': form})
+    else:
+        try:
+            form = PerObjForm(request.POST,instance=po)
+            form.save()
+            messages.success(request,"Registro de objeto del personaje actualizado con exito")
+            return redirect('perobjetos')
+        except ValueError:
+            return render(request,'act_perobjeto.html', {'perpod': po,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

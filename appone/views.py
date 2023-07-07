@@ -1189,6 +1189,55 @@ def actualiza_perpoder(request,pp_id):
             return render(request,'act_perpoder.html', {'perpod': pp,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
         
 @login_required
+def Permedios(request):
+    pm = PersonajeMedio.objects.all()
+    return render(request,'permedios.html',{
+        'persmed':pm,
+    })
+
+@login_required
+def elimina_permedio(request,pm_id):
+    pm = get_object_or_404(PersonajeMedio,pk=pm_id)
+    pm.delete()
+    messages.success(request,"Registro del personaje en medio eliminado con exito")
+    return redirect('permedios')
+
+@login_required
+def new_permedio(request):
+    if request.method == 'GET':
+        return render(request,'new_permedio.html', {
+            'form': PerMedForm,          
+        })
+    else:
+        try:
+            form = PerMedForm(request.POST)
+            Newpm = form.save(commit=False)
+            Newpm.save()
+            messages.success(request,"Registro del personaje en medio creado con exito")
+            return redirect('permedios')
+        except ValueError:
+            return render(request,'new_permedio.html', {
+                'form': PerMedForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_permedio(request,pm_id):
+    pm = get_object_or_404(PersonajeMedio,pk=pm_id)
+    if request.method == 'GET':
+        form = PerMedForm(instance=pm)
+        return render(request,'act_permedio.html', {'permed': pm,'form': form})
+    else:
+        try:
+            form = PerMedForm(request.POST,instance=pm)
+            form.save()
+            messages.success(request,"Registro del personaje en medio actualizado con exito")
+            return redirect('permedios')
+        except ValueError:
+            return render(request,'act_permedio.html', {'permed': pm,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+
+@login_required
 def Perobjetos(request):
     po = PersonajeObjeto.objects.all()
     return render(request,'perobjetos.html',{

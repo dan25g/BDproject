@@ -304,7 +304,8 @@ class Juego(models.Model):
 
 #FALTA
 class Nacionalidad(models.Model):
-    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING) 
     id_nacion = models.IntegerField()
     nacion_nombre = models.CharField(max_length=20)
     nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
@@ -388,18 +389,19 @@ class PerfilMedio(models.Model):
 
 #FALTA
 class PersonajeMedio(models.Model):
-    fk_med_pers = models.OneToOneField(Medio, models.DO_NOTHING,primary_key=True)  
+    id = models.AutoField(primary_key=True)
+    fk_med_pers = models.ForeignKey(Medio, models.DO_NOTHING)  
     fk_pers_med = models.ForeignKey(Personaje, models.DO_NOTHING)
-    actor_tipo = models.CharField()
-    actor_nombre = models.CharField(max_length=40)
-    personaje_tipo = models.CharField(choices=[('Antagonista','Antagonista'),('Protagonista','Protagonista'),('Secundario','Secundario')])
+    actor_tipo = models.CharField('Rol del actor',choices=[('Interpreta','Interpreta'),('Presta su voz','Presta su voz')])
+    actor_nombre = models.CharField('Nombre del Actor',max_length=40,null=False,blank=False)
+    personaje_tipo = models.CharField('Rol del Personaje',choices=[('Antagonista','Antagonista'),('Protagonista','Protagonista'),('Secundario','Secundario')])
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"personaje_medio"'
         unique_together = (('fk_med_pers', 'fk_pers_med'),)
 
-#FALTA
+#lista
 class PersonajeObjeto(models.Model):
     id = models.AutoField(primary_key=True)
     fk_obj_pers = models.ForeignKey(Objeto, models.DO_NOTHING) 

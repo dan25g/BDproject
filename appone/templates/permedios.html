@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Registro del personaje en medio</strong></h1>
+        <ul class="list-group ">
+        {% for pm in persmed %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">{{pm.fk_pers_med.primer_nombre}} {{pm.fk_pers_med.primer_apellido}}</h1>
+                </header>
+                <h3>Aparece en </h3>
+                <h2> {{pm.fk_med_pers.medionombre}} </h2>
+                <h5>{{pm.fk_med_pers.tipomed}}</h5>
+                <h4> Interpretado por: {{pm.actor_nombre}} </h4>
+                <h5>{{pm.actor_tipo}}</h5>
+                <h4> Rol: {{pm.personaje_tipo}} </h4>
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'permedio_act' pm.id %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Registro</button>
+                </a>  
+                <a href="{% url 'permedio_eli' pm.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Registro
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_permedio' %}">
+            <button class="btn btn-success ">Nueva Registro</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

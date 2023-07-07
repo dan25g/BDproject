@@ -257,3 +257,15 @@ class PerObjForm(forms.ModelForm):
             'fk_pers_obj' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
             'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
         } 
+
+class PerMedForm(forms.ModelForm):
+    class Meta:
+        model = PersonajeMedio
+        fields = ['fk_med_pers','fk_pers_med','actor_tipo','actor_nombre','personaje_tipo']
+        widgets = {
+            'fk_med_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Medio'}),
+            'fk_pers_med' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'actor_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Actor'}),
+            'actor_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Actor'}),
+            'personaje_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Personaje'}),
+        } 

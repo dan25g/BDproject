@@ -108,6 +108,9 @@ urlpatterns = [
     path('perobjeto/crear',views.new_perobjeto,name='new_perobjeto'),
     path('perobjeto/<int:po_id>/eli',views.elimina_perobjeto,name='perobjeto_eli'),
     path('perobjeto/<int:po_id>/act',views.actualiza_perobjeto,name='perobjeto_act'),
-    
+    path('permedio/',views.Permedios,name='permedios'),
+    path('permedio/crear',views.new_permedio,name='new_permedio'),
+    path('permedio/<int:pm_id>/eli',views.elimina_permedio,name='permedio_eli'),
+    path('permedio/<int:pm_id>/act',views.actualiza_permedio,name='permedio_act'),
 ]
 

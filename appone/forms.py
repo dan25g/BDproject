@@ -269,3 +269,13 @@ class PerMedForm(forms.ModelForm):
             'actor_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Actor'}),
             'personaje_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Personaje'}),
         } 
+
+class OrgMedForm(forms.ModelForm):
+    class Meta:
+        model = OrganizacionMedio
+        fields = ['fk_med_org','fk_org_med','estado']
+        widgets = {
+            'fk_med_org' : forms.Select(attrs={'class':'form-control','placeholder':'Medio'}),
+            'fk_org_med' : forms.Select(attrs={'class':'form-control','placeholder':'Nombre de la organización'}),
+            'estado' : forms.Select(attrs={'class':'form-control','placeholder':'Estado de la organización'}),
+        } 

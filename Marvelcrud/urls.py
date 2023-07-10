@@ -88,6 +88,8 @@ urlpatterns = [
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
     path('recomendaciones/mejores',views.recom_mejores,name='recom_mejores'),
     path('recomendaciones/nuevas',views.recom_nuevas,name='recom_nuevas'),
+    path('recomendaciones/perfavs',views.recom_perfavs,name='recom_perfavs'),
+    path('recomendaciones/orgfavs',views.recom_orgfavs,name='recom_orgfavs'),
     path('actividad/',views.actividad_admin,name='actividades'),
     path('amistades/',views.amistades,name='amistades'),
     path('amistades/crear',views.new_amistad,name='new_amistad'),
@@ -112,5 +114,9 @@ urlpatterns = [
     path('permedio/crear',views.new_permedio,name='new_permedio'),
     path('permedio/<int:pm_id>/eli',views.elimina_permedio,name='permedio_eli'),
     path('permedio/<int:pm_id>/act',views.actualiza_permedio,name='permedio_act'),
+    path('orgmedio/',views.Orgmedios,name='orgmedios'),
+    path('orgmedio/crear',views.new_orgmedio,name='new_orgmedio'),
+    path('orgmedio/<int:om_id>/eli',views.elimina_orgmedio,name='orgmedio_eli'),
+    path('orgmedio/<int:om_id>/act',views.actualiza_orgmedio,name='orgmedio_act'),
 ]
 

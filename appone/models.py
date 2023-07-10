@@ -351,11 +351,12 @@ class Ocupacion(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"ocupacion"'
         unique_together = (('personaje_id_ocu', 'id_ocupacion'),)
-#FALTA
+#lista
 class OrganizacionMedio(models.Model):
-    fk_med_org = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    fk_med_org = models.ForeignKey(Medio, models.DO_NOTHING) 
     fk_org_med = models.ForeignKey(Organizacion, models.DO_NOTHING)
-    estado = models.CharField(max_length=20)
+    estado = models.CharField('Estado de la organización',choices=[('Desconocido','Desconocido'),('Activa','Activa'),('Inactiva','Inactiva'),('Disuelta','Disuelta')])
 
     class Meta:
         managed = False
@@ -387,7 +388,7 @@ class PerfilMedio(models.Model):
         db_table =u'"infousuarios\".\"perfil_medio"'
         unique_together = (('fk_perf_med', 'fk_med_perf'),)
 
-#FALTA
+#lista
 class PersonajeMedio(models.Model):
     id = models.AutoField(primary_key=True)
     fk_med_pers = models.ForeignKey(Medio, models.DO_NOTHING)  

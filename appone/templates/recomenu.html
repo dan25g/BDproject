@@ -9,12 +9,16 @@
                 <a  href="{% url 'recom_mejores' %}" type="button" class="btn btn-success btn-lg mb-3 ms-4">
                     Lo mejor de lo mejor 🏆
                 </a>
-                <a  href="{% url 'home' %}" type="button" class="btn btn-warning btn-lg mb-3 ms-4">
-                    Basado en tus personajes favoritos
+                <a  href="{% url 'recom_perfavs' %}" type="button" class="btn btn-primary btn-lg mb-3 ms-4">
+                    Basado en tus personajes favoritos ❤️ 
                 </a>
-                <a  href="{% url 'recom_nuevas' %}" type="button" class="btn btn-info btn-lg mb-3 ms-4">
+                <a  href="{% url 'recom_orgfavs' %}" type="button" class="btn btn-warning btn-lg mb-3 ms-4">
+                    Tus organizaciones favoritas 🏢 
+                </a>
+                <a  href="{% url 'recom_nuevas' %}" type="button" class="btn btn-danger btn-lg mb-3 ms-4">
                     Los últimos lanzamientos 🆕
                 </a>
+
         </div>
     </main>
 {% endblock %}

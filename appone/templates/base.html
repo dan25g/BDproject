@@ -60,9 +60,19 @@
                       <li><a class="dropdown-item" href="/perpoder">Poder-personaje</a></li>
                       <li><a class="dropdown-item" href="/perobjeto">Objeto-personaje</a></li>
                       <li><a class="dropdown-item" href="/permedio">Personaje-medio</a></li>
-                      <li><a class="dropdown-item" href="#">Algo más aqui</a></li>
+                      <li><a class="dropdown-item" href="/orgmedio">Organización-medio</a></li>
                     </ul>
                 </li>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Info extra personajes
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Nacionalidades</a></li>
+                  <li><a class="dropdown-item" href="#">Ocupaciones</a></li>
+                  <li><a class="dropdown-item" href="#">Creadores</a></li>
+                </ul>
               </li>
               {% if user.es_admin %}
               <li class="nav-item dropdown">

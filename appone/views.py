@@ -1284,3 +1284,67 @@ def actualiza_perobjeto(request,po_id):
             return redirect('perobjetos')
         except ValueError:
             return render(request,'act_perobjeto.html', {'perpod': po,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def recom_perfavs(request):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating, medsinopsis, medionombre, tipomed from infopersonajes.medio m where m.medio_id in (select pm.fk_med_pers_id from infopersonajes.personaje_medio pm where pm.fk_pers_med_id in ( select pm.fk_pers_med_id from infopersonajes.personaje_medio pm where fk_med_pers_id in ( select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id ="+str(per.per_id)+"))) and m.medio_id not in ( select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id ="+str(per.per_id)+");")
+    return render(request,'perfavs.html',{
+        'medios':med,
+    })
+
+@login_required
+def recom_orgfavs(request):
+    per = get_object_or_404(Perfil,fk_usuario=request.user,esta_activo=True)
+    med = Medio.objects.raw("select m.medio_id, medfecestreno, medcomcreacion, medcomproduc, medrating,  medsinopsis, medionombre, tipomed from infopersonajes.medio m where m.medio_id in (select om.fk_med_org_id from infopersonajes.organizacion_medio om where om.fk_org_med_id in ( select om.fk_org_med_id from infopersonajes.organizacion_medio om where om.fk_med_org_id in ( select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id = "+str(per.per_id)+"))) and  m.medio_id not in ( select fk_med_perf_id from infousuarios.perfil_medio where fk_perf_med_id ="+str(per.per_id)+");")
+    return render(request,'orgfavs.html',{
+        'medios':med,
+    })
+
+@login_required
+def Orgmedios(request):
+    om = OrganizacionMedio.objects.all()
+    return render(request,'orgmedios.html',{
+        'orgsmed':om,
+    })
+
+@login_required
+def elimina_orgmedio(request,om_id):
+    om = get_object_or_404(OrganizacionMedio,pk=om_id)
+    om.delete()
+    messages.success(request,"Registro de la organización en medio eliminado con exito")
+    return redirect('orgmedios')
+
+@login_required
+def new_orgmedio(request):
+    if request.method == 'GET':
+        return render(request,'new_orgmedio.html', {
+            'form': OrgMedForm,          
+        })
+    else:
+        try:
+            form = OrgMedForm(request.POST)
+            Newom = form.save(commit=False)
+            Newom.save()
+            messages.success(request,"Registro de la organización en medio creado con exito")
+            return redirect('orgmedios')
+        except ValueError:
+            return render(request,'new_orgmedio.html', {
+                'form': OrgMedForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_orgmedio(request,om_id):
+    om = get_object_or_404(OrganizacionMedio,pk=om_id)
+    if request.method == 'GET':
+        form = OrgMedForm(instance=om)
+        return render(request,'act_orgmedio.html', {'orgmed': om,'form': form})
+    else:
+        try:
+            form = OrgMedForm(request.POST,instance=om)
+            form.save()
+            messages.success(request,"Registro de la organización en medio actualizado con exito")
+            return redirect('orgmedios')
+        except ValueError:
+            return render(request,'act_orgmedio.html', {'orgmed': om,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

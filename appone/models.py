@@ -197,8 +197,8 @@ class Combate(models.Model):
         return f"Combate Nro {self.cmbid}"
 #FALTA
 class Creador(models.Model):
-    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
-    id_creador = models.IntegerField()
+    id_creador = models.AutoField(primary_key=True)
+    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING)  
     creador_nombre = models.CharField(max_length=20)
     creador_apellido = models.CharField(max_length=20)
 
@@ -304,9 +304,8 @@ class Juego(models.Model):
 
 #FALTA
 class Nacionalidad(models.Model):
-    id = models.AutoField(primary_key=True)
+    id_nacion = models.AutoField(primary_key=True)
     personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING) 
-    id_nacion = models.IntegerField()
     nacion_nombre = models.CharField(max_length=20)
     nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
 
@@ -343,8 +342,8 @@ class Objeto(models.Model):
 
 #FALTA
 class Ocupacion(models.Model):
-    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
-    id_ocupacion = models.IntegerField()
+    id_ocupacion = models.AutoField(primary_key=True)
+    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING)
     ocupa_nombre = models.CharField(max_length=20)
 
     class Meta:

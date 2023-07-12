@@ -151,9 +151,15 @@
 
       {% if messages %}
         {% for m in messages %}
-          <script>
-            notifSwal("Exito !","{{m}}","success", "Ok");
-          </script>
+          {% if m.tags == 'success' %}
+            <script>
+              notifSwal("Exito !","{{m}}","success", "Ok");
+            </script>
+          {% elif m.tags == 'error' %}
+            <script>
+                notifSwal("Error !","{{m}}","error", "Ok");
+            </script>
+          {% endif %}
         {% endfor %}
       {% endif %}
       {% if error is not none %} 

@@ -310,7 +310,7 @@ def Civiles(request):
     civiles = Personaje.objects.raw(
         "select p.personaje_id, genc, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, color_pelo,color_ojos, frase_celebre, comic_primer_vez, estadomarital from infopersonajes.personaje p inner join infopersonajes.civil c on p.personaje_id = c.personaje_id")
     return render(request,'civiles.html',{
-        'civiles':civiles
+        'civiles':civiles,
     })
 
 @login_required
@@ -337,12 +337,16 @@ def new_civil(request):
 
 @login_required
 def elimina_civil(request,civil_id):
-    civ = Civil.objects.filter(personaje=civil_id)
-    pers = Personaje.objects.filter(personaje_id=civil_id)
-    civ.delete()
-    pers.delete()
-    messages.success(request,"Civil borrado con exito")
-    return redirect('civiles')     
+    try:
+        civ = Civil.objects.filter(personaje=civil_id)
+        pers = Personaje.objects.filter(personaje_id=civil_id)
+        civ.delete()
+        pers.delete()
+        messages.success(request,"Civil borrado con exito")
+        return redirect('civiles')  
+    except :
+        messages.error(request,"Civil no se puede borrar, es referenciado en otras tablas")
+        return redirect('civiles') 
 
 @login_required
 def actualiza_civil(request,civil_id):
@@ -373,12 +377,16 @@ def Heroes(request):
 
 @login_required
 def elimina_heroe(request,heroe_id):
-    hero = get_object_or_404(Heroe,pk=heroe_id)
-    pers = get_object_or_404(Personaje,pk=heroe_id)
-    hero.delete()
-    pers.delete()
-    messages.success(request,"Heroe eliminado con exito")
-    return redirect('heroes')     
+    try:
+        hero = get_object_or_404(Heroe,pk=heroe_id)
+        pers = get_object_or_404(Personaje,pk=heroe_id)
+        hero.delete()
+        pers.delete()
+        messages.success(request,"Heroe eliminado con exito")
+        return redirect('heroes')
+    except:
+        messages.error(request,"Heroe no se puede borrar, es referenciado en otras tablas")
+        return redirect('heroes')
 
 @login_required
 def new_heroe(request):
@@ -439,10 +447,16 @@ def villanos(request):
 def elimina_villano(request,vil_id):
     vil = get_object_or_404(Villano,pk=vil_id)
     pers = get_object_or_404(Personaje,pk=vil_id)
-    vil.delete()
-    pers.delete()
-    messages.success(request,"Villano eliminado con exito")
-    return redirect('villanos')  
+    try:
+        vil.delete()
+        pers.delete()
+        messages.success(request,"Villano eliminado con exito")
+        return redirect('villanos')  
+    except:
+        vil.personaje = pers
+        vil.save()
+        messages.error(request,"Villano no se puede borrar, es referenciado en otras tablas")
+        return redirect('villanos')  
 
 @login_required
 def new_villano(request):
@@ -502,10 +516,17 @@ def peliculas(request):
 def elimina_pelicula(request,pel_id):
     pel = get_object_or_404(Pelicula,pk=pel_id)
     med = get_object_or_404(Medio,pk=pel_id)
-    pel.delete()
-    med.delete()
-    messages.success(request,"Pelicula eliminada con exito")
-    return redirect('peliculas')  
+    try:
+        pel.delete()
+        med.delete()
+        messages.success(request,"Pelicula eliminada con exito")
+        return redirect('peliculas')
+    except:
+        pel.medio = med
+        pel.save()
+        messages.error(request,"Pelicula no se puede borrar, es referenciada en otras tablas")
+        return redirect('peliculas') 
+
 
 @login_required
 def new_pelicula(request):
@@ -565,10 +586,17 @@ def series(request):
 def elimina_serie(request,se_id):
     ser = get_object_or_404(Serie,pk=se_id)
     med = get_object_or_404(Medio,pk=se_id)
-    ser.delete()
-    med.delete()
-    messages.success(request,"Serie eliminada con exito")
-    return redirect('series')  
+    try:
+        ser.delete()
+        med.delete()
+        messages.success(request,"Serie eliminada con exito")
+        return redirect('series')
+    except:
+        ser.medio = med
+        ser.save()
+        messages.error(request,"Serie no se puede borrar, es referenciada en otras tablas")
+        return redirect('series')   
+
 
 @login_required
 def new_serie(request):
@@ -628,10 +656,17 @@ def juegos(request):
 def elimina_juego(request,jue_id):
     jue = get_object_or_404(Juego,pk=jue_id)
     med = get_object_or_404(Medio,pk=jue_id)
-    jue.delete()
-    med.delete()
-    messages.success(request,"Juego eliminado con exito")
-    return redirect('juegos')  
+    try:
+        jue.delete()
+        med.delete()
+        messages.success(request,"Juego eliminado con exito")
+        return redirect('juegos') 
+    except:
+        jue.medio = med
+        jue.save()
+        messages.error(request,"Juego no se puede borrar, es referenciado en otras tablas")
+        return redirect('juegos')  
+
 
 @login_required
 def new_juego(request):
@@ -687,10 +722,14 @@ def organizaciones(request):
 
 @login_required
 def elimina_organizacion(request,org_id):
-    org = get_object_or_404(Organizacion,pk=org_id)
-    org.delete()
-    messages.success(request,"Organización eliminada con exito")
-    return redirect('organizaciones')  
+    try:
+        org = get_object_or_404(Organizacion,pk=org_id)
+        org.delete()
+        messages.success(request,"Organización eliminada con exito")
+        return redirect('organizaciones')
+    except:
+        messages.error(request,"Organización no se puede borrar, es referenciada en otras tablas")
+        return redirect('organizaciones')    
 
 @login_required
 def new_organizacion(request):
@@ -735,10 +774,14 @@ def sedes(request):
 
 @login_required
 def elimina_sede(request,sed_id):
-    sed = get_object_or_404(Sede,pk=sed_id)
-    sed.delete()
-    messages.success(request,"Sede eliminada con exito")
-    return redirect('sedes')  
+    try:
+        sed = get_object_or_404(Sede,pk=sed_id)
+        sed.delete()
+        messages.success(request,"Sede eliminada con exito")
+        return redirect('sedes')
+    except:
+        messages.error(request,"Sede no se puede borrar, es referenciada en otras tablas")
+        return redirect('sedes') 
 
 @login_required
 def new_sede(request):
@@ -783,10 +826,14 @@ def poderes(request):
 
 @login_required
 def elimina_poder(request,pod_id):
-    pod = get_object_or_404(Poder,pk=pod_id)
-    pod.delete()
-    messages.success(request,"Poder eliminado con exito")
-    return redirect('poderes')  
+    try:
+        pod = get_object_or_404(Poder,pk=pod_id)
+        pod.delete()
+        messages.success(request,"Poder eliminado con exito")
+        return redirect('poderes')  
+    except:
+        messages.error(request,"Poder no se puede borrar, es referenciado en otras tablas")
+        return redirect('poderes') 
 
 @login_required
 def new_poder(request):
@@ -831,10 +878,14 @@ def objetos(request):
 
 @login_required
 def elimina_objeto(request,obj_id):
-    obj = get_object_or_404(Objeto,pk=obj_id)
-    obj.delete()
-    messages.success(request,"Objeto eliminado con exito")
-    return redirect('objetos')  
+    try:
+        obj = get_object_or_404(Objeto,pk=obj_id)
+        obj.delete()
+        messages.success(request,"Objeto eliminado con exito")
+        return redirect('objetos')
+    except:
+        messages.error(request,"Objeto no se puede borrar, es referenciado en otras tablas")
+        return redirect('objetos') 
 
 @login_required
 def new_objeto(request):

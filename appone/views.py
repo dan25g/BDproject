@@ -1399,3 +1399,51 @@ def actualiza_orgmedio(request,om_id):
             return redirect('orgmedios')
         except ValueError:
             return render(request,'act_orgmedio.html', {'orgmed': om,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+        
+@login_required
+def Nacionalidades(request):
+    nac = Nacionalidad.objects.all()
+    return render(request,'nacionalidades.html',{
+        'naciones':nac,
+    })
+
+@login_required
+def elimina_nacionalidad(request,nac_id):
+    nac = get_object_or_404(Nacionalidad,pk=nac_id)
+    nac.delete()
+    messages.success(request,"Nacionalidad eliminada con exito")
+    return redirect('nacionalidades')
+
+@login_required
+def new_nacionalidad(request):
+    if request.method == 'GET':
+        return render(request,'new_nacionalidad.html', {
+            'form': NacForm,          
+        })
+    else:
+        try:
+            form = NacForm(request.POST)
+            NewNac = form.save(commit=False)
+            NewNac.save()
+            messages.success(request,"Nacionalidad creada con exito")
+            return redirect('nacionalidades')
+        except ValueError:
+            return render(request,'new_nacionalidad.html', {
+                'form': NacForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_nacionalidad(request,nac_id):
+    nac = get_object_or_404(Nacionalidad,pk=nac_id)
+    if request.method == 'GET':
+        form = NacForm(instance=nac)
+        return render(request,'act_nacionalidad.html', {'orgmed': nac,'form': form})
+    else:
+        try:
+            form = NacForm(request.POST,instance=nac)
+            form.save()
+            messages.success(request,"Nacionalidad actualizada con exito")
+            return redirect('nacionalidades')
+        except ValueError:
+            return render(request,'act_nacionalidad.html', {'orgmed': nac,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

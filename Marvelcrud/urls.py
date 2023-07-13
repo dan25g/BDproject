@@ -118,5 +118,9 @@ urlpatterns = [
     path('orgmedio/crear',views.new_orgmedio,name='new_orgmedio'),
     path('orgmedio/<int:om_id>/eli',views.elimina_orgmedio,name='orgmedio_eli'),
     path('orgmedio/<int:om_id>/act',views.actualiza_orgmedio,name='orgmedio_act'),
+    path('nacionalidades/',views.Nacionalidades,name='nacionalidades'),
+    path('nacionalidades/crear',views.new_nacionalidad,name='new_nacionalidad'),
+    path('nacionalidades/<int:nac_id>/eli',views.elimina_nacionalidad,name='nacionalidad_eli'),
+    path('nacionalidades/<int:nac_id>/act',views.actualiza_nacionalidad,name='nacionalidad_act'),
 ]
 

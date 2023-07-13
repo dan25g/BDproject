@@ -306,8 +306,8 @@ class Juego(models.Model):
 class Nacionalidad(models.Model):
     id_nacion = models.AutoField(primary_key=True)
     personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING) 
-    nacion_nombre = models.CharField(max_length=20)
-    nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
+    nacion_nombre = models.CharField('Nombre del pais',max_length=20)
+    nacion_continente = models.CharField('Continente de la nación',choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
 
     class Meta:
         managed = False
@@ -344,7 +344,7 @@ class Objeto(models.Model):
 class Ocupacion(models.Model):
     id_ocupacion = models.AutoField(primary_key=True)
     personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING)
-    ocupa_nombre = models.CharField(max_length=20)
+    ocupa_nombre = models.CharField('Ocupación del personaje',max_length=20)
 
     class Meta:
         managed = False

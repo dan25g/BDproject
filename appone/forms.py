@@ -279,3 +279,32 @@ class OrgMedForm(forms.ModelForm):
             'fk_org_med' : forms.Select(attrs={'class':'form-control','placeholder':'Nombre de la organización'}),
             'estado' : forms.Select(attrs={'class':'form-control','placeholder':'Estado de la organización'}),
         } 
+
+class NacForm(forms.ModelForm):
+    class Meta:
+        model = Nacionalidad
+        fields = ['personaje_id_nac','nacion_nombre','nacion_continente']
+        widgets = {
+            'personaje_id_nac' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'nacion_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de la Nación'}),
+            'nacion_continente' : forms.Select(attrs={'class':'form-control','placeholder':'Continente de la nación'}),
+        } 
+
+class OcuForm(forms.ModelForm):
+    class Meta:
+        model = Ocupacion
+        fields = ['personaje_id_ocu','ocupa_nombre']
+        widgets = {
+            'personaje_id_ocu' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'ocupa_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ocupación del personaje'}),
+        } 
+
+class CreForm(forms.ModelForm):
+    class Meta:
+        model = Creador
+        fields = ['personaje_id_cre','creador_nombre','creador_apellido']
+        widgets = {
+            'personaje_id_cre' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'creador_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del creador'}),
+            'creador_apellido' : forms.TextInput(attrs={'class':'form-control','placeholder':'Apellido del creador'}),
+        } 

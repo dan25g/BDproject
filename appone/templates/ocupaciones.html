@@ -18,10 +18,10 @@
             <div>
                 {% if user.es_admin %}
                 <a href="{% url 'ocupacion_act' ocu.id_ocupacion %}">
-                    <button class="btn btn-warning mb-3 ms-2">Actualizar Nacionalidad</button>
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Ocupación</button>
                 </a>  
                 <a href="{% url 'ocupacion_eli' ocu.id_ocupacion %}" class="btn btn-danger mb-3 ms-4 btnEli">
-                    Eliminar Nacionalidad
+                    Eliminar Ocupación
                 </a>
                 {% endif %}
             </div>
@@ -29,7 +29,7 @@
         </ul>
         {% if user.es_admin %}
         <a href="{% url 'new_ocupacion' %}">
-            <button class="btn btn-success ">Nueva Nacionalidad</button>
+            <button class="btn btn-success ">Nueva Ocupación</button>
         </a>
         {% endif %}
         </div>

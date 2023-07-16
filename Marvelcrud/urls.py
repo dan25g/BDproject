@@ -126,5 +126,10 @@ urlpatterns = [
     path('ocupaciones/crear',views.new_ocupacion,name='new_ocupacion'),
     path('ocupaciones/<int:ocu_id>/eli',views.elimina_ocupacion,name='ocupacion_eli'),
     path('ocupaciones/<int:ocu_id>/act',views.actualiza_ocupacion,name='ocupacion_act'),
+    path('creadores/',views.Creadores,name='creadores'),
+    path('creadores/crear',views.new_creador,name='new_creador'),
+    path('creadores/<int:cre_id>/eli',views.elimina_creador,name='creador_eli'),
+    path('creadores/<int:cre_id>/act',views.actualiza_creador,name='creador_act'),
+
 ]
 

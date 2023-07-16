@@ -1495,3 +1495,51 @@ def actualiza_ocupacion(request,ocu_id):
             return redirect('ocupaciones')
         except ValueError:
             return render(request,'act_ocupacion.html', {'ocupa': ocu,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def Creadores(request):
+    cre = Creador.objects.all()
+    return render(request,'creadores.html',{
+        'cread':cre,
+    })
+
+@login_required
+def elimina_creador(request,cre_id):
+    cre = get_object_or_404(Creador,pk=cre_id)
+    cre.delete()
+    messages.success(request,"Creador eliminado con exito")
+    return redirect('creadores')
+
+@login_required
+def new_creador(request):
+    if request.method == 'GET':
+        return render(request,'new_creador.html', {
+            'form': CreForm,          
+        })
+    else:
+        try:
+            form = CreForm(request.POST)
+            NewCre = form.save(commit=False)
+            NewCre.save()
+            messages.success(request,"Creador registrado con exito")
+            return redirect('creadores')
+        except ValueError:
+            return render(request,'new_creador.html', {
+                'form': CreForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_creador(request,cre_id):
+    cre = get_object_or_404(Creador,pk=cre_id)
+    if request.method == 'GET':
+        form = CreForm(instance=cre)
+        return render(request,'act_creador.html', {'crea': cre,'form': form})
+    else:
+        try:
+            form = CreForm(request.POST,instance=cre)
+            form.save()
+            messages.success(request,"Creador actualizado con exito")
+            return redirect('creadores')
+        except ValueError:
+            return render(request,'act_creador.html', {'crea': cre,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 

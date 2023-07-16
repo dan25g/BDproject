@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+        <h1 class="fw-bold"> {{permed.fk_pers_med.primer_nombre}} {{permed.fk_pers_med.primer_apellido}} en {{permed.fk_med_pers.medionombre}} </h1>
+        <form method="POST">
+            {% csrf_token %} 
+            {{form.as_p}}
+            <button class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

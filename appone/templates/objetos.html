@@ -17,18 +17,22 @@
                         <p>Descripción: {{objeto.objdescripcion}}</p>
             </a>
             <div>
+                {% if user.es_admin %}
                 <a href="{% url 'objeto_act' objeto.obid %}">
                     <button class="btn btn-warning mb-3 ms-2">Actualizar Objeto</button>
                 </a>
-                <a href="{% url 'objeto_eli' objeto.obid %}">
-                    <button class="btn btn-danger mb-3 ms-4">Eliminar Objeto</button>
+                <a href="{% url 'objeto_eli' objeto.obid %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Objeto
                 </a>
+                {% endif %}
             </div>
         {% endfor %}
         </ul>
+        {% if user.es_admin %}
         <a href="{% url 'new_objeto' %}">
             <button class="btn btn-success mb-3 ">Nuevo Objeto</button>
         </a>
+        {% endif %}
         </div>
     </div>
 </main>

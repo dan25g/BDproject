@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from appone import views
 
-from appone.views import Index, exportReport1, exportReport21, exportReport3
+from appone.views import Index, exportReport1, exportReport21, exportReport3, exportReport4
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -64,6 +64,7 @@ urlpatterns = [
     path('export_reporte_1/', exportReport1, name='export_reporte1'),
     path('export_reporte_2/', exportReport21, name='export_reporte2'),
     path('export_reporte_3/', exportReport3, name='export_reporte3'),
+    path('export_reporte_4/', exportReport4, name='export_reporte4'),
     path('sedes/',views.sedes,name='sedes'),
     path('sedes/crear',views.new_sede,name='new_sede'),
     path('sedes/<int:sed_id>/act',views.actualiza_sede,name='sede_act'),
@@ -80,7 +81,55 @@ urlpatterns = [
     path('lista/<int:med_id>/cal',views.lg_calificar,name='lg_calificar'),
     path('lista/<int:med_id>/eli',views.lg_eliminar,name='lg_eli'),
     path('lista/<int:med_id>/guardar',views.lg_guardar,name='lg_guardar'),
+    path('combates/',views.combates,name='combates'),
+    path('combates/crear',views.new_combate,name='new_combate'),
+    path('combates/<int:cmb_id>/eli',views.cmb_elimina,name='combate_eli'),
+    path('combates/<int:cmb_id>/act',views.actualiza_combate,name='combate_act'),
     path('recomendaciones/',views.recom_menu,name='recomendaciones'),
-    
+    path('recomendaciones/mejores',views.recom_mejores,name='recom_mejores'),
+    path('recomendaciones/nuevas',views.recom_nuevas,name='recom_nuevas'),
+    path('recomendaciones/perfavs',views.recom_perfavs,name='recom_perfavs'),
+    path('recomendaciones/orgfavs',views.recom_orgfavs,name='recom_orgfavs'),
+    path('actividad/',views.actividad_admin,name='actividades'),
+    path('amistades/',views.amistades,name='amistades'),
+    path('amistades/crear',views.new_amistad,name='new_amistad'),
+    path('amistades/<int:ami_id>/eli',views.elimina_amistad,name='amistad_eli'),
+    path('matrimonio/',views.matrimonios,name='matrimonios'),
+    path('matrimonio/crear',views.new_matrimonio,name='new_matrimonio'),
+    path('matrimonio/<int:mat_id>/eli',views.elimina_matrimonio,name='matrimonio_eli'),
+    path('matrimonio/<int:mat_id>/act',views.actualiza_matrimonio,name='matrimonio_act'),
+    path('histpersonaje/',views.Histpersonajes,name='histpersonajes'),
+    path('histpersonaje/crear',views.new_histpersonaje,name='new_histpersonaje'),
+    path('histpersonaje/<int:hit_id>/eli',views.elimina_histpersonaje,name='histpersonaje_eli'),
+    path('histpersonaje/<int:hit_id>/act',views.actualiza_histpersonaje,name='histpersonaje_act'),
+    path('perpoder/',views.Perpoderes,name='perpoderes'),
+    path('perpoder/crear',views.new_perpoder,name='new_perpoder'),
+    path('perpoder/<int:pp_id>/eli',views.elimina_perpoder,name='perpoder_eli'),
+    path('perpoder/<int:pp_id>/act',views.actualiza_perpoder,name='perpoder_act'),  
+    path('perobjeto/',views.Perobjetos,name='perobjetos'),
+    path('perobjeto/crear',views.new_perobjeto,name='new_perobjeto'),
+    path('perobjeto/<int:po_id>/eli',views.elimina_perobjeto,name='perobjeto_eli'),
+    path('perobjeto/<int:po_id>/act',views.actualiza_perobjeto,name='perobjeto_act'),
+    path('permedio/',views.Permedios,name='permedios'),
+    path('permedio/crear',views.new_permedio,name='new_permedio'),
+    path('permedio/<int:pm_id>/eli',views.elimina_permedio,name='permedio_eli'),
+    path('permedio/<int:pm_id>/act',views.actualiza_permedio,name='permedio_act'),
+    path('orgmedio/',views.Orgmedios,name='orgmedios'),
+    path('orgmedio/crear',views.new_orgmedio,name='new_orgmedio'),
+    path('orgmedio/<int:om_id>/eli',views.elimina_orgmedio,name='orgmedio_eli'),
+    path('orgmedio/<int:om_id>/act',views.actualiza_orgmedio,name='orgmedio_act'),
+    path('nacionalidades/',views.Nacionalidades,name='nacionalidades'),
+    path('nacionalidades/crear',views.new_nacionalidad,name='new_nacionalidad'),
+    path('nacionalidades/<int:nac_id>/eli',views.elimina_nacionalidad,name='nacionalidad_eli'),
+    path('nacionalidades/<int:nac_id>/act',views.actualiza_nacionalidad,name='nacionalidad_act'),
+    path('ocupaciones/',views.Ocupaciones,name='ocupaciones'),
+    path('ocupaciones/crear',views.new_ocupacion,name='new_ocupacion'),
+    path('ocupaciones/<int:ocu_id>/eli',views.elimina_ocupacion,name='ocupacion_eli'),
+    path('ocupaciones/<int:ocu_id>/act',views.actualiza_ocupacion,name='ocupacion_act'),
+    path('creadores/',views.Creadores,name='creadores'),
+    path('creadores/crear',views.new_creador,name='new_creador'),
+    path('creadores/<int:cre_id>/eli',views.elimina_creador,name='creador_eli'),
+    path('creadores/<int:cre_id>/act',views.actualiza_creador,name='creador_act'),
+
 ]
 

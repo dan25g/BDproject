@@ -25,21 +25,25 @@
                 {% endif %}
             {% endfor %}    
         <div>
+            {% if user.es_admin %}
             <a href="{% url 'juego_act' jue.medio_id %}">
                 <button class="btn btn-warning mb-3 ms-2">Actualizar Juego</button>
             </a>
-            <a href="{% url 'juego_eli' jue.medio_id %}">
-                <button class="btn btn-danger mb-3 ms-4">Eliminar Juego</button>
+            <a href="{% url 'juego_eli' jue.medio_id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                Eliminar Juego
             </a>
+            {% endif %}
             <a href="{% url 'lg_guardar' jue.medio_id %}">
                 <button class="btn btn-info mb-3 ms-4">Agregar a la Lista</button>
             </a>
         </div>
         {% endfor %}
         </ul>
+        {% if user.es_admin %}
         <a href="{% url 'new_juego' %}">
             <button class="btn btn-success ">Nuevo Juego</button>
         </a>
+        {% endif %}
         </div>
     </div>
 </main>

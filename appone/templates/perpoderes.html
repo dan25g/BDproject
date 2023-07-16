@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Registro de poder del personaje</strong></h1>
+        <ul class="list-group ">
+        {% for pp in perspod %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">Registro Nro {{pp.id}} </h1>
+                </header>
+                <h2>{{pp.fk_pers_pod.primer_nombre}} {{pp.fk_pers_pod.primer_apellido}}</h2>
+                <p> Tiene </p>
+                <h2>{{pp.fk_pod_pers.ponombre}}</h2>
+                {% if pp.hereditario %}
+                    <h3>Es heredado</h3>
+                {% endif %}
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'perpoder_act' pp.id %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Registro</button>
+                </a>  
+                <a href="{% url 'perpoder_eli' pp.id %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Registro
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_perpoder' %}">
+            <button class="btn btn-success ">Nueva Registro</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

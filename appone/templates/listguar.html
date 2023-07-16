@@ -13,15 +13,15 @@
                     <h1 class="fw-bold">{{med.fk_med_perf}} </h1>
                     <h6>Vista en: {{med.fecha_vista}}</h6>
                 </header>
-                <h3>Calificacion: {{med.calificacion}}</h3>
+                <h3>Calificacion de Perfil: {{med.calificacion}}</h3>
                 <h2>{{med.fk_med_perf.tipomed}}</h2>
             </a>  
         <div>
             <a href="{% url 'lg_calificar' med.id %}">
                 <button class="btn btn-warning mb-3 ms-2">Cambiar Calificacion</button>
             </a>
-            <a href="{% url 'lg_eli' med.id %}">
-                <button class="btn btn-danger mb-3 ms-4">Quitar de la lista</button>
+            <a href="{% url 'lg_eli' med.id %}"class="btn btn-danger mb-3 ms-4 btnEli">
+                Quitar de la lista
             </a>
         </div>
         {% endfor %}

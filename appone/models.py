@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
-
+#lista
 class Suscripcion(models.Model):
     susid = models.AutoField(primary_key=True)
     sustipo = models.CharField(max_length=10)
@@ -51,7 +51,7 @@ class UsuarioManager(BaseUserManager):
         Usuario.save()
         return Usuario
     
-    
+    #lista
 class Usuario(AbstractBaseUser):
     username = models.CharField('Identificador del usuario',primary_key=True, max_length=15)
     nombreu = models.CharField('Nombre del usuario',null=False,blank=False,max_length=20)
@@ -91,7 +91,7 @@ class Usuario(AbstractBaseUser):
         managed = False
         db_table =u'"infousuarios\".\"usuario"'
 
-
+#lista
 class Perfil(models.Model):
     per_id = models.AutoField(primary_key=True)
     idioma = models.CharField(max_length=10)
@@ -102,18 +102,18 @@ class Perfil(models.Model):
     class Meta:
         managed = False
         db_table =u'"infousuarios\".\"perfil"'
-
+#lista
 class Actividad(models.Model):
     act_id = models.AutoField(primary_key=True)
     act_ingreso = models.DateTimeField()
-    act_dispositivo = models.CharField(max_length=10, default='PC')
+    act_dispositivo = models.CharField(max_length=30)
     act_fin = models.DateTimeField()
     fk_perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
         db_table =u'"infousuarios\".\"actividad"'
-
+#lista
 class Beneficio(models.Model):
     benid = models.AutoField(primary_key=True)
     bendescripcion = models.CharField(max_length=50)
@@ -123,7 +123,7 @@ class Beneficio(models.Model):
         db_table =u'"infousuarios\".\"beneficio"'
 
 
-
+#lista
 class SuscripcionBeneficio(models.Model):
     fk_ben_sus = models.ForeignKey(Beneficio, models.DO_NOTHING,primary_key=True)  
     fk_sus_ben = models.ForeignKey(Suscripcion, models.DO_NOTHING)
@@ -133,7 +133,7 @@ class SuscripcionBeneficio(models.Model):
         db_table =u'"infousuarios\".\"suscripcion_beneficio"'
         unique_together = (('fk_ben_sus', 'fk_sus_ben'),)
 
-
+#lista
 class Tarjetacredito(models.Model):
     tdcnumero = models.BigIntegerField('Numero de la tarjeta',primary_key=True,blank=False,null=False)
     tdcfecvencimiento = models.DateField('Fecha de vencimiento de la tarjeta',blank=False,null=False)
@@ -143,7 +143,7 @@ class Tarjetacredito(models.Model):
     class Meta:
         managed = False
         db_table =u'"infousuarios\".\"tarjetacredito"'
-
+#lista
 class Personaje(models.Model):
     personaje_id = models.AutoField(primary_key=True)
     genc = models.CharField('Sexo del personaje',null=False,blank=False,choices=[('M','Masculino'),('F','Femenino'),('Desc','Desconocido'),('Otro','Otro')])
@@ -160,26 +160,31 @@ class Personaje(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"personaje"'
-
+    
+    def __str__(self):
+        return f"{self.personaje_id} - {self.primer_nombre} {self.primer_apellido}"
+#lista
 class Civil(models.Model):
     personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"civil"'
-
-
+    def __str__(self):
+        return f"{self.personaje.personaje_id} - {self.personaje.primer_nombre} {self.personaje.primer_apellido}"
+#lista
 class Amistad(models.Model):
-    id_civil = models.OneToOneField(Civil, models.DO_NOTHING,primary_key=True)  
-    id_amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
+    civil = models.ForeignKey(Civil, models.DO_NOTHING)  
+    amispers = models.ForeignKey(Personaje, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"amistad"'
-        unique_together = (('id_civil', 'id_amispers'),)
+        unique_together = (('civil', 'amispers'),)
 
 
-
+#lista
 class Combate(models.Model):
     cmbid = models.AutoField(primary_key=True)
     cmblugar = models.CharField(max_length=20)
@@ -188,10 +193,12 @@ class Combate(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"combate"'
 
-
+    def __str__(self):
+        return f"Combate Nro {self.cmbid}"
+#FALTA
 class Creador(models.Model):
-    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)  
-    id_creador = models.IntegerField()
+    id_creador = models.AutoField(primary_key=True)
+    personaje_id_cre = models.ForeignKey(Personaje, models.DO_NOTHING)  
     creador_nombre = models.CharField(max_length=20)
     creador_apellido = models.CharField(max_length=20)
 
@@ -200,7 +207,7 @@ class Creador(models.Model):
         db_table =u'"infopersonajes\".\"creador"'
         unique_together = (('personaje_id_cre', 'id_creador'),)
 
-
+#lista
 class Heroe(models.Model):
     personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_superheroe = models.CharField(max_length=20)
@@ -214,9 +221,10 @@ class Heroe(models.Model):
     def __str__(self):
         return f"{self.personaje.personaje_id} - {self.nombre_superheroe}"
 
-
+#lista
 class HistoricoMatrimonio(models.Model):
-    id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    id_pers_conyug1 = models.ForeignKey(Personaje, models.DO_NOTHING) 
     id_pers_conyug2 = models.ForeignKey(Civil, models.DO_NOTHING,)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
@@ -225,7 +233,7 @@ class HistoricoMatrimonio(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"historico_matrimonio"'
         unique_together = (('id_pers_conyug1', 'id_pers_conyug2', 'fecha_inicio'),)
-
+#lista
 class Organizacion(models.Model):
     id_organizacion = models.AutoField(primary_key=True)
     org_nombre = models.CharField('Nombre de la organizacion',max_length=40)
@@ -241,20 +249,21 @@ class Organizacion(models.Model):
         
     def __str__(self):
         return f"{self.id_organizacion} - {self.org_nombre}"
-
+#lista
 class HistoricoPersonaje(models.Model):
-    fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING, primary_key=True) 
-    fk_org_pers = models.OneToOneField(Organizacion, models.DO_NOTHING, blank=True, null=True)
-    fundador = models.BooleanField()
-    lider = models.BooleanField()
-    fecha_union = models.DateField()
-    fecha_salida = models.DateField(blank=True, null=True)
+    id = models.AutoField(primary_key=True)
+    fk_pers_org = models.ForeignKey(Personaje, models.DO_NOTHING) 
+    fk_org_pers = models.ForeignKey(Organizacion, models.DO_NOTHING, blank=False, null=False)
+    fundador = models.BooleanField('¿Fundó la organización?')
+    lider = models.BooleanField('¿Lideró la organización?')
+    fecha_union = models.DateField('Fecha de unión a la organización', blank=False, null=False)
+    fecha_salida = models.DateField('Fecha de salida de la organización',blank=True, null=True)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"historico_personaje"'
         unique_together = (('fk_pers_org', 'fk_org_pers', 'fecha_union'),)
-
+#lista
 class Medio(models.Model):
     medio_id = models.AutoField(primary_key=True)
     medfecestreno = models.DateField('Fecha de estreno',null=False,blank=False)
@@ -271,7 +280,7 @@ class Medio(models.Model):
 
     def __str__(self):
         return f"{self.medionombre}"
-
+#lista
 class Jueplataforma(models.Model):
     id_plataforma = models.AutoField(primary_key=True)
     plataforma = models.CharField(max_length=20)
@@ -282,7 +291,7 @@ class Jueplataforma(models.Model):
 
     def __str__(self):
         return f"{self.id_plataforma} - {self.plataforma}"
-
+#lista
 class Juego(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
     medtipo = models.CharField('Tipo de Juego',choices=[('accion','accion'),('aventura','aventura'),('estrategia','estrategia'),('rpg','rpg'),('mundo abierto','mundo abierto'),('simulacion','simulacion')])
@@ -293,18 +302,18 @@ class Juego(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"juego"'
 
-
+#lista
 class Nacionalidad(models.Model):
-    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True) 
-    id_nacion = models.IntegerField()
-    nacion_nombre = models.CharField(max_length=20)
-    nacion_continente = models.CharField(choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
+    id_nacion = models.AutoField(primary_key=True)
+    personaje_id_nac = models.ForeignKey(Personaje, models.DO_NOTHING) 
+    nacion_nombre = models.CharField('Nombre del pais',max_length=20)
+    nacion_continente = models.CharField('Continente de la nación',choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"nacionalidad"'
         unique_together = (('personaje_id_nac', 'id_nacion'),)
-
+#lista
 class Tipoobj(models.Model):
     idtipo = models.AutoField(primary_key=True)
     tipo_nombre = models.CharField(max_length=20)
@@ -316,7 +325,7 @@ class Tipoobj(models.Model):
 
     def __str__(self):
         return f"{self.idtipo} - {self.tipo_nombre}"
-
+#lista
 class Objeto(models.Model):
     obid = models.AutoField(primary_key=True)
     objnombre = models.CharField('Nombre del Objeto',max_length=50)
@@ -331,28 +340,29 @@ class Objeto(models.Model):
     def __str__(self):
         return f"{self.obid} - {self.objnombre}"
 
-
+#FALTA
 class Ocupacion(models.Model):
-    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
-    id_ocupacion = models.IntegerField()
-    ocupa_nombre = models.CharField(max_length=20)
+    id_ocupacion = models.AutoField(primary_key=True)
+    personaje_id_ocu = models.ForeignKey(Personaje, models.DO_NOTHING)
+    ocupa_nombre = models.CharField('Ocupación del personaje',max_length=20)
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"ocupacion"'
         unique_together = (('personaje_id_ocu', 'id_ocupacion'),)
-
+#lista
 class OrganizacionMedio(models.Model):
-    fk_med_org = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    fk_med_org = models.ForeignKey(Medio, models.DO_NOTHING) 
     fk_org_med = models.ForeignKey(Organizacion, models.DO_NOTHING)
-    estado = models.CharField(max_length=20)
+    estado = models.CharField('Estado de la organización',choices=[('Desconocido','Desconocido'),('Activa','Activa'),('Inactiva','Inactiva'),('Disuelta','Disuelta')])
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"organizacion_medio"'
         unique_together = (('fk_med_org', 'fk_org_med'),)
 
-
+#lista
 class Pelicula(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
     medtipo = models.CharField('Tipo de pelicula',choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')],max_length=20)
@@ -364,7 +374,7 @@ class Pelicula(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"pelicula"'        
-
+#lista
 class PerfilMedio(models.Model):
     id = models.AutoField(primary_key=True)
     fk_perf_med = models.ForeignKey(Perfil, models.DO_NOTHING)  
@@ -377,22 +387,24 @@ class PerfilMedio(models.Model):
         db_table =u'"infousuarios\".\"perfil_medio"'
         unique_together = (('fk_perf_med', 'fk_med_perf'),)
 
-
+#lista
 class PersonajeMedio(models.Model):
-    fk_med_pers = models.OneToOneField(Medio, models.DO_NOTHING,primary_key=True)  
+    id = models.AutoField(primary_key=True)
+    fk_med_pers = models.ForeignKey(Medio, models.DO_NOTHING)  
     fk_pers_med = models.ForeignKey(Personaje, models.DO_NOTHING)
-    actor_tipo = models.CharField()
-    actor_nombre = models.CharField(max_length=40)
-    personaje_tipo = models.CharField(choices=[('Antagonista','Antagonista'),('Protagonista','Protagonista'),('Secundario','Secundario')])
+    actor_tipo = models.CharField('Rol del actor',choices=[('Interpreta','Interpreta'),('Presta su voz','Presta su voz')])
+    actor_nombre = models.CharField('Nombre del Actor',max_length=40,null=False,blank=False)
+    personaje_tipo = models.CharField('Rol del Personaje',choices=[('Antagonista','Antagonista'),('Protagonista','Protagonista'),('Secundario','Secundario')])
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"personaje_medio"'
         unique_together = (('fk_med_pers', 'fk_pers_med'),)
 
-
+#lista
 class PersonajeObjeto(models.Model):
-    fk_obj_pers = models.OneToOneField(Objeto, models.DO_NOTHING, primary_key=True) 
+    id = models.AutoField(primary_key=True)
+    fk_obj_pers = models.ForeignKey(Objeto, models.DO_NOTHING) 
     fk_pers_obj = models.ForeignKey(Personaje, models.DO_NOTHING)
     hereditario = models.BooleanField()
 
@@ -401,18 +413,7 @@ class PersonajeObjeto(models.Model):
         db_table =u'"infopersonajes\".\"personaje_objeto"'
         unique_together = (('fk_obj_pers', 'fk_pers_obj'),)
 
-
-class PersonajePoder(models.Model):
-    fk_pod_pers = models.OneToOneField('Poder', models.DO_NOTHING, primary_key=True)  
-    fk_pers_pod = models.ForeignKey(Personaje, models.DO_NOTHING)
-    hereditario = models.BooleanField()
-
-    class Meta:
-        managed = False
-        db_table =u'"infopersonajes\".\"personaje_poder"'
-        unique_together = (('fk_pod_pers', 'fk_pers_pod'),)
-
-
+#lista
 class Poder(models.Model):
     podid = models.AutoField(primary_key=True)
     ponombre = models.CharField('Nombre del Poder',max_length=30)
@@ -422,21 +423,38 @@ class Poder(models.Model):
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"poder"'
+    
+    def __str__(self):
+        return f"{self.podid} - {self.ponombre}"
+
+#lista
+class PersonajePoder(models.Model):
+    id = models.AutoField(primary_key=True)
+    fk_pod_pers = models.OneToOneField(Poder, models.DO_NOTHING,related_name='Poder',)  
+    fk_pers_pod = models.ForeignKey(Personaje, models.DO_NOTHING,related_name='Personaje')
+    hereditario = models.BooleanField('¿Es heredado?')
+
+    class Meta:
+        managed = False
+        db_table =u'"infopersonajes\".\"personaje_poder"'
+        unique_together = (('fk_pod_pers', 'fk_pers_pod'),)
 
 
+#lista
 class RegistroCombates(models.Model):
-    fk_cmb_reg = models.ForeignKey(Combate, models.DO_NOTHING,primary_key=True)
+    id = models.AutoField(primary_key=True)
+    fk_cmb_reg = models.ForeignKey(Combate, models.DO_NOTHING)
     fk_obj_reg = models.ForeignKey(Objeto, models.DO_NOTHING)
     id_pers_reg = models.ForeignKey(Personaje, models.DO_NOTHING)
     id_pod_reg = models.ForeignKey(Poder, models.DO_NOTHING)
-    cmbfecha = models.DateField()
+    cmbfecha = models.DateField("Fecha de Combate")
 
     class Meta:
         managed = False
         db_table =u'"infopersonajes\".\"registro_combates"'
         unique_together = (('fk_cmb_reg', 'fk_obj_reg', 'id_pers_reg', 'id_pod_reg', 'cmbfecha'),)
 
-
+#lista
 class Sede(models.Model):
     id_sede = models.AutoField(primary_key=True)
     sede_nombre = models.CharField('Nombre de la sede',max_length=20)
@@ -448,7 +466,7 @@ class Sede(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"sede"'
 
-
+#lista
 class Serie(models.Model):
     medio = models.OneToOneField(Medio, models.DO_NOTHING, primary_key=True)
     medtipo = models.CharField('Tipo de serie',choices=[('animada','animada'),('liveaction','liveaction'),('stopmotion','stopmotion')])
@@ -459,7 +477,7 @@ class Serie(models.Model):
     class Meta:
         managed = False
         db_table = 'serie'
-
+#lista
 class Villano(models.Model):
     personaje = models.OneToOneField(Personaje, models.DO_NOTHING, primary_key=True)
     nombre_supervillano = models.CharField('nombre de villano',max_length=20)

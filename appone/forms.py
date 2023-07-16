@@ -128,7 +128,7 @@ class JuegoForm(forms.ModelForm):
         fields = ['medtipo','juegocompania','fk_plataforma']
         widgets = {
             'medtipo' : forms.Select(attrs={'class':'form-control','placeholder':'Tipo de Juego'}),
-            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Comapañia desarrolladora del juego'}),
+            'juegocompania' : forms.TextInput(attrs={'class':'form-control','placeholder':'Compañia desarrolladora del juego'}),
             'fk_plataforma' : forms.Select(attrs={'class':'form-control','placeholder':'Plataforma del juego'}),
         } 
         
@@ -183,4 +183,128 @@ class CalMedioForm(forms.ModelForm):
         fields = ['calificacion']
         widgets = {
             'calificacion' : forms.Select(attrs={'class':'form-control','placeholder':'Calificacion del medio del perfil'}),
+        } 
+
+class CombateForm(forms.ModelForm):
+    class Meta:
+        model = Combate
+        fields = ['cmblugar']
+        widgets = {
+            'cmblugar' : forms.TextInput(attrs={'class':'form-control','placeholder':'Lugar del combate'}),
+        } 
+
+class CmbRegForm(forms.ModelForm):
+    class Meta:
+        model = RegistroCombates
+        fields = ['fk_obj_reg','id_pers_reg','id_pod_reg','cmbfecha']
+        widgets = {
+            'fk_obj_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Objeto'}),
+            'id_pers_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'id_pod_reg' : forms.Select(attrs={'class':'form-control','placeholder':'Poder'}),
+            'cmbfecha' : forms.DateInput(attrs={'class':'date','label':'Fecha del combate','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+        } 
+
+
+class AmistadForm(forms.ModelForm):
+    class Meta:
+        model = Amistad
+        fields = ['civil','amispers']
+        widgets = {
+            'civil' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
+            'amispers' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+        } 
+
+class MatrimonioForm(forms.ModelForm):
+    class Meta:
+        model = HistoricoMatrimonio
+        fields = ['id_pers_conyug1','id_pers_conyug2','fecha_inicio', 'fecha_fin']
+        widgets = {
+            'id_pers_conyug1' : forms.Select(attrs={'class':'form-control','placeholder':'Civil'}),
+            'id_pers_conyug2' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'fecha_inicio' : forms.DateInput(attrs={'class':'date','label':'Fecha de inicio de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'fecha_fin' : forms.DateInput(attrs={'class':'date','label':'Fecha de fin de matrimonio','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+        } 
+
+class HistPersonajeForm(forms.ModelForm):
+    class Meta:
+        model = HistoricoPersonaje
+        fields = ['fk_pers_org','fk_org_pers','fundador', 'lider','fecha_union','fecha_salida']
+        widgets = {
+            'fk_pers_org' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'fk_org_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Organización'}),
+            'fundador' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Fundó la organización?'}),
+            'lider' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Lideró la organización?'}),
+            'fecha_union' : forms.DateInput(attrs={'class':'date','label':'Fecha de unión a la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+            'fecha_salida' : forms.DateInput(attrs={'class':'date','label':'Fecha de salida de la organización','type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)'}),
+        } 
+
+class PerPodForm(forms.ModelForm):
+    class Meta:
+        model = PersonajePoder
+        fields = ['fk_pod_pers','fk_pers_pod','hereditario']
+        widgets = {
+            'fk_pod_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Poder'}),
+            'fk_pers_pod' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
+        } 
+
+class PerObjForm(forms.ModelForm):
+    class Meta:
+        model = PersonajeObjeto
+        fields = ['fk_obj_pers','fk_pers_obj','hereditario']
+        widgets = {
+            'fk_obj_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Objeto'}),
+            'fk_pers_obj' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'hereditario' : forms.CheckboxInput(attrs={'class':'checkbox-inline form-check-input mb-3 ms-4','placeholder':'¿Es hereditario?'}),
+        } 
+
+class PerMedForm(forms.ModelForm):
+    class Meta:
+        model = PersonajeMedio
+        fields = ['fk_med_pers','fk_pers_med','actor_tipo','actor_nombre','personaje_tipo']
+        widgets = {
+            'fk_med_pers' : forms.Select(attrs={'class':'form-control','placeholder':'Medio'}),
+            'fk_pers_med' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'actor_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del Actor'}),
+            'actor_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Actor'}),
+            'personaje_tipo' : forms.Select(attrs={'class':'form-control','placeholder':'Rol del Personaje'}),
+        } 
+
+class OrgMedForm(forms.ModelForm):
+    class Meta:
+        model = OrganizacionMedio
+        fields = ['fk_med_org','fk_org_med','estado']
+        widgets = {
+            'fk_med_org' : forms.Select(attrs={'class':'form-control','placeholder':'Medio'}),
+            'fk_org_med' : forms.Select(attrs={'class':'form-control','placeholder':'Nombre de la organización'}),
+            'estado' : forms.Select(attrs={'class':'form-control','placeholder':'Estado de la organización'}),
+        } 
+
+class NacForm(forms.ModelForm):
+    class Meta:
+        model = Nacionalidad
+        fields = ['personaje_id_nac','nacion_nombre','nacion_continente']
+        widgets = {
+            'personaje_id_nac' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'nacion_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre de la Nación'}),
+            'nacion_continente' : forms.Select(attrs={'class':'form-control','placeholder':'Continente de la nación'}),
+        } 
+
+class OcuForm(forms.ModelForm):
+    class Meta:
+        model = Ocupacion
+        fields = ['personaje_id_ocu','ocupa_nombre']
+        widgets = {
+            'personaje_id_ocu' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'ocupa_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ocupación del personaje'}),
+        } 
+
+class CreForm(forms.ModelForm):
+    class Meta:
+        model = Creador
+        fields = ['personaje_id_cre','creador_nombre','creador_apellido']
+        widgets = {
+            'personaje_id_cre' : forms.Select(attrs={'class':'form-control','placeholder':'Personaje'}),
+            'creador_nombre' : forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del creador'}),
+            'creador_apellido' : forms.TextInput(attrs={'class':'form-control','placeholder':'Apellido del creador'}),
         } 

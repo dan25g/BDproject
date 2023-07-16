@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Objetos</strong></h1>
+        <ul class="list-group ">
+        {% for act in actividad %}
+            <a class="list-group-item mb-4">
+                        <header class="d-flex justify-content-between">
+                            <h1 class="fw-bold">Actividad de {{act.fk_perfil.fk_usuario.username}} </h1>
+                            <h5 class="mb-3 ms-4">Desde: {{act.act_dispositivo}}</h5>
+                        </header>
+                        <h6>Ingresó: {{act.act_ingreso}}</h6>
+                        <h6>Salió: {{act.act_fin}}</h6>
+            </a>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

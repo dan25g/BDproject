@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+        <h1 class="text-center display-3 py-5"><strong>Nacionalidades</strong></h1>
+        <ul class="list-group ">
+        {% for nac in naciones %}
+            <a class="list-group-item mb-4">
+                <header class="d-flex justify-content-between">
+                    <h1 class="fw-bold">{{nac.personaje_id_nac.primer_nombre}} {{nac.personaje_id_nac.primer_apellido}}</h1>
+                </header>
+                <h2>Es de</h2>
+                <h1>{{nac.nacion_nombre}}</h1>
+                <h2>Continente: {{nac.nacion_continente}}</h2>
+            </a>
+            <div>
+                {% if user.es_admin %}
+                <a href="{% url 'nacionalidad_act' nac.id_nacion %}">
+                    <button class="btn btn-warning mb-3 ms-2">Actualizar Nacionalidad</button>
+                </a>  
+                <a href="{% url 'nacionalidad_eli' nac.id_nacion %}" class="btn btn-danger mb-3 ms-4 btnEli">
+                    Eliminar Nacionalidad
+                </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        {% if user.es_admin %}
+        <a href="{% url 'new_nacionalidad' %}">
+            <button class="btn btn-success ">Nueva Nacionalidad</button>
+        </a>
+        {% endif %}
+        </div>
+    </div>
+</main>
+
+
+
+
+{% endblock %}

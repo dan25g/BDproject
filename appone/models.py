@@ -198,7 +198,7 @@ class Combate(models.Model):
 #FALTA
 class Creador(models.Model):
     id_creador = models.AutoField(primary_key=True)
-    personaje_id_cre = models.OneToOneField(Personaje, models.DO_NOTHING)  
+    personaje_id_cre = models.ForeignKey(Personaje, models.DO_NOTHING)  
     creador_nombre = models.CharField(max_length=20)
     creador_apellido = models.CharField(max_length=20)
 
@@ -302,10 +302,10 @@ class Juego(models.Model):
         managed = False
         db_table =u'"infopersonajes\".\"juego"'
 
-#FALTA
+#lista
 class Nacionalidad(models.Model):
     id_nacion = models.AutoField(primary_key=True)
-    personaje_id_nac = models.OneToOneField(Personaje, models.DO_NOTHING) 
+    personaje_id_nac = models.ForeignKey(Personaje, models.DO_NOTHING) 
     nacion_nombre = models.CharField('Nombre del pais',max_length=20)
     nacion_continente = models.CharField('Continente de la nación',choices=[('America','America'),('Europa','Europa'),('Africa','Africa'),('Asia','Asia'),('Oceania','Oceania')])
 
@@ -343,7 +343,7 @@ class Objeto(models.Model):
 #FALTA
 class Ocupacion(models.Model):
     id_ocupacion = models.AutoField(primary_key=True)
-    personaje_id_ocu = models.OneToOneField(Personaje, models.DO_NOTHING)
+    personaje_id_ocu = models.ForeignKey(Personaje, models.DO_NOTHING)
     ocupa_nombre = models.CharField('Ocupación del personaje',max_length=20)
 
     class Meta:

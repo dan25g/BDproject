@@ -122,5 +122,9 @@ urlpatterns = [
     path('nacionalidades/crear',views.new_nacionalidad,name='new_nacionalidad'),
     path('nacionalidades/<int:nac_id>/eli',views.elimina_nacionalidad,name='nacionalidad_eli'),
     path('nacionalidades/<int:nac_id>/act',views.actualiza_nacionalidad,name='nacionalidad_act'),
+    path('ocupaciones/',views.Ocupaciones,name='ocupaciones'),
+    path('ocupaciones/crear',views.new_ocupacion,name='new_ocupacion'),
+    path('ocupaciones/<int:ocu_id>/eli',views.elimina_ocupacion,name='ocupacion_eli'),
+    path('ocupaciones/<int:ocu_id>/act',views.actualiza_ocupacion,name='ocupacion_act'),
 ]
 

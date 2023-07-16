@@ -1438,7 +1438,7 @@ def actualiza_nacionalidad(request,nac_id):
     nac = get_object_or_404(Nacionalidad,pk=nac_id)
     if request.method == 'GET':
         form = NacForm(instance=nac)
-        return render(request,'act_nacionalidad.html', {'orgmed': nac,'form': form})
+        return render(request,'act_nacionalidad.html', {'nacion': nac,'form': form})
     else:
         try:
             form = NacForm(request.POST,instance=nac)
@@ -1446,4 +1446,52 @@ def actualiza_nacionalidad(request,nac_id):
             messages.success(request,"Nacionalidad actualizada con exito")
             return redirect('nacionalidades')
         except ValueError:
-            return render(request,'act_nacionalidad.html', {'orgmed': nac,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+            return render(request,'act_nacionalidad.html', {'nacion': nac,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
+
+@login_required
+def Ocupaciones(request):
+    ocu = Ocupacion.objects.all()
+    return render(request,'ocupaciones.html',{
+        'ocupas':ocu,
+    })
+
+@login_required
+def elimina_ocupacion(request,ocu_id):
+    ocu = get_object_or_404(Ocupacion,pk=ocu_id)
+    ocu.delete()
+    messages.success(request,"Ocupación eliminada con exito")
+    return redirect('ocupaciones')
+
+@login_required
+def new_ocupacion(request):
+    if request.method == 'GET':
+        return render(request,'new_ocupacion.html', {
+            'form': OcuForm,          
+        })
+    else:
+        try:
+            form = OcuForm(request.POST)
+            NewOcu = form.save(commit=False)
+            NewOcu.save()
+            messages.success(request,"Ocupación creada con exito")
+            return redirect('ocupaciones')
+        except ValueError:
+            return render(request,'new_ocupacion.html', {
+                'form': OcuForm, 
+                'error':'Por favor ingrese datos validos'           
+            })
+        
+@login_required
+def actualiza_ocupacion(request,ocu_id):
+    ocu = get_object_or_404(Ocupacion,pk=ocu_id)
+    if request.method == 'GET':
+        form = OcuForm(instance=ocu)
+        return render(request,'act_ocupacion.html', {'ocupa': ocu,'form': form})
+    else:
+        try:
+            form = OcuForm(request.POST,instance=ocu)
+            form.save()
+            messages.success(request,"Ocupación actualizada con exito")
+            return redirect('ocupaciones')
+        except ValueError:
+            return render(request,'act_ocupacion.html', {'ocupa': ocu,'form': form, 'error':"ERROR. No se ha podido actualizar"}) 
